@@ -1,0 +1,11 @@
+{
+  "name": "JointsWP",
+  "private": true,
+  "ignore": [],
+  "dependencies": {
+		"foundation-sites": "accordion-submenu-toggle"
+  },
+  "devDependencies": {
+    "motion-ui": "^1.2.2"
+  }
+}
