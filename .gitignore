@@ -70,6 +70,9 @@ Thumbs.db
 *.exe
 *.o
 *.so
+wp-content/themes/marylandnature/assets/css/
+wp-content/themes/marylandnature/assets/js/
+!wp-content/themes/marylandnature/assets/js/scripts/
 
 # ignore packaged files
 *.7z
@@ -98,8 +101,7 @@ wp-content/themes/twenty*/
 
 # ignore node/grunt dependency directories
 node_modules/
-/bower_components/
-/node_modules/
+bower_components/
 
 # DW Dreamweaver added files
 _notes
