@@ -10,6 +10,8 @@
 		- test with multiple events
 	* Format templates/pages for:
 		- single event (adding meetup link, meta)
+	* Sidebar
+		- Museum show be expanded on http://localhost:3000/marylandnature/category/curators-blog/
 	* Resources
 	  - Add some publications & format listing/search
 	* Search
@@ -27,6 +29,7 @@
 		- Get Involved landing: http://localhost:3000/marylandnature/get-involved/
 		- What We Do landing: http://localhost:3000/marylandnature/what-we-do/
 		- Learn landing: http://localhost:3000/marylandnature/learn/
+		- Resources: http://localhost:3000/marylandnature/learn/resources/
 		
 */
 

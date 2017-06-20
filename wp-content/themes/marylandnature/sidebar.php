@@ -1,4 +1,4 @@
-<div id="sidebar1" class="sidebar medium-pull-9 medium-3 columns" role="complementary" data-equalizer-watch data-sticky-container>
+<div id="sidebar1" class="sidebar medium-pull-9 medium-3 columns" role="complementary" data-equalizer-watch="brellis" data-sticky-container>
 	<div class="sticky" data-sticky data-margin-top="0" data-anchor="post-<?php the_ID(); ?>">
 		<?php joints_sidebar_nav(); ?>
 

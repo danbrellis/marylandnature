@@ -5,12 +5,12 @@ $grid_width = 12 / $grid_columns; ?>
 
 <?php if( 0 === ( $wp_query->current_post  )  % $grid_columns ): ?>
 
-    <div class="row archive-grid" data-equalizer> <!--Begin Row:--> 
+    <div class="row archive-grid" data-equalizer="archive-grid" data-equalize-by-row="true"> <!--Begin Row:--> 
 
 <?php endif; ?> 
 
 		<!--Item: -->
-		<div class="large-<?php echo $grid_width; ?> medium-<?php echo $grid_width; ?> columns panel" data-equalizer-watch>
+		<div class="large-<?php echo $grid_width; ?> medium-<?php echo $grid_width; ?> columns panel" data-equalizer-watch="archive-grid">
 		
 			<article id="post-<?php the_ID(); ?>" <?php post_class(''); ?> role="article">
 			

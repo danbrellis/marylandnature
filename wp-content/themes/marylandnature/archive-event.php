@@ -1,21 +1,15 @@
 <?php get_header(); ?>
 	
 	<div id="content">
-	
 		<div id="inner-content">
-
-			<div class="hbanner">
-				<div class="row">
-					<header class="small-12 columns article-header">
-						<h1 class="page-title stringbean text-center"><?php echo nhsm_event_scope_prefix(' '); post_type_archive_title(); ?></h1>
-					</header>
-				</div>
-			</div>
 			<div class="row">
 				<div class="medium-12 columns">
 			
-					<div class="row" data-equalizer data-equalize-on="medium">
-						<main id="main" class="medium-9 medium-push-3 columns" role="main" data-equalizer-watch>
+					<div class="row" data-equalizer="brellis" data-equalize-on="medium">
+						<main id="main" class="medium-9 medium-push-3 columns" role="main" data-equalizer-watch="brellis">
+							<header class="small-12 columns article-header">
+								<h1 class=""><?php echo nhsm_event_scope_prefix(' '); post_type_archive_title(); ?></h1>
+							</header>
 							<?php get_template_part( 'parts/loop', 'event-archive' ); ?>	
 						</main> <!-- end #main -->
 

@@ -33,6 +33,15 @@ i.larger {
 	margin-top: rem-calc(20);
 }
 
+.vert-center {
+	display: table !important;
+	
+	span {
+		display: table-cell;
+		vertical-align: middle;
+	}
+}
+
 /*********************
 LINK STYLES
 *********************/
@@ -491,6 +500,10 @@ a .label {
 		margin: 4px 0 7px;
 		text-align: center;
 	}
+}
+
+.panel-grid-cell .sow-image-container + h3.widget-title {
+	margin-top: 10px;
 }
 
 // Add Foundation styling to password protect button

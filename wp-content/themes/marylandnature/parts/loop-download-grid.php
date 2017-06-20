@@ -1,4 +1,5 @@
 <?php 
+$dlm_download = new DLM_Download( get_the_ID() );
 // Adjust the amount of rows in the grid
 $grid_columns = 2;
 $grid_width = 12 / $grid_columns; ?>
@@ -17,7 +18,7 @@ $grid_width = 12 / $grid_columns; ?>
 				<a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>" class="h4"><?php the_title(); ?></a>
 				<ul class="post-meta clearfix no-bullet subtle">
 					<li class="post-meta-date"><i class="fi-clock"></i>&nbsp;<?php echo get_the_time('F j, Y'); ?></li>
-					<?php if ( comments_open() ): ?><li class="post-meta-comments"><i class="fi-comment"></i>&nbsp;<?php comments_popup_link( '0 Comments', '1 Comment', '% Comments', 'comments-link', ''); ?></li><?php endif; ?>
+					<li class="post-meta-filetype"><i class="fi-page-copy"></i>&nbsp;<?php echo $dlm_download->get_the_filetype(); ?></li>
 					<?php the_tags('<li class="post-meta-tags"><i class="fi-pricetag-multiple"></i>&nbsp;', ', ', '</li>'); ?>
 				</ul>
 				<?php the_excerpt(); ?>
