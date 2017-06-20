@@ -123,13 +123,14 @@ class NHSM_Sidebar_Nav {
 		}
 		//check if it's a category archive
 		else {
+			
 			foreach($tax as $t){
-				//var_dump($t); echo '<br><br>';
-				
+				if($t['tax'] !== 'event-category') continue;
+				$term = !$t['term'] ? false : explode(',', str_replace(' ', '', $t['term']));
 				if($t['tax'] == 'category') {
-					if(is_category(explode(',', str_replace(' ', '', $t['term'])))) $this->queried_parent = $t['parent'];
+					if(is_category($term)) $this->queried_parent = $t['parent'];
 				}
-				elseif(is_tax($t['tax'], explode(',', str_replace(' ', '', $t['term'])))) $this->queried_parent = $t['parent'];
+				elseif(is_tax($t['tax'], $term)) $this->queried_parent = $t['parent'];
 			}
 		}
 		
