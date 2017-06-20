@@ -101,8 +101,8 @@ class NHSM_Sidebar_Nav {
 				elseif(get_sub_field('archive_type') == 'taxonomy'){
 					$tax_term = explode(':', get_sub_field('archive_slug'));
 					$tax[] = array(
-						'tax' => isset($tax_term[1]) ? $tax_term[1] : 'category',
-						'term' => $tax_term[0],
+						'tax' => $tax_term[0],
+						'term' => isset($tax_term[1]) ? $tax_term[1]: false,
 						'parent' => get_sub_field('parent_object')
 					);
 				}
@@ -124,7 +124,12 @@ class NHSM_Sidebar_Nav {
 		//check if it's a category archive
 		else {
 			foreach($tax as $t){
-				if(is_tax($t['tax'], $t['term'])) $this->queried_parent = $t['parent'];
+				//var_dump($t); echo '<br><br>';
+				
+				if($t['tax'] == 'category') {
+					if(is_category(explode(',', str_replace(' ', '', $t['term'])))) $this->queried_parent = $t['parent'];
+				}
+				elseif(is_tax($t['tax'], explode(',', str_replace(' ', '', $t['term'])))) $this->queried_parent = $t['parent'];
 			}
 		}
 		
