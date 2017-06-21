@@ -4,7 +4,7 @@
 
 /* @todo
  HERE - go through every page and confirm template and no glitch and can be reviewed for content & make a list of pages needing additional work/questions
- 
+ HERE - format tabs: http://localhost/marylandnature/tag/flowers/#resources
  * Finish event calendar:
 		- add a legend/filter for cats (& topics?)
 		- test with multiple events
@@ -93,7 +93,7 @@ require_once(get_template_directory().'/assets/functions/custom-post-type.php');
 /** Queries **/
 function nhsm_pre_get_posts( $query ) {
 	if($query->is_main_query() && !is_admin()){
-		if ( is_post_type_archive('nhsm_event') || is_tax('event-category') ) {
+		if ( is_post_type_archive('event') || is_tax('event-category') ) {
 			$query->set( 'orderby', 'meta_value' );
 			$query->set( 'meta_type', 'DATETIME' );
 			$query->set( 'meta_key', '_event_start_date' );
@@ -352,6 +352,42 @@ function nhsm_em_the_date_reg_box($event = 0){
 		</ul>
 	</div>
 	<?php echo ob_get_clean();
+}
+
+function nhsm_em_the_event_archive_filters(){
+	$qo = get_queried_object();
+	$queried_term_id = is_a($qo, 'WP_Post_Type') ? false : $qo->term_id;
+	$terms = get_terms( array(
+		'taxonomy' => 'event-category',
+		'hide_empty' => false,
+	) );
+	
+	$scope = isset($_GET['show']) ? sanitize_title($_GET['show']) : 'upcoming';	?>
+	<form class="" method="get" action="" role="form" style="margin-top:20px; margin-bottom:10px;">
+		<div class="row">
+			<div class="small-1 columns">
+				<label for="middle-label" class="text-right middle">Filter: </label>
+			</div>
+			<div class="small-5 columns end">
+				<select name="show" class="form-control" onchange="this.form.submit()">
+					<option value="all" <?php selected($scope, 'all'); ?>>All Events</option>
+					<option value="upcoming" <?php selected($scope, 'upcoming'); ?>>Upcoming Events</option>
+					<option value="past" <?php selected($scope, 'past'); ?>>Past Events</option>
+				</select>
+			</div>
+			<?php if($terms && !empty($terms) && !is_wp_error($terms)): ?>
+				<div class="medium-5 end columns">
+					<select class="form-control" onchange="javascript:location.href = this.value;">
+						<option value="<?php echo add_query_arg('show', $scope, get_post_type_archive_link('event')); ?>">All Categories</option>
+						<?php foreach($terms as $term): ?>
+						<option value="<?php echo add_query_arg('show', $scope, get_term_link($term)); ?>" <?php selected( $term->term_id, $queried_term_id ); ?>><?php echo $term->name; ?></option>
+						<?php endforeach; ?>
+					</select>
+				</div>
+			<?php endif; ?>
+		</div>
+	</form>
+	<?php
 }
 
 /* Site Origin */

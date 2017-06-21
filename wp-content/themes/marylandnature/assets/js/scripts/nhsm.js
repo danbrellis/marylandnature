@@ -209,4 +209,7 @@ jQuery( document ).ready( function( $ ) {
 		$('.wildapricotframe').iFrameResize( [{'checkOrigin': false, 'log': true}] );
   }
 	
+	$('.tabs').on('change.zf.tabs', function() {
+		Foundation.reInit('equalizer');
+	});
 });

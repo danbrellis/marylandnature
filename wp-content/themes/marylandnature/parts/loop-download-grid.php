@@ -2,7 +2,8 @@
 $dlm_download = new DLM_Download( get_the_ID() );
 // Adjust the amount of rows in the grid
 $grid_columns = 2;
-$grid_width = 12 / $grid_columns; ?>
+$grid_width = 12 / $grid_columns;
+global $wp_query; ?>
 
 <?php if( 0 === ( $wp_query->current_post  )  % $grid_columns ): ?>
 
