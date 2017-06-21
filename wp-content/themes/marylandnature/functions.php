@@ -8,12 +8,11 @@
  * Finish event calendar:
 		- add a legend/filter for cats (& topics?)
 		- test with multiple events
+		- add calendar actions into url (change month, filter by cat)
 	* Format templates/pages for:
 		- single event (adding meetup link, meta)
-	* Sidebar
-		- Museum show be expanded on http://localhost:3000/marylandnature/category/curators-blog/
 	* Resources
-	  - Add some publications & format listing/search
+	  - Add filter to cat pages (search by title, tag): http://localhost:3000/marylandnature/downloads/program-resources/
 	* Search
 		- Remove homepage (and others) from results (maybe use plugin below)
 		- Add filtering & incorporate plugin for better results
@@ -25,11 +24,9 @@
 	* mobile
 		- optimize nav
 	* Single Pages
-		- Ask a question
 		- Get Involved landing: http://localhost:3000/marylandnature/get-involved/
 		- What We Do landing: http://localhost:3000/marylandnature/what-we-do/
 		- Learn landing: http://localhost:3000/marylandnature/learn/
-		- Resources: http://localhost:3000/marylandnature/learn/resources/
 		
 */
 
@@ -309,6 +306,52 @@ add_filter('em_event_category_fields', 'nhsm_em_event_category_fields');
 function nhsm_em_event_category_fields($fields){
 	if(isset($fields['color'])) unset($fields['color']);
 	return $fields;
+}
+
+function nhsm_em_the_event_terms_list($event = 0){
+	$e = get_post($event);
+	if(get_post_type() !== 'event') return false;
+	$cats = get_the_terms(get_the_ID(), 'event-category');
+	$cat_list = array();
+
+	if($cats && is_array($cats)){
+		foreach($cats as $cat){
+			$link = get_term_link( $cat, 'event-category' );
+			$template = !is_wp_error( $link ) ? '<a href="'.esc_url($link).'">%s</a>' : '%s';
+			$styles = array();
+
+			$bg_color = get_term_meta( $cat->term_id, '_label_bg_color', true );
+			if(!empty( $bg_color ) ) $styles[] = "background:#{$bg_color}";
+
+			$txt_color = get_term_meta( $cat->term_id, '_label_txt_color', true );
+			if(!empty( $txt_color ) ) $styles[] = "color:#{$txt_color}";
+
+			$cat_list[] = sprintf($template, '<span class="label dynamic" style="'.implode(';', $styles).'">'.$cat->name.'</span>');
+		}
+	}
+
+	echo '<p class="event_cat_labels">'.implode(' ', $cat_list).'</p>';
+}
+
+function nhsm_em_the_date_reg_box($event = 0){
+	$e = get_post($event);
+	if(get_post_type() !== 'event') return false;
+	ob_start(); ?>
+	<div class="callout event-important-info">
+		<ul class="post-meta clearfix no-bullet">
+			<li class="post-meta-date"><i class="fi-clock"></i>&nbsp;<?php echo nhsm_get_date_range($e); ?></li>
+			<?php if(nhsm_is_event_over()): ?>
+				<li class="post-meta-notice"><i class="fi-alert"></i>&nbsp;This event has passed.</li>
+			<?php else:
+				$tickets_url = apply_filters( 'em_single_event_tickets_url', get_post_meta( $e->ID, '_event_tickets_url', true ) );
+				if ( $tickets_url ) : ?>
+				<li class="post-meta-action"><i class="fi-checkbox"></i>&nbsp;<a href="<?php echo esc_url($tickets_url); ?>" title="Visit event registration url" target="_blank">Register Now!</a></li>
+				<?php endif;
+			endif; ?>
+
+		</ul>
+	</div>
+	<?php echo ob_get_clean();
 }
 
 /* Site Origin */
