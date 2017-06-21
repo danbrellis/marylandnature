@@ -252,7 +252,7 @@ add_filter( 'the_content_more_link', '__return_false' );
 
 function nhsm_addthis($loop_check = false){
 	if($loop_check) if(!is_single()) return;
-	//echo '<div class="float-right"><!-- Go to www.addthis.com/dashboard to customize your tools --><div class="addthis_inline_share_toolbox"></div></div>';
+	echo '<div class="float-right"><!-- Go to www.addthis.com/dashboard to customize your tools --><div class="addthis_inline_share_toolbox"></div></div>';
 }
 
 /** PLUGINS **/
