@@ -11,10 +11,7 @@
 						
 						
 							<header class="article-header">
-								<div class="float-right">
-									<!-- Go to www.addthis.com/dashboard to customize your tools -->
-									<div class="addthis_inline_share_toolbox"></div>
-								</div>
+								<?php nhsm_addthis(); ?>
 								<h1 class="entry-title single-title">Search<?php if(get_search_query() != '') echo ' for "'.esc_attr(get_search_query()).'"'; ?></h1>
 							</header>
 						

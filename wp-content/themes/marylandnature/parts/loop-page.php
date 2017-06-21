@@ -2,10 +2,7 @@
 					
   <header class="article-header">
 		
-		<div class="float-right">
-			<!-- Go to www.addthis.com/dashboard to customize your tools -->
-			<div class="addthis_inline_share_toolbox"></div>
-		</div>
+		<?php nhsm_addthis(); ?>
 		<h1 class="entry-title single-title" itemprop="headline"><?php the_title(); ?></h1>
 		<?php nhsm_the_banner_image(); ?>
 

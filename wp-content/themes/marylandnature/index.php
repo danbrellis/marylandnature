@@ -12,10 +12,7 @@ $page_id = get_option( 'page_for_posts' );
 							
 							<header class="article-header">
 
-								<div class="float-right">
-									<!-- Go to www.addthis.com/dashboard to customize your tools -->
-									<div class="addthis_inline_share_toolbox"></div>
-								</div>
+								<?php nhsm_addthis(); ?>
 								<h1 class="entry-title single-title"><?php echo apply_filters( 'the_title', get_the_title( $page_id ) ); ?></h1>
 								<?php nhsm_the_banner_image($page_id); ?>
 
