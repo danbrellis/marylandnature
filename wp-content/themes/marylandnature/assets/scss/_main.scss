@@ -1371,6 +1371,10 @@ HOMEPAGE STYLES
 		
 		display: none;
 		
+		.panel-grid-cell + .panel-grid-cell {
+			float: right;
+		}
+		
 		.sow-headline-container {
 			float: right;
 		}

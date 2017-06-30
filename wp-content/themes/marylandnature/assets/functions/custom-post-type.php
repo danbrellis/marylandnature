@@ -272,22 +272,25 @@ add_action( 'edited_event-category',  'nhsm_save_termmeta' );
 
 function add_color_label_column( $columns ){
 	$columns['nhsm_label_colors'] = 'Label';
+	$columns['nhsm_cat_img'] = 'Image';
 	unset($columns['description']);
 	return $columns;
 }
 add_filter('manage_edit-event-category_columns', 'add_color_label_column' );
 
 function add_color_label_column_content( $content, $column_name, $term_id ){
-	if( $column_name !== 'nhsm_label_colors' ){
-			return $content;
-	}
+	if( $column_name === 'nhsm_label_colors' ){
+		$bg_color = get_term_meta( $term_id, '_label_bg_color', true );
+		$bg_color = ( ! empty( $bg_color ) ) ? "#{$bg_color}" : '#abd037';
+		$txt_color = get_term_meta( $term_id, '_label_txt_color', true );
+		$txt_color = ( ! empty( $txt_color ) ) ? "#{$txt_color}" : '#ffffff';
 
-	$bg_color = get_term_meta( $term_id, '_label_bg_color', true );
-	$bg_color = ( ! empty( $bg_color ) ) ? "#{$bg_color}" : '#abd037';
-	$txt_color = get_term_meta( $term_id, '_label_txt_color', true );
-	$txt_color = ( ! empty( $txt_color ) ) ? "#{$txt_color}" : '#ffffff';
-	
-	$content = '<span class="label dynamic" style="color:'.$txt_color.';background:'.$bg_color.'">Label Colors</span>';
+		$content = '<span class="label dynamic" style="color:'.$txt_color.';background:'.$bg_color.'">Label Colors</span>';
+	}
+	if( $column_name === 'nhsm_cat_img' ){
+		$image_id = get_term_meta ( $term_id, 'category_image_id', true );
+		$content = '<a href="'. get_edit_post_link( $image_id ) .'" target="_blank" title="View Image">'.wp_get_attachment_image ( $image_id, array(75, 75) ).'</a>';
+	}
 
 	return $content;
 }
