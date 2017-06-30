@@ -4,7 +4,6 @@
 
 /* @todo
  HERE - go through every page and confirm template and no glitch and can be reviewed for content & make a list of pages needing additional work/questions
- HERE - format tabs: http://localhost/marylandnature/tag/flowers/#resources
  * Finish event calendar:
 		- add a legend/filter for cats (& topics?)
 		- test with multiple events
@@ -24,8 +23,6 @@
 	* mobile
 		- optimize nav
 	* Single Pages
-		- Get Involved landing: http://localhost:3000/marylandnature/get-involved/
-		- What We Do landing: http://localhost:3000/marylandnature/what-we-do/
 		- Learn landing: http://localhost:3000/marylandnature/learn/
 		
 */
