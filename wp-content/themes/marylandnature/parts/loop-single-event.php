@@ -14,6 +14,8 @@
 		<?php em_display_single_event_google_map(); ?>
 		<?php //the_post_thumbnail('full'); ?>
 		<?php the_content(); ?>
+		<h2>Photographs</h2>
+		<?php em_display_event_gallery(); ?>
 	</section> <!-- end article section -->
 						
 	<footer class="article-footer">

@@ -150,6 +150,7 @@ function nhsm_post_gallery($output, $attr, $instance){
 		if( trim( $attachment->post_excerpt ) ) 
 			$attr['aria-describedby'] = $selector.'-'.$id;
 		
+		/* //removed for now until we create a formated single tempalte for media
 		if ( ! empty( $atts['link'] ) && 'file' === $atts['link'] ) {
 			$image_output = wp_get_attachment_link( $id, $atts['size'], false, false, false, $attr );
 		} elseif ( ! empty( $atts['link'] ) && 'none' === $atts['link'] ) {
@@ -157,7 +158,8 @@ function nhsm_post_gallery($output, $attr, $instance){
 		} else {
 			$image_output = wp_get_attachment_link( $id, $atts['size'], true, false, false, $attr );
 		}
-		$image_meta  = wp_get_attachment_metadata( $id );
+		*/
+		$image_output = wp_get_attachment_link( $id, $atts['size'], false, false, false, $attr );
 		
 		$cred = nhsm_format_image_credit_line(false, $id);
 		$caption = $attachment->post_excerpt ? wptexturize($attachment->post_excerpt) . '<br />' . $cred : $cred;
