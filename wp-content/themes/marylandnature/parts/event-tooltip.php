@@ -39,6 +39,7 @@ if($cats && is_array($cats)){
 		<td><?php echo implode($wheres); ?></td>
 	</tr>
 	<?php endif; ?>
-	<?php echo get_the_tag_list( '<tr><th>Topics</th><td>', ', ', '</td></tr>'); ?>
+	<?php $tag_list = get_the_tag_list( '<tr><th>Topics</th><td>', ', ', '</td></tr>');
+	echo str_replace('/"', '/#events"', $tag_list); ?>
 </table>
 <a href="<?php echo get_permalink(); ?>" class="button small" title="<?php the_title(); ?>">More details</a>

@@ -1,6 +1,6 @@
 <div id="post-not-found" class="hentry">
 	
-	<?php if ( is_search() ) : ?>
+	<?php if ( is_search() || is_tag() ) : ?>
 		
 		<header class="article-header">
 			<h1><?php _e( 'Sorry, No Results.', 'jointswp' );?></h1>

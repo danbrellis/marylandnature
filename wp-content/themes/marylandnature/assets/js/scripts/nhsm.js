@@ -1,5 +1,22 @@
 // JavaScript Document
 
+function removeHash () { 
+	var scrollV, scrollH, loc = window.location;
+	if ("pushState" in history)
+		history.pushState("", document.title, loc.pathname + loc.search);
+	else {
+		// Prevent scrolling by storing the page's current scroll offset
+		scrollV = document.body.scrollTop;
+		scrollH = document.body.scrollLeft;
+
+		loc.hash = "";
+
+		// Restore the scroll offset, should be flicker free
+		document.body.scrollTop = scrollV;
+		document.body.scrollLeft = scrollH;
+	}
+}
+
 (function( $ ) {
 	
 	"use strict";
@@ -129,7 +146,6 @@ jQuery( document ).ready( function( $ ) {
 		var cal = $('#events-full-calendar').fullCalendar('getCalendar');
 
 		cal.on('eventRender', function( event, element, view ) {
-			console.log(event);
 			if(event.appendToTitle !== false){
 				element.find('.fc-content').after(event.appendToTitle);
 			}
@@ -138,22 +154,86 @@ jQuery( document ).ready( function( $ ) {
 			//$(document).foundation();
 
 			//add dropdown pane
-			var dropdownPane = '<div class="dropdown-pane top large" id="dropdown'+event.id+'" data-dropdown data-auto-focus="true"><button class="close-button" aria-label="Close event details" type="button"><span aria-hidden="true">&times;</span></button>'+event.tooltip+'</div>';
+			var dropdownPane = '<div class="dropdown-pane top large event-tooltip" id="dropdown'+event.id+'" data-dropdown data-auto-focus="true"><button class="close-button" aria-label="Close event details" type="button"><span aria-hidden="true">&times;</span></button>'+event.tooltip+'</div>';
 			$("#events-full-calendar").after( $(dropdownPane) );
 			element.attr('data-toggle', 'dropdown'+event.id);
 		});
 		cal.on('eventAfterAllRender', function(view){
 			$(document).foundation();
+			
 			$('.dropdown-pane .close-button').on('click', function(){
 				$(this).closest('.dropdown-pane').foundation('close');
 			});
 		});
 
 		setTimeout(function() {
-				$('#events-full-calendar').fullCalendar('rerenderEvents');
+			var hash = window.location.hash;
+			var data = {
+				'action': 'get_event_cat_filters',
+				'active': 0,
+				'security': nhsm_ajax.cal_security
+			};
+
+			//Setup cat filtering dropdown
+			$.post(nhsm_ajax.ajax_url, data, function(r) {
+				//console.log(r);
+				if(r.error) {
+					console.log(r.output);
+				}
+				else {
+					$('#events-full-calendar').find('.fc-right').html(r.output);
+				}
+				$(document).foundation();
+				var inputs = $('#event-cat-filter').find('input');
+			
+				//Refetch events if hash is present and precheck corresponding checkboxes
+				if(hash){
+					var newSource = nhsm_ajax.ajax_url + '?action=get_events&cats=' + hash.substr(1);
+					$('.event-tooltip').remove();
+					$('#events-full-calendar').fullCalendar('removeEventSources');
+					$('#events-full-calendar').fullCalendar('removeEvents');
+					$('#events-full-calendar').fullCalendar('addEventSource', newSource);
+					$('#cal-filtered').text('On');
+
+					var toCheck = hash.replace('#', '').split('+');
+					inputs.each(function(){
+						if($.inArray($(this).attr('id').replace('cat_',''), toCheck) > -1){
+							$(this).prop("checked", true);
+						}
+					});
+				}
+				
+				//Listen for checkboxes to be checked
+				inputs.on('change', function(e){
+
+					//gather all checked
+					var checked = [];
+					inputs.each(function(){
+						if($(this).prop('checked')) checked.push($(this).attr('id').replace('cat_',''));
+					});
+					if(checked.length > 0) {
+						$('#cal-filtered').text('On');
+						window.location.hash=checked.join('+');
+					}
+					else {
+						$('#cal-filtered').text('Off');
+						removeHash();
+					}
+
+					var newSource = nhsm_ajax.ajax_url + '?action=get_events&cats=' + checked.join('+');
+					$('.event-tooltip').remove();
+					$('#events-full-calendar').fullCalendar('removeEventSources');
+					$('#events-full-calendar').fullCalendar('removeEvents');
+					$('#events-full-calendar').fullCalendar('addEventSource', newSource);
+				});
+			});
+
+
+			$('#events-full-calendar').fullCalendar('rerenderEvents');
 		});
 	}
 
+	//old code (#calendar no longer used, replaced with #events-full-calendar)
 	if($('#calendar').length){
 		$('#calendar').fullCalendar({
 			eventLimit: true,

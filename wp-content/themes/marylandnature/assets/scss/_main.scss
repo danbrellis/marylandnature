@@ -351,6 +351,22 @@ POSTS & CONTENT STYLES
 	}
 }
 
+//remove when in production!!
+.addthis_inline_share_toolbox {
+	width: 130px;
+	height: 30px;
+	background: rgb(59, 89, 152);
+	
+	&:after {
+		content: "social sharing";
+		line-height: 30px;
+		text-align: center;
+		width: 130px;
+		color: #fff;
+		display: block;
+	}
+}
+
 .single-title,
 .page-title {
 	
@@ -1449,6 +1465,28 @@ FOUNDATION STYLES
 	border-radius: 50%;
 }
 
+.is-dropdown-submenu {
+	z-index: 2; //increased to sit ontop of event maker's full-calendar
+}
+
+.button.dropdown, button.dropdown {
+	padding-right: 1.6em;
+	&:after {
+		display: block;
+    width: 0;
+    height: 0;
+    border: inset 5px;
+    content: '';
+    border-bottom-width: 0;
+    border-top-style: solid;
+    border-color: $white transparent transparent;
+    right: .6em;
+		position: absolute;
+    top: 50%;
+    margin-top: -2px;
+	}
+}
+
 /*********************
 PLUGIN STYLES
 *********************/
@@ -1459,6 +1497,56 @@ PLUGIN STYLES
 }
 
 /* Full Calendar */
+#event-cat-filter {
+	li {
+		text-align: left;
+		
+		.label {
+			cursor: pointer;
+			display: block;
+			font-size: 1rem;
+			margin-bottom: 1em;
+			
+			input {
+				margin: 0;
+			}
+			
+			i:before {
+				font-family: "foundation-icons";
+				font-style: normal;
+				font-weight: normal;
+				font-variant: normal;
+				text-transform: none;
+				line-height: 1;
+				-webkit-font-smoothing: antialiased;
+				display: inline-block;
+				text-decoration: inherit;
+			}
+			
+			input[type=checkbox]:checked + i {
+				&:before{ content: "\f126"; }
+			}
+			
+			&:hover {
+				opacity: .85;
+				
+				input[type=checkbox]:checked + i {
+					&:before{ content: "\f217"; }
+				}
+			}
+			
+			/*
+			&:hover{
+				opacity: .85;
+				i.fi-check {
+					//&:before{ content: "\f217"; }
+					@extend .fi-x;
+				}
+			}
+			*/
+		}
+	}
+}
 .fc {
 	h2 {
 		border-bottom: none;

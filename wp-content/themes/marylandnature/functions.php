@@ -3,11 +3,9 @@
 
 
 /* @todo
- HERE - go through every page and confirm template and no glitch and can be reviewed for content & make a list of pages needing additional work/questions
  * Finish event calendar:
-		- add a legend/filter for cats (& topics?)
 		- test with multiple events
-		- add calendar actions into url (change month, filter by cat)
+		- add calendar actions into url (change month?)
 	* Format templates/pages for:
 		- single event (adding meetup link, meta)
 	* Resources
@@ -23,7 +21,7 @@
 	* mobile
 		- optimize nav
 	* Single Pages
-		- Learn landing: http://localhost:3000/marylandnature/learn/
+		- Connecting Naturalists: http://localhost:3000/marylandnature/learn/connecting-naturalists/
 		
 */
 
@@ -296,6 +294,7 @@ function nhsm_em_calendar_event_data($event_data, $event){
 add_filter('em_get_full_calendar_script_args', 'nhsm_em_get_full_calendar_script_args');
 function nhsm_em_get_full_calendar_script_args($args){
 	if(isset($_GET['open'])) $args['defaultDate'] = sanitize_title_with_dashes($_GET['open']);
+	$args['header']['right'] = '';
 	return $args;	
 }
 
