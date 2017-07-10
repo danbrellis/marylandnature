@@ -1,14 +1,14 @@
 {
-  "name": "JointsWP-sass",
+  "name": "MarylandNature",
   "version": "4.0.0",
-  "description": "A WordPress starter theme using Foundation 6",
+  "description": "A Wordpress theme for the Natural History Society of Maryland",
   "repository": {
     "type": "git",
-    "url": "https://github.com/JeremyEnglert/JointsWP.git"
+    "url": "https://github.com/danbrellis/marylandnature.git"
   },
-  "author": "Jeremy Englert",
+  "author": "Dan Brellis",
   "license": "GPL-2.0 AND MIT",
-  "homepage": "https://github.com/JeremyEnglert/JointsWP",
+  "homepage": "https://github.com/danbrellis/marylandnature",
   "devDependencies": {
     "babel-preset-es2015": "^6.5.0",
     "browser-sync": "^2.11.0",
