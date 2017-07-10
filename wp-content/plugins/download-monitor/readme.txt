@@ -3,8 +3,8 @@ Contributors: never5, barrykooij, mikejolley, hchouhan
 Donate link: http://www.barrykooij.com/donate/
 Tags: download, downloads, monitor, hits, download monitor, tracking, admin, count, counter, files, versions, download count, logging, AJAX, digital, documents, download category, download manager, download template, downloadmanager, file manager, file tree, grid, hits, ip-address, manager, media, monitor, password, protect downloads, tracker
 Requires at least: 3.8
-Tested up to: 4.7.2
-Stable tag: 1.9.6
+Tested up to: 4.7.4
+Stable tag: 1.9.7
 License: GPLv3
 Text Domain: -
 
@@ -118,6 +118,10 @@ More documentation can be found in our [Knowledge Base](https://www.download-mon
 4. Display regular download links or fancy ones all using shortcodes and templates.
 
 == Changelog ==
+
+= 1.9.7: May 5, 2017 =
+* Tweak: Added capability checks to log export and delete functionality. Props [Pritect](http://www.pritect.net/).
+* Tweak: We're now redirecting users to home on empty download request. Behavior can be changed via filters. See https://www.download-monitor.com/kb/empty-download-request-redirection/
 
 = 1.9.6: February 28, 2017 =
 * Tweak: Fix display for unknown user in exported log, props [Matt Mower](https://github.com/mdmower).
