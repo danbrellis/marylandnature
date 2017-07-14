@@ -26,11 +26,18 @@ if ($_SERVER["HTTP_HOST"] === 'dev.marylandnature.org') {
 	$host = 'marylandnaturalistor.ipowermysql.com';
 } else if ($_SERVER["HTTP_HOST"] === 'localhost') {
   $db_name = 'marylandnature';
-	$username = 'root';
+  $username = 'root';
   $password = 'root';
-	$host = 'localhost';
-	define('WP_DEBUG', true);
-	define('SITEORIGIN_PANELS_NOCACHE', true);
+  $host = 'localhost';
+  define('WP_DEBUG', true);
+  define('SITEORIGIN_PANELS_NOCACHE', true);
+} else if ($_SERVER["HTTP_HOST"] === 'marylandnature.local') {
+  $db_name = 'dev_marylandnature';
+  $username = 'root';
+  $password = '';
+  $host = 'localhost';
+  define('WP_DEBUG', true);
+  define('SITEORIGIN_PANELS_NOCACHE', true);
 }
 /** The name of the database for WordPress */
 define('DB_NAME', $db_name);
