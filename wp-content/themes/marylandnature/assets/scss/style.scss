@@ -17,6 +17,8 @@ CSS file.
 // Import foundation.scss from vendor files
 @import "../../vendor/foundation-sites/scss/foundation.scss";
 
+//Le fonts
+@import url('https://fonts.googleapis.com/css?family=Lato:100,300,400,700');
 $font-path: "../fonts/foundation-icons/foundation-icons";
 @font-face {
   font-family: "foundation-icons";
