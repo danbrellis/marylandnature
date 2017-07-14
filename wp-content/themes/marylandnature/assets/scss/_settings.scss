@@ -56,6 +56,7 @@ $foundation-palette: (
   warning: #d04937,
   alert: #83291C,
 );
+$offwhite: #fafafa;
 $light-gray: #e6e6e6;
 $medium-gray: #cacaca;
 $dark-gray: #8a8a8a;
@@ -616,7 +617,7 @@ $tooltip-radius: $global-radius;
 // -----------
 
 $topbar-padding: 0.5rem;
-$topbar-background: $white;
+$topbar-background: $offwhite;
 $topbar-submenu-background: $topbar-background;
 $topbar-title-spacing: 0.45rem 1rem 0 1rem;
 $topbar-input-width: 200px;
