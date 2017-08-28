@@ -3,18 +3,27 @@
 function nhsm_wp_footer(){
 	$min = WP_DEBUG ? '' : '.min';
 	// Adding scripts file in the footer
+  $local = array(
+    'ajax_url' => admin_url( 'admin-ajax.php'),
+    'cal_security' => wp_create_nonce( "cedar-waxwing" ),
+    'img_credit_security' => wp_create_nonce( "mountain-mint" )
+  );
 	if(wp_script_is('events-maker-front-calendar') === true){
 		wp_enqueue_script( 'site-js', get_template_directory_uri() . '/assets/js/scripts'.$min.'.js', array( 'jquery', 'events-maker-front-calendar' ), '', true );
 		wp_localize_script(
 			'events-maker-front-calendar',
 			'nhsm_ajax',
-			array(
-				'ajax_url' => admin_url( 'admin-ajax.php'),
-				'cal_security' => wp_create_nonce( "cedar-waxwing" )
-			)
+			$local
 		);
 	}
-	else wp_enqueue_script( 'site-js', get_template_directory_uri() . '/assets/js/scripts'.$min.'.js', array( 'jquery' ), '', true );
+	else {
+    wp_enqueue_script('site-js', get_template_directory_uri() . '/assets/js/scripts' . $min . '.js', array('jquery'), '', true);
+    wp_localize_script(
+      'site-js',
+      'nhsm_ajax',
+      $local
+    );
+  }
 }
 add_action('wp_footer', 'nhsm_wp_footer');
 

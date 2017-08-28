@@ -283,6 +283,43 @@ jQuery( document ).ready( function( $ ) {
 			}
 		});
 	}
+
+	//add credits/captions to images
+	if($('.add_caption_to_bg').length){
+		var map = [];
+        $('.add_caption_to_bg').each(function(i){
+			map.push({
+                key: i,
+				dom: $(this),
+				bg: $(this).css('background-image').replace('url(','').replace(')','').replace(/\"/gi, "")
+            });
+		});
+		if(map.length > 0){
+			var data = {
+                'action': 'get_img_credit',
+                'security': nhsm_ajax.img_credit_security,
+                'items': JSON.stringify(map)
+            };
+			$.post(nhsm_ajax.ajax_url, data, function(r) {
+                if (r.error) {
+                    console.log(r.output);
+                }
+                else {
+                	$.each(map, function(i){
+                		var credit = $(r.output[i]);
+                		var parent = map[i].dom;
+                        parent.append(credit);
+                		credit.css('right', parent.position().left);
+					});
+				}
+            });
+        }
+
+        //Setup cat filtering dropdown
+        /*
+
+        */
+	}
 	
 	//Cross domain iframe height (used for wildapricot widgets)
 	if ($(".wildapricotframe").length){

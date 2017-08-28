@@ -118,3 +118,33 @@ function get_event_cat_filters(){
 	echo wp_send_json($json);
 	die();
 }
+
+add_action( 'wp_ajax_get_img_credit', 'ajax_get_img_credit' );
+add_action( 'wp_ajax_nopriv_get_img_credit', 'ajax_get_img_credit' );
+function ajax_get_img_credit(){
+  $json = array();
+  check_ajax_referer( 'mountain-mint', 'security' );
+  $items = isset($_REQUEST['items']) ? json_decode(stripslashes($_REQUEST['items'])) : array();
+  //echo '<pre>'; var_dump($items); echo '</pre>';
+  $credits = array();
+  if(is_array($items)){
+    foreach($items as $item){
+      $post_id = attachment_url_to_postid($item->bg);
+      if($post_id){
+        $credit = nhsm_img_title_and_credit(false, $post_id, true, false);
+        $credits[] = '<span class="lg_img_caption">' . $credit . '</span>';
+      }
+    }
+  }
+  //echo '<pre>'; var_dump($items); echo '</pre>';
+  if(empty($credits)){
+    $json['error'] = true;
+    $json['output'] = 'No background images found';
+  }
+  else {
+    $json['error'] = false;
+    $json['output'] = $credits;
+  }
+  echo wp_send_json($json);
+  die();
+}

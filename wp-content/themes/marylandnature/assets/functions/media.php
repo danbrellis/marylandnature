@@ -61,6 +61,12 @@ function caption_shortcode_with_credits($empty, $attr, $content) {
 }
 
 //for displaying image credits
+function nhsm_img_title_and_credit($credit = false, $img_id = false, $link = true, $small = true){
+  $post = get_post($img_id);
+  $credit = nhsm_format_image_credit_line($credit, $img_id, $link, $small);
+  return sprintf("%s. %s", get_the_title($post), $credit);
+}
+
 function nhsm_format_image_credit_line($credit = false, $img_id = false, $link = true, $small = true){
 	if(!$credit) $credit = nhsm_get_image_credit($img_id, $link);
 	$ret = sprintf(__('Image courtesy: %s', 'rys'), $credit);
