@@ -98,7 +98,7 @@ function get_event_cat_filters(){
 	) );
 	ob_start();
 	if($terms && !is_wp_error($terms)): ?>
-		<button class="button secondary dropdown float-right" type="button" data-toggle="event-cat-filter">Category Filtering [<span id="cal-filtered">Off</span>]</button>
+		<button class="dropdown float-right" type="button" data-toggle="event-cat-filter">Category Filtering [<span id="cal-filtered">Off</span>]</button>
 		<div class="dropdown-pane bottom" id="event-cat-filter" data-dropdown data-auto-focus="true">
 			<ul class="menu vertical">
 					<?php foreach($terms as $term): 

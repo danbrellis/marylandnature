@@ -166,6 +166,10 @@ jQuery( document ).ready( function( $ ) {
 			});
 		});
 
+		$('.fc-agendaview-button').on('click', function(){
+            window.location.href = nhsm_ajax.agenda_url;
+		});
+
 		setTimeout(function() {
 			var hash = window.location.hash;
 			var data = {

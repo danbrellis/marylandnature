@@ -3,10 +3,15 @@
 function nhsm_wp_footer(){
 	$min = WP_DEBUG ? '' : '.min';
 	// Adding scripts file in the footer
+  
+  //get cal pages
+  $events_maker_general = get_option('events_maker_general', array());
   $local = array(
     'ajax_url' => admin_url( 'admin-ajax.php'),
     'cal_security' => wp_create_nonce( "cedar-waxwing" ),
-    'img_credit_security' => wp_create_nonce( "mountain-mint" )
+    'img_credit_security' => wp_create_nonce( "mountain-mint" ),
+    'calendar_url' => get_permalink($events_maker_general['pages']['calendar']['id']),
+    'agenda_url' => get_permalink($events_maker_general['pages']['events']['id'])
   );
 	if(wp_script_is('events-maker-front-calendar') === true){
 		wp_enqueue_script( 'site-js', get_template_directory_uri() . '/assets/js/scripts'.$min.'.js', array( 'jquery', 'events-maker-front-calendar' ), '', true );

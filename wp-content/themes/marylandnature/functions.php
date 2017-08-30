@@ -6,13 +6,15 @@
  * Finish event calendar:
 		- test with multiple events
 		- add calendar actions into url (change month?)
+    - bug when turning filter on then off, event is displayed # of times filter was used (need to clear array i assume)
 	* Format templates/pages for:
-		- single event (adding meetup link, meta)
+		- single event (adding meetup link, meta, and pull in resources related to that event cat)
+    - tag archive (http://marylandnature.local/tag/communications/#general) need to make the menu look nicer. maybe use underline instead of block bg like the main nav
 	* Resources
 	  - Add filter to cat pages (search by title, tag): http://localhost:3000/marylandnature/downloads/program-resources/
 	* Search
 		- Remove homepage (and others) from results (maybe use plugin below)
-		- Add filtering & incorporate plugin for better results
+		- Add filtering (like tag archive) & incorporate plugin for better results
 		- Add better meta in results for specific post types (collections, evfents)
 	* Experts (http://localhost:3000/marylandnature/role/experts/)
 	  - sticky sidebar jumps to top of page when scroll down
@@ -294,7 +296,18 @@ function nhsm_em_calendar_event_data($event_data, $event){
 add_filter('em_get_full_calendar_script_args', 'nhsm_em_get_full_calendar_script_args');
 function nhsm_em_get_full_calendar_script_args($args){
 	if(isset($_GET['open'])) $args['defaultDate'] = sanitize_title_with_dashes($_GET['open']);
+	$args['customButtons'] = array(
+	  /*'calview' => array(
+	    'text' => 'Calendar',
+      'href' => '#foo'
+    ),*/
+    'agendaview' => array(
+      'text' => 'List View'
+    )
+  );
 	$args['header']['right'] = '';
+	$args['header']['left'] = 'calview agendaview';
+	$args['header']['center'] = 'prev title next';
 	return $args;	
 }
 

@@ -1621,9 +1621,35 @@ PLUGIN STYLES
 	}
 	
 	.fc-day-grid-event {
-    margin: 1px 1px 0;
-    padding: 7px 5px;
+		margin: 1px 1px 0;
+		padding: 7px 5px;
 		border: 0;
+	}
+
+	.fc-toolbar {
+		h2 {
+			margin: 0 .5em;
+		}
+		button {
+			@extend .button;
+			@extend .secondary;
+
+			padding: 0 .6em;
+			font-size: 1rem;
+			margin-top: rem-calc(12px);
+
+			&.fc-state-default {
+				background-image: none;
+				background-repeat: no-repeat;
+				border: none;
+				text-shadow: none;
+				box-shadow: none;
+			}
+
+			&.fc-calview-button {
+				border-right: 1px solid $medium-gray !important;
+			}
+		}
 	}
 	
 	.fc-cats {
