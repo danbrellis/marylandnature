@@ -521,19 +521,35 @@ a .label {
 	position: relative;
 }
 .lg_img_caption {
-	position: absolute;
-	bottom: 0;
 	display: inline;
-	text-align: right;
 	font-size: 16px;
-	color: $white;
+}
+
+.img-caption-container {
+	position: relative;
+	margin-bottom: 20px;
+
+	img {
+		margin-bottom: 0px;
+	}
+
+
+}
+
+.img-caption-container span, .lg_img_caption {
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
+	text-align: right;
+	background: rgba(255, 255, 255, 0.9);
+	padding: 0px 6px;
 
 	a {
-		color: $white;
+		color: $reading;
 
-		&:hover, &:focus{
+		&:hover, &:focus {
+			color: $black;
 			text-decoration: underline;
-			color: $white;
 		}
 	}
 }

@@ -194,7 +194,7 @@ function nhsm_get_the_banner_image($post = 0, $atts = array()){
 	);
 	$atts = wp_parse_args( $atts, $defaults );
 	if(has_post_thumbnail($post)){
-		return get_the_post_thumbnail($post, 'nhsm_hbanner', $atts);
+		return nhsm_fuse_img_and_caption(get_the_post_thumbnail($post, 'nhsm_hbanner', $atts), nhsm_img_title_and_credit(false, get_post_thumbnail_id($post->ID)));
 	}
 }
 
@@ -212,7 +212,7 @@ function nhsm_get_the_category_banner_image($cat_id = 0, $taxonomy = 'category',
 		'class' => 'single_page_banner'
 	);
 	$atts = wp_parse_args( $atts, $defaults );
-	return wp_get_attachment_image($image_id, 'nhsm_hbanner', false, $atts);
+	return nhsm_fuse_img_and_caption(wp_get_attachment_image($image_id, 'nhsm_hbanner', false, $atts), nhsm_img_title_and_credit(false, $image_id));
 }
 
 function nhsm_banner_style($post = 0, $fallback = '', array $styles = array()){
@@ -245,4 +245,8 @@ function nhsm_banner_style($post = 0, $fallback = '', array $styles = array()){
 	foreach($styles as $k => $v) $style_attr = $k . ':' . $v . ';';
 		
 	return ' style="'.$style_attr.'"';
+}
+
+function nhsm_fuse_img_and_caption($img, $caption = false){
+  return sprintf("<div class='img-caption-container'>%s<span>%s</span></div>", $img, $caption);
 }
