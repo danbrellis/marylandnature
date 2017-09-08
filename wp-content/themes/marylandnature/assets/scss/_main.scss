@@ -1631,6 +1631,10 @@ PLUGIN STYLES
 	table {
 		margin-bottom: inherit;
 	}
+
+	.fc-other-month .fc-day-number {
+		color: lighten($reading, 25%);
+	}
 	
 	.fc-day-number {
 		color: $reading;

@@ -4,9 +4,7 @@
 
 /* @todo
  * Finish event calendar:
-		- test with multiple events
 		- add calendar actions into url (change month?)
-    - bug when turning filter on then off, event is displayed # of times filter was used (need to clear array i assume)
 	* Format templates/pages for:
 		- single event (adding meetup link, meta, and pull in resources related to that event cat)
     - tag archive (http://marylandnature.local/tag/communications/#general) need to make the menu look nicer. maybe use underline instead of block bg like the main nav
@@ -305,6 +303,7 @@ function nhsm_em_get_full_calendar_script_args($args){
       'text' => 'List View'
     )
   );
+	$args['columnFormat'] = 'dddd';
 	$args['header']['right'] = '';
 	$args['header']['left'] = 'calview agendaview';
 	$args['header']['center'] = 'prev title next';

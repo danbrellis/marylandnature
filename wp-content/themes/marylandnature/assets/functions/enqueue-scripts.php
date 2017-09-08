@@ -14,6 +14,10 @@ function nhsm_wp_footer(){
     'agenda_url' => get_permalink($events_maker_general['pages']['events']['id'])
   );
 	if(wp_script_is('events-maker-front-calendar') === true){
+    //remove plugin's version and use theme's udated version
+    wp_deregister_script( 'events-maker-fullcalendar' );
+    wp_register_script('events-maker-fullcalendar', get_template_directory_uri() . '/assets/js/scripts/fullcalendar/fullcalendar.js', array( 'jquery', 'events-maker-moment' ), '3.3.0');
+    
 		wp_enqueue_script( 'site-js', get_template_directory_uri() . '/assets/js/scripts'.$min.'.js', array( 'jquery', 'events-maker-front-calendar' ), '', true );
 		wp_localize_script(
 			'events-maker-front-calendar',
