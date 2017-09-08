@@ -1,43 +1,19 @@
 === Share Buttons by AddThis ===
-Contributors: abramsm, srijith.v, vipinss, dnrahamim, jgrodel, bradaddthiscom, mkitzman, addthis_paul, addthis_matt, addthis_elsa, ribin_addthis, AddThis_Mike
-Tags: AddThis, bookmark, bookmarking, Facebook, LinkedIn, mobile, mobile sharing, Pinterest, plugin, share, share button, share buttons, share buttons plugin, sharing, sharing buttons, sharing sidebar, sidebar, social buttons, social tools, twitter, widget
+Contributors: abramsm, jgrodel, bradaddthis.com, addthis_paul, addthis_matt, ribin_addthis, addthis_elsa, addthisleland
+Tags: bookmarking, email sharing, facebook, linkedin, pinterest, share, sharing buttons, social marketing, social tools, twitter, whatsapp
 Requires at least: 3.0
-Tested up to: 4.7.3
-Stable tag: 5.3.5
+Tested up to: 4.8.1
+Stable tag: 6.1.0
+License: GPLv2
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Increase social traffic to your website with WordPress share buttons that connect directly to over 200 social networks.
+Share buttons from AddThis help you get more traffic from sharing through social networks.
 
 
 
 == Description ==
 
-Get more of your website’s content shared on social media by installing the AddThis WordPress share buttons plugin. With AddThis, your users can easily share your content on the most popular social networks, including Facebook, Twitter, Pinterest, and more. You can also choose whether to display these share buttons on your homepage, category page, archive page, and other WordPress pages or posts.
-
-With the AddThis WordPress share buttons plugin, you get:
-
-= Share Buttons =
-
-* Position buttons above or below your content
-* Choose between several button styles and sizes
-* Include share counts to encourage your visitors to share
-* Personalize which sharing services appear or pick them yourself
-
-= Sharing Sidebar =
-
-* Choose which side of your page it appears on
-* Control how many buttons show up in the sidebar
-
-= Mobile Sharing Toolbar =
-
-* Position the toolbar at the top or bottom of your page
-* Turn on or off displayed share count
-* Control how many buttons appear
-
-<a href="https://www.addthis.com/register">Create a registered account</a> with AddThis to access the AddThis mode for this plugin, which offers additional share button configurations and analytics via the AddThis dashboard. Analytics include your top performing content, services and tools.
-
-Also be sure to check out the <a href="https://wordpress.org/plugins/addthis-follow/">AddThis WordPress follow button plugin</a>, which is great for getting your website visitors to follow you on the most popular social networks, including Facebook, Twitter, Instagram, Snapchat, and more.
-
-<a href="http://www.addthis.com/academy/">AddThis Academy</a> | <a href="http://www.addthis.com/privacy">Privacy Policy</a>
+The best share buttons on the web are now available for your WordPress site. Promote your content easily by sharing to over 200 of the most popular social networking and bookmarking sites (like Facebook Share, Facebook Like, Twitter, Pinterest, Google+, WhatsApp, LinkedIn and more). Clean, customizable and simple share buttons are unobtrusive, quick to load and recognized all over the web.
 
 
 
@@ -64,8 +40,7 @@ To upload the plugin through WordPress, instead of FTP:
 
 = Is AddThis free? =
 
-Many of our tools are free, but Pro users get the benefit of exclusive widgets, including mobile­ friendly tools
-and retina icons, priority support and deeper analytics.
+Many of our tools are free, but Pro users get the benefit of exclusive widgets, priority support and deeper analytics.
 
 = Do I need to create an account? =
 
@@ -73,92 +48,87 @@ No, you do not need to create an account in order to control a limited number of
 
 = Is JavaScript required? =
 
-All of the options required through this plugin require javascript. JavaScript must be enabled. We load the actual interface via JavaScript at run-time, which allows us to upgrade the core functionality of the menu itself automatically everywhere.
+All AddThis website tools require JavaScript. JavaScript must be enabled. We load the actual interface via JavaScript at run-time, which allows us to upgrade the core functionality of the menu itself automatically everywhere whenever a new social sharing services comes out.
 
 = Why use AddThis? =
 1. Ease of use. AddThis is easy to install, customize and localize. We've worked hard to make a suite of simple and beautiful website tools on the internet.
 1. Performance. The AddThis menu code is tiny and fast. We constantly optimize its behavior and design to make sharing a snap.
 1. Peace of mind. AddThis gathers the best services on the internet so you don't have to, and backs them up with industrial strength analytics, code caching, active tech support and a thriving developer community.
 1. Flexibility. AddThis can be customized via API, and served securely via SSL. You can roll your own sharing toolbars with our toolbox. Share just about anything, anywhere ­­ your way.
-1. Global reach. AddThis sends content to 200+ sharing services 60+ languages, to over 1.9 billion unique users in countries all over the world.
+1. Global reach. AddThis sends content to 200+ sharing services 60+ languages, to over 2 billion unique users in countries all over the world.
 
 = What PHP version is required? =
 
-This plugin requires PHP 5.2.4 or greater.
+This plugin requires PHP 5.2.4 or greater and is tested on the following versions of PHP:
+
+* 5.2.4
+* 5.2.17
+* 5.3.29
+* 5.4.45
+* 5.5.38
+* 5.6.31
+* 7.0.22
+* 7.1.8
 
 = Who else uses AddThis? =
-Over 15,000,000 sites have installed AddThis. With over 1.9 billion unique users, AddThis is helping share content all over the world, in more than sixty languages.
-
-= What services does AddThis support? =
-We currently support over 200 services, from email and blogging platforms to social networks and news aggregators, and we add new services every month. Want to know if your favorite service is supported? This list is accurate up to the minute: <a href="http://www.addthis.com/services">http://www.addthis.com/services</a>.
+Over 15,000,000 sites have installed AddThis. With over 2 billion unique users, AddThis is helping share content all over the world, in more than sixty languages.
 
 = How do I remove AddThis from a page =
 In the screen options you can enable the AddThis meta box. Check the box and save if you've already published that page or post to disable AddThis on that page or post.
 
+= Are there filters? =
 
+Yes! There are lots of filters in this plugin.
 
-== Screenshots ==
+Filters allow developers to hook into this plugin's functionality in upgrade-safe ways to define very specific behavior by writing their own PHP code snippets.
 
-1. Sharing Tools tab on the plugin settings page (WordPress mode)
-2. Sharing Tools tab on the plugin settings page (WordPress mode)
-3. Advanced Options tab on the plugin settings page
-4. Drag and dropable sharing buttons widget (WordPress mode)
-4. Sharing Tools tab on the plugin settings page (AddThis mode)
-5. Analytics on the AddThis Dashboard
-6. Tool Gallery on the AddThis Dashboard
-7. Customization options on the AddThis Dashboard
+Developer <a href="https://plugins.svn.wordpress.org/addthis-all/trunk/documentation.filters.md">documentation</a> on our filters is available. This documentation lists all the filters for our plugins. This plugin does not include filters for follow tools or related post tools.
+
+= Are there widgets? =
+
+Yes! There are widgets available for all AddThis inline tools (the ones that don't float on the page).
+
+If you register with an AddThis Pro account, you'll also see widgets for our Pro tools.
+
+Developer <a href="https://plugins.svn.wordpress.org/addthis-all/trunk/documentation.widgets.md">documentation</a> on our widgets is also available. This documentation lists all the widgets for our plugins. This plugin does not include widgets for follow tools or related post tools.
+
+= Are there shortcodes? =
+
+Yes! There are lots of shortcodes in this plugin. There are shortcodes are available for all AddThis inline tools (the ones that don't float on the page).
+
+If you register with an AddThis Pro account, the shortcodes for our Pro tools will work for you, too.
+
+See our <a href="https://plugins.svn.wordpress.org/addthis-all/trunk/documentation.shortcodes.md">documentation</a> on our shortcodes. This documentation lists all the shortcodes for our plugins. This plugin does not include shortcodes for follow tools or related post tools.
 
 
 
 == Changelog ==
 
-= 5.3.5 =
-* Removing data-title and addthis:title attributes from inline tool HTML so that Open Graph tags can be used.
-* Replacing deprecated update_usermeta with update_user_meta
-* Replacing deprecated delete_usermeta with delete_user_meta
-* Updating link to configure tools at AddThis.com
-* Compatibility improvements for <a href="https://wordpress.org/plugins/addthis-follow/">Follow Buttons by AddThis</a>, <a href="https://wordpress.org/plugins/addthis-related-posts/">Related Posts by AddThis</a>, <a href="https://wordpress.org/plugins/addthis-all/">Website Tools by AddThis</a> & <a href="https://wordpress.org/plugins/addthis-smart-layers/">Smart Layers by AddThis</a>.
+= 6.1.0 =
+* Fix for PHP error from AddThisSharingButtonsMobileToolbarTool.php line 66
+* Fix for PHP error from AddThisSharingButtonsFeature.php line 200
+* Fix for PHP notice from AddThisFeature.php line 652
+* Fixing error message complaining about plugin not being compatable with itself for upgraded users.
+* Correcting language for widgets in conflict mode after upgrade
+* Removing line breaks from HTML added to public pages
+* Not using addthis.layers() json on page when user is using their AddThis account as this creates buggy behavior
+* Disabling the wp_trim_excerpt by default as it's the most likely to cause theme issues
+* Adding error message if browser can't talk to addthis.com and communication with AddThis APIs are required for funtionality.
+* Adding requested AddThisWidgetByDomClass functionality that will allow users adding a widget via PHP to customze the URL, title, description and image used for that share. Please see the <a href="https://plugins.svn.wordpress.org/addthis-all/trunk/documentation.widgets.md">widget documentation</a> for more infromation.
 
-= 5.3.4 =
-* Removing reporting of WordPress version for non-admin users
+= 6.0.0 =
+* Plugin rewritten from scratch.
+* Adding shortcodes for use inside posts for all current AddThis tools
+* Redesigned the plugin's widget to work all current AddThis sharing tools. The class for the new widget is AddThisWidgetByDomClass. Widgets created through WordPress's UI will automatically be migrated to use the new class. However, any hard coded use of the old widget class AddThisSidebarWidget will need to be updated before upgrading. Developer <a href="https://plugins.svn.wordpress.org/addthis-all/trunk/documentation.widgets.md">documentation</a> on the new widget is available.
+* The filter addthis_post_exclude is replaced with addthis_sharing_buttons_enable. Please review the <a href="https://plugins.svn.wordpress.org/addthis-all/trunk/documentation.filters.md">documentation</a> for usage.
+* Optionally, allows users to set up their AddThis account and AddThis site profile from inside WordPress.
+* Optionally, walks existing AddThis users through logging into their AddThis account and picking a site profile to register their plugin without leaving WordPress. Once registered, AddThis is able to start collecting Analytics on your visitors social use of your site. No more copying in Profile IDs! (Analytics are only available at <a href="https://addthis.com">addthis.com</a>.)
+* After registering the plugin with AddThis, Pro users can edit settings for any share tools from within WordPress.
+* Full compatibility with the current <a href="https://wordpress.org/support/plugin/addthis-follow">Follow Buttons by AddThis</a>, <a href="https://wordpress.org/support/plugin/addthis-related-posts">Related Posts by AddThis</a>, <a href="https://wordpress.org/support/plugin/addthis-smart-layers">Smart Layers by AddThis</a>, and <a href="https://wordpress.org/support/plugin/addthis-all">Website Tools by AddThis</a>plugins.
 
-= 5.3.3 =
-* Fixing PHP Notice: Undefined variable: displaySidebar in AddThisConfigs.php on line 450
-* Replacing a silly use of mysql_real_escape_string in title field value sanitization of widgets with sanitize_text_field, for improved PHP7 support
-
-= 5.3.2 =
-* Potential Yoast fix. <a href="mailto:help@addthis.com">Please let us know</a> if you still have issues with this plugin and Yoast after upgrading.
-
-= 5.3.1 =
-* Disabling the mobile version of the Sharing Sidebar when the Mobile Sharing Toolbar is enabled
-
-= 5.3.0 =
-* Adding Mobile Sharing Toolbar to WordPress mode (already available to users in AddThis mode). It will automatically be turned on for pages where you've enabled the Sharing Sidebar. You can change this in the settings.
-* Fixing notice: Undefined variable: inputHtml in addthis-toolbox.php on line 142
-* Increasing the number of services that can be added to the sharing sidebar from 6 to 10
-* Adding missing licenses and attributions
-* SS fixes for Twenty Sixteen theme
-
-= 5.2.3 =
-* Adding missing licenses and attributions
-
-= 5.2.2 =
-* Fix for duplicate sharing tools showing up due to weird caching plugin behavior
-* Fix for notices in addthis_social_widget.php on lines 1291 & 1306
-* Fix for changes in wp-cli 0.21.1
-
-= 5.2.1 =
-* Renaming the plugin from AddThis Sharing Buttons to Share Buttons by AddThis
-* Adding AddThis EULA
-
-= 5.2.0 =
-* New feature: AddThis Sharing Buttons metabox supported on custom post types. This meta box is used to disable sharing buttons on posts when editing them.
-* Removing duplicate metabox title 'AddThis'
+= 5.1.3 =
 * Fixing preview options in plugin settings
 * Using a more unique preview identifier to reduce likelyhood of conflicts with other plugins (specifically <a href="https://wordpress.org/support/plugin/public-post-preview">Public Post Preview</a>)
-* Fix for undefined variable below_excerpt in addthis_social_widget.php on line 1301
-* Fix for non-object post in addthis_settings_functions.php on line 430
-* Fix for Clickback checkbox in Advanced Options
 
 = 5.1.2 =
 * Resolves a bug where above excerpt sharing buttons would be added whenever below excerpt sharing buttons were enabled
@@ -336,7 +306,7 @@ In the screen options you can enable the AddThis meta box. Check the box and sav
 
 = 3.0.2 =
 * Bug fix: Conflict with WpSuperCache resolved
-* Wordpress 3.5 style conflicts resolved
+* WordPress 3.5 style conflicts resolved
 
 = 3.0.1 =
 * Bug fix: Issues with usernames/passwords with special characters
@@ -348,7 +318,7 @@ In the screen options you can enable the AddThis meta box. Check the box and sav
 
 = 2.5.1 =
 * Added hashtag support for Twitter
-* Conflict removed with <a href="http://wordpress.org/extend/plugins/addthis-follow/">AddThis Follow</a> and <a href="http://wordpress.org/extend/plugins/addthis-welcome/">AddThis Welcome Bar</a> Wordpress plugins
+* Conflict removed with <a href="http://wordpress.org/extend/plugins/addthis-follow/">AddThis Follow</a> and <a href="http://wordpress.org/extend/plugins/addthis-welcome/">AddThis Welcome Bar</a> WordPress plugins
 * Bug fixes
 
 = 2.5.0 =
@@ -470,41 +440,15 @@ Fixed nondeterministic bug with the_title(), causing the title to occasionally a
 
 == Upgrade Notice ==
 
-= 5.3.5 =
-Removing data-title and addthis:title attributes from inline tool HTML so that Open Graph tags can be used. Replacing some deprecated functions. Compatibility improvements for <a href="https://wordpress.org/plugins/addthis-follow/">Follow Buttons by AddThis</a>, <a href="https://wordpress.org/plugins/addthis-related-posts/">Related Posts by AddThis</a>, <a href="https://wordpress.org/plugins/addthis-all/">Website Tools by AddThis</a> & <a href="https://wordpress.org/plugins/addthis-smart-layers/">Smart Layers by AddThis</a>.
+= 6.1.0 =
+Fixs for PHP errors, whitespace issues, changes in default settings. Adding requested AddThisWidgetByDomClass functionality that will allow users adding a widget via PHP to customze the URL, title, description and image used for that share.
 
-= 5.3.4 =
-Removing reporting of WordPress version for non-admin users.
+= 6.0.0 =
+Plugin rewritten from scratch. Adding shortcodes for use inside posts for all current AddThis tools. Redesigned the plugin's widget to work all current AddThis sharing tools. The class for the new widget is AddThisWidgetByDomClass. Widgets created through WordPress's UI will automatically be migrated to use the new class. However, any hard coded use of the old widget class AddThisSidebarWidget will need to be updated before upgrading. Developer <a href="https://plugins.svn.wordpress.org/addthis-all/trunk/documentation.widgets.md">documentation</a> on the new widget is available. The filter addthis_post_exclude is replaced with addthis_sharing_buttons_enable. Please review the <a href="https://plugins.svn.wordpress.org/addthis-all/trunk/documentation.filters.md">documentation</a> for usage. Full compatibility with the current <a href="https://wordpress.org/support/plugin/addthis-follow">Follow Buttons by AddThis</a>, <a href="https://wordpress.org/support/plugin/addthis-related-posts">Related Posts by AddThis</a>, <a href="https://wordpress.org/support/plugin/addthis-smart-layers">Smart Layers by AddThis</a>, and <a href="https://wordpress.org/support/plugin/addthis-all">Website Tools by AddThis</a>plugins.
 
-= 5.3.3 =
-Fixing PHP Notice: Undefined variable: displaySidebar in AddThisConfigs.php on line 450. Replacing a silly use of mysql_real_escape_string in title field value sanitization of widgets with sanitize_text_field, for improved PHP7 support.
-
-= 5.3.2 =
-Potential Yoast fix. <a href="mailto:help@addthis.com">Please let us know</a> if you still have issues with this plugin and Yoast after upgrading.
-
-= 5.3.1 =
-Disabling the mobile version of the Sharing Sidebar when the Mobile Sharing Toolbar is enabled
-
-= 5.3.0 =
-New tool for WordPress mode! The Mobile Sharing Sidebar. It will automatically be turned on for pages where you've enabled the Sharing Sidebar. You can change this in the settings. Fixied notice "Undefined variable: inputHtml in addthis-toolbox.php on line 142". Increases the number of services that can be added to the sharing sidebar from 6 to 10. Adding missing licenses and attributions. CSS fixes for Twenty Sixteen theme.
-
-= 5.2.3 =
-Adding missing licenses and attributions
-
-= 5.2.2 =
-Dupliate button issues? This may help. Yeah, we know we said this last time. But for real now. Also, fixes for compatibility with wp-cli 0.21.1.
-
-= 5.2.1 =
-Dupliate button issues? This may help. Also, we renamed the plugin from AddThis Sharing Buttons to Share Buttons by AddThis.
-
-= 5.2.0 =
-* New feature: AddThis Sharing Buttons metabox supported on custom post types. This meta box is used to disable sharing buttons on posts when editing them.
-* Removing duplicate metabox title 'AddThis'
+= 5.1.3 =
 * Fixing preview options in plugin settings
 * Using a more unique preview identifier to reduce likelyhood of conflicts with other plugins (specifically <a href="https://wordpress.org/support/plugin/public-post-preview">Public Post Preview</a>)
-* Fix for undefined variable below_excerpt in addthis_social_widget.php on line 1301
-* Fix for non-object post in addthis_settings_functions.php on line 430
-* Fix for Clickback checkbox in Advanced Options
 
 = 5.1.2 =
 * Resolves a bug where above excerpt sharing buttons would be added whenever below excerpt sharing buttons were enabled
@@ -711,3 +655,4 @@ Bug fixes, more filters, small tweak to options.
 
 = 2.0.0 =
 More and better options for sharing widgets.  Redesigned analytics dashboard widget and interface.
+
