@@ -2,7 +2,7 @@
 /*
 Plugin Name: SiteOrigin Widgets Bundle
 Description: A collection of all widgets, neatly bundled into a single plugin. It's also a framework to code your own widgets on top of.
-Version: 1.9.3
+Version: 1.11.0
 Text Domain: so-widgets-bundle
 Domain Path: /lang
 Author: SiteOrigin
@@ -12,7 +12,7 @@ License: GPL3
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
 */
 
-define('SOW_BUNDLE_VERSION', '1.9.3');
+define('SOW_BUNDLE_VERSION', '1.11.0');
 define('SOW_BUNDLE_BASE_FILE', __FILE__);
 
 // Allow JS suffix to be pre-set
@@ -80,6 +80,9 @@ class SiteOrigin_Widgets_Bundle {
 
 		add_filter( 'wp_enqueue_scripts', array($this, 'register_general_scripts') );
 		add_filter( 'wp_enqueue_scripts', array($this, 'enqueue_active_widgets_scripts') );
+		
+		// This is a temporary filter to disable the new Jetpack Grunion contact form editor.
+		add_filter( 'tmp_grunion_allow_editor_view', '__return_false' );
 	}
 
 	/**
@@ -313,7 +316,8 @@ class SiteOrigin_Widgets_Bundle {
 	 */
 	function admin_activate_widget() {
 		if(
-			!empty($_GET['page'])
+			current_user_can( apply_filters( 'siteorigin_widgets_admin_menu_capability', 'manage_options' ) )
+			&& !empty($_GET['page'])
 			&& $_GET['page'] == 'so-widgets-plugins'
 			&& !empty( $_GET['widget_action'] ) && !empty( $_GET['widget'] )
 			&& isset($_GET['_wpnonce'])
@@ -345,17 +349,22 @@ class SiteOrigin_Widgets_Bundle {
 	 * @action wp_ajax_so_widgets_bundle_manage
 	 */
 	function admin_ajax_manage_handler(){
-		if( !wp_verify_nonce($_GET['_wpnonce'], 'manage_so_widget') ) exit();
-		if( ! current_user_can( apply_filters( 'siteorigin_widgets_admin_menu_capability', 'manage_options' ) ) ) exit();
-		if( empty($_POST['widget']) ) exit();
+		if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'manage_so_widget' ) ) {
+			wp_die( __( 'Invalid request.', 'so-widgets-bundle' ), 403 );
+		}
+		
+		if ( ! current_user_can( apply_filters( 'siteorigin_widgets_admin_menu_capability', 'manage_options' ) ) ) {
+			wp_die( __( 'Insufficient permissions.', 'so-widgets-bundle' ), 403 );
+		}
+		if ( empty( $_POST['widget'] ) ) {
+			wp_die( __( 'Invalid post.', 'so-widgets-bundle' ), 400 );
+		}
 
 		if( !empty($_POST['active']) ) $this->activate_widget($_POST['widget']);
 		else $this->deactivate_widget( $_POST['widget'] );
 
 		// Send a kind of dummy response.
-		header('content-type: application/json');
-		echo json_encode( array('done' => true) );
-		exit();
+		wp_send_json( array( 'done' => true ) );
 	}
 
 	/**
@@ -364,16 +373,22 @@ class SiteOrigin_Widgets_Bundle {
 	 * @action wp_ajax_so_widgets_setting_form
 	 */
 	function admin_ajax_settings_form(){
-		if( ! wp_verify_nonce($_GET['_wpnonce'], 'display-widget-form') ) exit();
-		if( ! current_user_can( apply_filters( 'siteorigin_widgets_admin_menu_capability', 'manage_options' ) ) ) exit();
+		if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'display-widget-form' ) ) {
+			wp_die( __( 'Invalid request.', 'so-widgets-bundle' ), 403 );
+		}
+		if ( ! current_user_can( apply_filters( 'siteorigin_widgets_admin_menu_capability', 'manage_options' ) ) ) {
+			wp_die( __( 'Insufficient permissions.', 'so-widgets-bundle' ), 403 );
+		}
 
 		$widget_objects = $this->get_widget_objects();
 
-		$widget_path = empty( $_GET['id'] ) ? false : WP_PLUGIN_DIR . $_GET['id'];
+		$widget_path = empty( $_GET['id'] ) ? false : wp_normalize_path( WP_PLUGIN_DIR ) . $_GET['id'];
 
 		$widget_object = empty( $widget_objects[ $widget_path ] ) ? false : $widget_objects[ $widget_path ];
-
-		if( empty( $widget_object ) || ! $widget_object->has_form( 'settings' ) ) exit();
+		
+		if ( empty( $widget_object ) || ! $widget_object->has_form( 'settings' ) ) {
+			wp_die( __( 'Invalid request.', 'so-widgets-bundle' ), 400 );
+		}
 
 		unset( $widget_object->widget_options['has_preview'] );
 
@@ -391,8 +406,8 @@ class SiteOrigin_Widgets_Bundle {
 			<?php $widget_object->form( $value, 'settings' ) ?>
 		</form>
 		<?php
-
-		exit();
+		
+		wp_die();
 	}
 
 	/**
@@ -401,17 +416,25 @@ class SiteOrigin_Widgets_Bundle {
 	 * @action wp_ajax_so_widgets_setting_save
 	 */
 	function admin_ajax_settings_save(){
-		if( ! wp_verify_nonce( $_GET['_wpnonce'], 'save-widget-settings' ) ) exit();
-		if( ! current_user_can( apply_filters( 'siteorigin_widgets_admin_menu_capability', 'manage_options' ) ) ) exit();
+		if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'save-widget-settings' ) ) {
+			wp_die( __( 'Invalid request.', 'so-widgets-bundle' ), 403 );
+		}
+		if ( ! current_user_can( apply_filters( 'siteorigin_widgets_admin_menu_capability', 'manage_options' ) ) ) {
+			wp_die( __( 'Insufficient permissions.', 'so-widgets-bundle' ), 403 );
+		}
 
 		$widget_objects = $this->get_widget_objects();
-		$widget_path = empty( $_GET['id'] ) ? false : WP_PLUGIN_DIR . $_GET['id'];
+		$widget_path = empty( $_GET['id'] ) ? false : wp_normalize_path( WP_PLUGIN_DIR ) . $_GET['id'];
 		$widget_object = empty( $widget_objects[ $widget_path ] ) ? false : $widget_objects[ $widget_path ];
-
-		if( empty( $widget_object ) || ! $widget_object->has_form( 'settings' ) ) exit();
+		
+		if ( empty( $widget_object ) || ! $widget_object->has_form( 'settings' ) ) {
+			wp_die( __( 'Invalid request.', 'so-widgets-bundle' ), 400 );
+		}
 
 		$form_values = array_shift( array_shift( array_values( $_POST ) ) );
 		$widget_object->save_global_settings( $form_values );
+		
+		wp_send_json_success();
 	}
 
 	/**
@@ -469,19 +492,25 @@ class SiteOrigin_Widgets_Bundle {
 	 * Get javascript variables for admin.
 	 */
 	function admin_ajax_get_javascript_variables() {
-		if ( empty( $_REQUEST['_widgets_nonce'] ) || !wp_verify_nonce( $_REQUEST['_widgets_nonce'], 'widgets_action' ) ) return;
-		$result = array();
+		if ( empty( $_REQUEST['_widgets_nonce'] ) ||
+		     ! wp_verify_nonce( $_REQUEST['_widgets_nonce'], 'widgets_action' ) ) {
+			wp_die( __( 'Invalid request.', 'so-widgets-bundle' ), 403 );
+		}
+		
 		$widget_class = $_POST['widget'];
 		global $wp_widget_factory;
-		if ( ! empty( $wp_widget_factory->widgets[ $widget_class ] ) ) {
-			$widget = $wp_widget_factory->widgets[ $widget_class ];
-			if( method_exists( $widget, 'get_javascript_variables' ) ) $result = $widget->get_javascript_variables();
+		if ( empty( $wp_widget_factory->widgets[ $widget_class ] ) ) {
+			wp_die( __( 'Invalid post.', 'so-widgets-bundle' ), 400 );
 		}
-
-		header('content-type: application/json');
-		echo json_encode($result);
-
-		exit();
+		
+		$widget = $wp_widget_factory->widgets[ $widget_class ];
+		if ( ! method_exists( $widget, 'get_javascript_variables' ) ) {
+			wp_die( __( 'Invalid request.', 'so-widgets-bundle' ), 400 );
+		}
+		
+		$result = $widget->get_javascript_variables();
+		
+		wp_send_json( $result );
 	}
 
 	/**
@@ -611,8 +640,9 @@ class SiteOrigin_Widgets_Bundle {
 
 		foreach( $folders as $folder ) {
 
-			$files = glob( $folder . '*/*.php' );
+			$files = glob( wp_normalize_path( $folder ) . '*/*.php' );
 			foreach ($files as $file) {
+				$file = wp_normalize_path( $file );
 				include_once $file;
 
 				$widget_class = $manager->get_class_from_path( $file );
@@ -697,7 +727,7 @@ class SiteOrigin_Widgets_Bundle {
 	function plugin_action_links($links){
 		unset( $links['edit'] );
 		$links['manage'] = '<a href="' . admin_url('plugins.php?page=so-widgets-plugins') . '">'.__('Manage Widgets', 'so-widgets-bundle').'</a>';
-		$links['support'] = '<a href="https://siteorigin.com/thread/" target="_blank">'.__('Support', 'so-widgets-bundle').'</a>';
+		$links['support'] = '<a href="https://siteorigin.com/thread/" target="_blank" rel="noopener noreferrer">'.__('Support', 'so-widgets-bundle').'</a>';
 		return $links;
 	}
 

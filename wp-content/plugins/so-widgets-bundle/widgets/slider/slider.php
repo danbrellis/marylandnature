@@ -192,13 +192,16 @@ class SiteOrigin_Widget_Slider_Widget extends SiteOrigin_Widget_Base_Slider {
 	}
 	
 	function get_template_variables( $instance, $args ) {
-		$frames = $instance['frames'];
-		foreach ( $frames as &$frame ) {
-			$link_atts = array();
-			if ( ! empty( $frame['new_window'] ) ) {
-				$link_atts['target'] = '_blank';
+		$frames = empty( $instance['frames'] ) ? array() : $instance['frames'];
+		if ( ! empty( $frames ) ) {
+			foreach ( $frames as &$frame ) {
+				$link_atts = array();
+				if ( ! empty( $frame['new_window'] ) ) {
+					$link_atts['target'] = '_blank';
+					$link_atts['rel'] = 'noopener noreferrer';
+				}
+				$frame['link_attributes'] = $link_atts;
 			}
-			$frame['link_attributes'] = $link_atts;
 		}
 		return array(
 			'controls' => $instance['controls'],
@@ -255,6 +258,16 @@ class SiteOrigin_Widget_Slider_Widget extends SiteOrigin_Widget_Base_Slider {
 		}
 
 		return $instance;
+	}
+
+	function get_form_teaser(){
+		if( class_exists( 'SiteOrigin_Premium' ) ) return false;
+
+		return sprintf(
+			__( 'Add a Lightbox to your image slides with %sSiteOrigin Premium%s', 'so-widgets-bundle' ),
+			'<a href="https://siteorigin.com/downloads/premium/?featured_addon=plugin/lightbox" target="_blank" rel="noopener noreferrer">',
+			'</a>'
+		);
 	}
 }
 

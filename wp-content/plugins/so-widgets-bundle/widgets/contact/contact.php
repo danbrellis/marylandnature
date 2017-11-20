@@ -61,8 +61,14 @@ class SiteOrigin_Widgets_ContactForm_Widget extends SiteOrigin_Widget {
 					'to'                               => array(
 						'type'        => 'text',
 						'label'       => __( 'To email address', 'so-widgets-bundle' ),
-						'description' => __( 'Where contact emails will be delivered to.', 'so-widgets-bundle' ),
+						'description' => __( 'Where contact emails will be delivered to. You can send to multiple emails by separating the emails with a comma (,)', 'so-widgets-bundle' ),
 						'sanitize'    => 'multiple_emails',
+					),
+					'from'                               => array(
+						'type'        => 'text',
+						'label'       => __( 'From email address', 'so-widgets-bundle' ),
+						'description' => __( 'It will appear as if emails are sent from this address. Ideally this should be in the same domain as this server to avoid spam filters.', 'so-widgets-bundle' ),
+						'sanitize'    => 'email',
 					),
 					'default_subject'                  => array(
 						'type'        => 'text',
@@ -628,7 +634,7 @@ class SiteOrigin_Widgets_ContactForm_Widget extends SiteOrigin_Widget {
 
 		return sprintf(
 			__( 'Get more form fields for the Contact Form Widget in %s', 'so-widgets-bundle' ),
-			'<a href="' . esc_url( $url ) . '" target="_blank">' . __( 'SiteOrigin Premium', 'so-widgets-bundle' ) . '</a>'
+			'<a href="' . esc_url( $url ) . '" target="_blank" rel="noopener noreferrer">' . __( 'SiteOrigin Premium', 'so-widgets-bundle' ) . '</a>'
 		);
 	}
 
@@ -646,6 +652,9 @@ class SiteOrigin_Widgets_ContactForm_Widget extends SiteOrigin_Widget {
 		if ( empty( $instance['settings']['to'] ) ) {
 			$current_user               = wp_get_current_user();
 			$instance['settings']['to'] = $current_user->user_email;
+		}
+		if ( empty( $instance['settings']['from'] ) ) {
+			$instance['settings']['from'] = get_option( 'admin_email' );
 		}
 		if ( empty( $instance['fields'] ) ) {
 			$instance['fields'] = array(
@@ -831,7 +840,7 @@ class SiteOrigin_Widgets_ContactForm_Widget extends SiteOrigin_Widget {
 			$field_id   = 'sow-contact-form-field-' . $field_name;
 
 			$value = '';
-			if ( ! empty( $_POST[ $field_name ] ) ) {
+			if ( ! empty( $_POST[ $field_name ] ) && wp_verify_nonce( $_POST['_wpnonce'], '_contact_form_submit' ) ) {
 				$value = stripslashes_deep( $_POST[ $field_name ] );
 			}
 
@@ -913,6 +922,13 @@ class SiteOrigin_Widgets_ContactForm_Widget extends SiteOrigin_Widget {
 	 * Ajax action handler to send the form
 	 */
 	function contact_form_action( $instance, $storage_hash ) {
+		if ( ! wp_verify_nonce( $_POST['_wpnonce'], '_contact_form_submit' ) ) {
+			// Using `return false;` instead of `wp_die` because this function may sometimes be called as a side effect
+			// of trying to enqueue scripts required for the front end. In those cases `$_POST['_wpnonce']` doesn't exist
+			// and calling `wp_die` will halt script execution and break things. Ideally it should be possible to enqueue
+			// front end scripts without calling widgets' render functions, but that will mean a fairly large refactor.
+			return false;
+		}
 		if ( empty( $_POST['instance_hash'] ) || $_POST['instance_hash'] != $storage_hash ) {
 			return false;
 		}
@@ -1131,7 +1147,7 @@ class SiteOrigin_Widgets_ContactForm_Widget extends SiteOrigin_Widget {
 	}
 
 	function send_mail( $email_fields, $instance ) {
-		$body = '<strong>From:</strong> <a href="mailto:' . sanitize_email( $email_fields['email'] ) . '">' . esc_html( $email_fields['name'] ) . '</a> &#60;' . sanitize_email( $email_fields['email'] ) . "&#62; \n\n";
+		$body = '<strong>' . __( 'From', 'so-widgets-bundle' ) . ':</strong> <a href="mailto:' . sanitize_email( $email_fields['email'] ) . '">' . esc_html( $email_fields['name'] ) . '</a> &#60;' . sanitize_email( $email_fields['email'] ) . "&#62; \n\n";
 		foreach ( $email_fields['message'] as $m ) {
 			$body .= '<strong>' . $m['label'] . ':</strong>';
 			$body .= "\n";
@@ -1145,10 +1161,15 @@ class SiteOrigin_Widgets_ContactForm_Widget extends SiteOrigin_Widget {
 			// Also replaces the email address that comes from the prebuilt layout directory
 			$instance['settings']['to'] = get_option( 'admin_email' );
 		}
+		
+		if ( $instance['settings']['from'] == 'test@example.com' || empty( $instance['settings']['from'] ) ) {
+			$instance['settings']['from'] = get_option( 'admin_email' );
+		}
 
 		$headers = array(
 			'Content-Type: text/html; charset=UTF-8',
-			'From: ' . $this->sanitize_header( $email_fields['name'] ) . ' <' . sanitize_email( $email_fields['email'] ) . '>',
+			'From: ' . $this->sanitize_header( $email_fields['name'] ) . ' <' . $instance['settings']['from'] . '>',
+			'Reply-To: ' . $this->sanitize_header( $email_fields['name'] ) . ' <' . sanitize_email( $email_fields['email'] ) . '>',
 		);
 
 		// Check if this is a duplicated send

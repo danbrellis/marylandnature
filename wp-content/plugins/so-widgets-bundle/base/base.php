@@ -7,6 +7,7 @@ include plugin_dir_path(__FILE__).'inc/widget-manager.class.php';
 include plugin_dir_path(__FILE__).'inc/meta-box-manager.php';
 include plugin_dir_path(__FILE__).'inc/post-selector.php';
 include plugin_dir_path(__FILE__).'inc/string-utils.php';
+include plugin_dir_path(__FILE__).'inc/array-utils.php';
 include plugin_dir_path(__FILE__).'inc/attachments.php';
 include plugin_dir_path(__FILE__).'inc/actions.php';
 include plugin_dir_path(__FILE__).'inc/shortcode.php';
@@ -238,4 +239,16 @@ function siteorigin_widgets_get_measurements_list() {
 
 	// Allow themes and plugins to trim or enhance the list.
 	return apply_filters('siteorigin_widgets_get_measurements_list', $measurements);
+}
+
+
+/**
+ * Returns the base URL of our widget with `$path` appended.
+ *
+ * @param string $path Extra path to append to the end of the URL.
+ *
+ * @return string Base URL of the widget, with $path appended.
+ */
+function siteorigin_widgets_url( $path = '' ) {
+	return plugins_url( 'so-widgets-bundle/' . $path );
 }

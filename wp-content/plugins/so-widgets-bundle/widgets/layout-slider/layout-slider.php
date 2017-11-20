@@ -60,9 +60,10 @@ class SiteOrigin_Widget_LayoutSlider_Widget extends SiteOrigin_Widget_Base_Slide
 
 							'image_type' => array(
 								'type' => 'select',
-								'label' => __('Background image type', 'so-widgets-bundle'),
+								'label' => __( 'Background image type', 'so-widgets-bundle' ),
 								'options' => array(
-									'cover' => __('Cover', 'so-widgets-bundle'),
+									'cover' => __( 'Cover', 'so-widgets-bundle '),
+									'tile' => __( 'Tile', 'so-widgets-bundle' ),
 								),
 								'default' => 'cover',
 							),
@@ -193,7 +194,7 @@ class SiteOrigin_Widget_LayoutSlider_Widget extends SiteOrigin_Widget_Base_Slide
 			?>
 			<p>
 				<?php _e( 'This widget requires: ', 'so-widgets-bundle' ) ?>
-				<a href="https://siteorigin.com/page-builder/" target="_blank"><?php _e( 'SiteOrigin Page Builder', 'so-widgets-bundle' ) ?></a>
+				<a href="https://siteorigin.com/page-builder/" target="_blank" rel="noopener noreferrer"><?php _e( 'SiteOrigin Page Builder', 'so-widgets-bundle' ) ?></a>
 			</p>
 			<?php
 		}
