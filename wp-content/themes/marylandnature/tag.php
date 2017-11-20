@@ -55,8 +55,10 @@
 								
 							); add_filter('excerpt_more', '__return_false');
 							?>
-							<ul class="tabs" data-deep-link="true" data-update-history="true" data-deep-link-smudge="true" data-deep-link-smudge="500" data-tabs id="deeplinked-tabs">
-								<li class="tabs-title is-active"><a href="#general" aria-selected="true">General</a></li>
+              <ul class="menu tabs" data-deep-link="true" data-update-history="true" data-deep-link-smudge="true" data-deep-link-smudge="500" data-tabs id="deeplinked-tabs">
+                <li class="menu-text float-left">Filter by:</li>
+                
+                <li class="tabs-title is-active"><a href="#general" aria-selected="true">General</a></li>
 								<?php foreach($tabs as $k => $v): ?>
 									<li class="tabs-title"><a href="#<?php echo $k; ?>" aria-selected="true"><?php echo $v['label']; ?></a></li>
 								<?php endforeach; ?>

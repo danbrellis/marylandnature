@@ -1559,6 +1559,22 @@ FOUNDATION STYLES
 	}
 }
 
+.tabs.menu {
+	background: $white;
+
+	li {
+		&.menu-text {
+			float: left;
+		}
+
+		&.is-active a {
+			color: $reading;
+			background: $light-gray;
+		}
+
+	}
+}
+
 /*********************
 PLUGIN STYLES
 *********************/
