@@ -568,6 +568,8 @@ class SiteOrigin_Panels_Renderer {
 		foreach ( $panels_data[ 'grids' ] as $grid ) {
 			$layout_data[] = array(
 				'style' => ! empty( $grid[ 'style' ] ) ? $grid[ 'style' ] : array(),
+				'ratio' => ! empty( $grid[ 'ratio' ] ) ? $grid[ 'ratio' ] : '',
+				'ratio_direction' => ! empty( $grid[ 'ratio_direction' ] ) ? $grid[ 'ratio_direction' ] : '',
 				'color_label' => ! empty( $grid[ 'color_label' ] ) ? $grid[ 'color_label' ] : '',
 				'label' => ! empty( $grid[ 'label' ] ) ? $grid[ 'label' ] : '',
 				'cells' => array()
@@ -766,6 +768,6 @@ class SiteOrigin_Panels_Renderer {
 	}
 	
 	public function front_css_url(){
-		return plugin_dir_url( __FILE__ ) . '../css/front-flex.css';
+		return siteorigin_panels_url( 'css/front-flex.css' );
 	}
 }

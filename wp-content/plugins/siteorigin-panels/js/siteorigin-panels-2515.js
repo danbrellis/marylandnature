@@ -919,7 +919,13 @@ module.exports = panels.view.dialog.extend({
 
 		if (!_.isUndefined(this.model)) {
 			// Set the initial value of the
-			this.$('input.so-row-field').val(this.model.get('cells').length);
+			this.$( 'input[name="cells"].so-row-field' ).val( this.model.get( 'cells' ).length );
+			if ( this.model.has( 'ratio' ) ) {
+				this.$( 'select[name="ratio"].so-row-field' ).val( this.model.get( 'ratio' ) );
+			}
+			if ( this.model.has( 'ratio_direction' ) ) {
+				this.$( 'select[name="ratio_direction"].so-row-field' ).val( this.model.get( 'ratio_direction' ) );
+			}
 		}
 
 		this.$('input.so-row-field').keyup(function () {
@@ -944,11 +950,19 @@ module.exports = panels.view.dialog.extend({
 		// Set the rows to be a copy of the model
 		this.row = {
 			cells: this.model.get('cells').clone(),
-			style: {}
+			style: {},
+			ratio: this.model.get('ratio'),
+			ratio_direction: this.model.get('ratio_direction'),
 		};
 
 		// Set the initial value of the cell field.
-		this.$('input.so-row-field').val(this.model.get('cells').length);
+		this.$( 'input[name="cells"].so-row-field' ).val( this.model.get( 'cells' ).length );
+		if ( this.model.has( 'ratio' ) ) {
+			this.$( 'select[name="ratio"].so-row-field' ).val( this.model.get( 'ratio' ) );
+		}
+		if ( this.model.has( 'ratio_direction' ) ) {
+			this.$( 'select[name="ratio_direction"].so-row-field' ).val( this.model.get( 'ratio_direction' ) );
+		}
 
 		this.clearCellStylesCache();
 
@@ -1340,7 +1354,7 @@ module.exports = panels.view.dialog.extend({
 				this.$('.row-set-form input[name="cells"]').val(f.cells);
 			}
 
-			this.$('.row-set-form input[name="ratio"]').val(f.ratio);
+			this.$('.row-set-form select[name="ratio"]').val(f.ratio);
 
 			var cells = [];
 			var cellCountChanged = (
@@ -1384,6 +1398,9 @@ module.exports = panels.view.dialog.extend({
 					cell.set('weight', cellWeight);
 				}
 			}.bind(this));
+			
+			this.row.ratio = f.ratio;
+			this.row.ratio_direction = f.direction;
 
 			if (cellCountChanged) {
 				this.regenerateRowPreview();
@@ -1436,7 +1453,9 @@ module.exports = panels.view.dialog.extend({
 
 		// Set the cells
 		if (!_.isEmpty(this.model)) {
-			this.model.setCells(this.row.cells);
+			this.model.setCells( this.row.cells );
+			this.model.set( 'ratio', this.row.ratio );
+			this.model.set( 'ratio_direction', this.row.ratio_direction );
 		}
 
 		// Update the row styles if they've loaded
@@ -1840,7 +1859,7 @@ module.exports = panels.view.dialog.extend( {
 
 } );
 
-},{"../view/widgets/js-widget":30}],10:[function(require,module,exports){
+},{"../view/widgets/js-widget":31}],10:[function(require,module,exports){
 var panels = window.panels, $ = jQuery;
 
 module.exports = panels.view.dialog.extend( {
@@ -2313,6 +2332,9 @@ module.exports = {
 	},
 
 	processTemplate: function ( s ) {
+		if ( _.isUndefined( s ) || _.isNull( s ) ) {
+			return '';
+		}
 		s = s.replace( /{{%/g, '<%' );
 		s = s.replace( /%}}/g, '%>' );
 		s = s.trim();
@@ -2479,21 +2501,22 @@ jQuery( function ( $ ) {
 		field,
 		form,
 		builderConfig;
-
-	if ( $( '#siteorigin-panels-metabox' ).length && $( 'form#post' ).length ) {
+	
+	var $panelsMetabox = $( '#siteorigin-panels-metabox' );
+	form = $( 'form#post' );
+	if ( $panelsMetabox.length && form.length ) {
 		// This is usually the case when we're in the post edit interface
-		container = $( '#siteorigin-panels-metabox' );
-		field = $( '#siteorigin-panels-metabox .siteorigin-panels-data-field' );
-		form = $( 'form#post' );
+		container = $panelsMetabox;
+		field = $panelsMetabox.find( '.siteorigin-panels-data-field' );
 
 		builderConfig = {
 			editorType: 'tinyMCE',
 			postId: $( '#post_ID' ).val(),
 			editorId: '#content',
-			builderType: $( '#siteorigin-panels-metabox' ).data( 'builder-type' ),
-			builderSupports: $( '#siteorigin-panels-metabox' ).data( 'builder-supports' ),
+			builderType: $panelsMetabox.data( 'builder-type' ),
+			builderSupports: $panelsMetabox.data( 'builder-supports' ),
 			loadOnAttach: panelsOptions.loadOnAttach && $( '#auto_draft' ).val() == 1,
-			loadLiveEditor: $( '#siteorigin-panels-metabox' ).data('live-editor') == 1,
+			loadLiveEditor: $panelsMetabox.data('live-editor') == 1,
 			liveEditorPreview: container.data('preview-url')
 		};
 	}
@@ -2659,6 +2682,14 @@ module.exports = Backbone.Model.extend({
 
 				if ( ! _.isUndefined( data.grids[i].style ) ) {
 					rowAttrs.style = data.grids[i].style;
+				}
+
+				if ( ! _.isUndefined( data.grids[i].ratio) ) {
+					rowAttrs.ratio = data.grids[i].ratio;
+				}
+
+				if ( ! _.isUndefined( data.grids[i].ratio_direction) ) {
+					rowAttrs.ratio_direction = data.grids[i].ratio_direction
 				}
 
 				if ( ! _.isUndefined( data.grids[i].color_label) ) {
@@ -2832,6 +2863,8 @@ module.exports = Backbone.Model.extend({
 			data.grids.push( {
 				cells: row.get('cells').length,
 				style: row.get( 'style' ),
+				ratio: row.get('ratio'),
+				ratio_direction: row.get('ratio_direction'),
 				color_label: row.get( 'color_label' ),
 				label: row.get( 'label' ),
 			} );
@@ -2956,6 +2989,8 @@ module.exports = Backbone.Model.extend({
 				panels_data.grids.push( {
 					cells: $cells.length,
 					style: $row.data( 'style' ),
+					ratio: $row.data( 'ratio' ),
+					ratio_direction: $row.data( 'ratio-direction' ),
 					color_label: $row.data( 'color-label' ),
 					label: $row.data( 'label' ),
 				} );
@@ -2976,6 +3011,7 @@ module.exports = Backbone.Model.extend({
 							panels_info = {
 								grid: ri,
 								cell: ci,
+								style: $widget.data( 'style' ),
 								raw: false,
 								label: $widget.data( 'label' )
 							};
@@ -3433,6 +3469,7 @@ module.exports = Backbone.Model.extend( {
 			cloneValues.builder_id = Math.random().toString( 36 ).substr( 2 );
 		}
 
+		clone.set( 'widget_id', '' );
 		clone.set( 'values', cloneValues, {silent: true} );
 		clone.set( 'collection', cell.get('widgets'), {silent: true} );
 		clone.cell = cell;
@@ -3841,8 +3878,7 @@ module.exports = Backbone.View.extend( {
 		'click .so-tool-button.so-row-add': 'displayAddRowDialog',
 		'click .so-tool-button.so-prebuilt-add': 'displayAddPrebuiltDialog',
 		'click .so-tool-button.so-history': 'displayHistoryDialog',
-		'click .so-tool-button.so-live-editor': 'displayLiveEditor',
-		'click .so-learn-wrapper .show-tutorials': 'loadTutorials'
+		'click .so-tool-button.so-live-editor': 'displayLiveEditor'
 	},
 
 	/* A row collection */
@@ -3943,10 +3979,6 @@ module.exports = Backbone.View.extend( {
 		this.$el
 			.attr( 'id', 'siteorigin-panels-builder-' + this.cid )
 			.addClass( 'so-builder-container' );
-
-		if( panelsOptions.tutorials_enabled ) {
-			this.loadTutorials();
-		}
 
 		this.trigger( 'builder_rendered' );
 
@@ -4069,9 +4101,10 @@ module.exports = Backbone.View.extend( {
 		// Move the panels box into a tab of the content editor
 		metabox.insertAfter( '#wp-content-wrap' ).hide().addClass( 'attached-to-editor' );
 
-		// Switch to the Page Builder interface as soon as we load the page if there are widgets
+		// Switch to the Page Builder interface as soon as we load the page if there are widgets or the normal editor
+		// isn't supported.
 		var data = this.model.get( 'data' );
-		if ( ! _.isEmpty( data.widgets ) || ! _.isEmpty( data.grids ) ) {
+		if ( ! _.isEmpty( data.widgets ) || ! _.isEmpty( data.grids ) || ! this.supports( 'revertToEditor' ) ) {
 			this.displayAttachedBuilder( { confirm: false } );
 		}
 
@@ -4155,6 +4188,13 @@ module.exports = Backbone.View.extend( {
 
 		// Hide the standard content editor
 		$( '#wp-content-wrap' ).hide();
+
+
+		$( '#editor-expand-toggle' ).on( 'change.editor-expand', function () {
+			if ( ! $( this ).prop( 'checked' ) ) {
+				$( '#wp-content-wrap' ).hide();
+			}
+		} );
 
 		// Show page builder and the inside div
 		this.metabox.show().find( '> .inside' ).show();
@@ -4742,52 +4782,6 @@ module.exports = Backbone.View.extend( {
 					}
 				}.bind( this )
 			);
-		}
-	},
-
-	loadTutorials: function( event ){
-		if( ! _.isUndefined( event ) ) {
-			event.preventDefault();
-		}
-
-		var $dd = this.$('.so-learn-wrapper .so-tool-button-dropdown');
-		$dd.addClass( 'so-loading' ).find( '.view-message' ).hide();
-
-		var loadResponse = function( response ){
-			if( ! _.isUndefined( response.error ) ) {
-				$dd.find( '.view-message' ).show().find('p').html(response.error);
-			}
-			else if( response.length ) {
-				panelsOptions.cache.tutorials = response;
-
-				for( var i in response.slice( 0,4 ) ) {
-					$dd.find( '.view-tutorials ul' ).append(
-						$('<li></li>')
-							.append(
-								$('<a target="_blank"></a>')
-									.text( response[i].title )
-									.attr( 'href', response[i].url )
-							)
-							.append(
-								$('<small></small>').text( response[i].excerpt )
-							)
-					);
-				}
-
-				$dd.find('.view-tutorials').show();
-			}
-			$dd.removeClass( 'so-loading' );
-		};
-
-		if( typeof panelsOptions.cache.tutorials === 'undefined' ) {
-			$.get(
-				panelsOptions.ajaxurl,
-				{ action: 'so_panels_get_tutorials' },
-				loadResponse
-			);
-		}
-		else {
-			loadResponse( panelsOptions.cache.tutorials );
 		}
 	},
 } );
@@ -5479,6 +5473,7 @@ module.exports = Backbone.View.extend( {
 			// This triggers once everything is visible
 			this.trigger( 'open_dialog_complete' );
 			this.builder.trigger( 'open_dialog', this );
+			$( document ).trigger( 'open_dialog', this );
 		}
 	},
 
@@ -7095,11 +7090,41 @@ module.exports = Backbone.View.extend( {
 } );
 
 },{}],30:[function(require,module,exports){
+var $ = jQuery;
+
+var customHtmlWidget = {
+	addWidget: function( idBase, widgetContainer, widgetId ) {
+		var component = wp.customHtmlWidgets;
+		
+		var fieldContainer = $( '<div></div>' );
+		var syncContainer = widgetContainer.find( '.widget-content:first' );
+		syncContainer.before( fieldContainer );
+
+		var widgetControl = new component.CustomHtmlWidgetControl( {
+			el: fieldContainer,
+			syncContainer: syncContainer,
+		} );
+
+		widgetControl.initializeEditor();
+		
+		// HACK: To ensure CodeMirror resize for the gutter.
+		widgetControl.editor.codemirror.refresh();
+		
+		return widgetControl;
+	}
+};
+
+module.exports = customHtmlWidget;
+
+},{}],31:[function(require,module,exports){
+var customHtmlWidget = require( './custom-html-widget' );
 var mediaWidget = require( './media-widget' );
 var textWidget = require( './text-widget' );
 
 var jsWidget = {
+	CUSTOM_HTML: 'custom_html',
 	MEDIA_AUDIO: 'media_audio',
+	MEDIA_GALLERY: 'media_gallery',
 	MEDIA_IMAGE: 'media_image',
 	MEDIA_VIDEO: 'media_video',
 	TEXT: 'text',
@@ -7109,7 +7134,11 @@ var jsWidget = {
 		var widget;
 
 		switch ( idBase ) {
+			case this.CUSTOM_HTML:
+				widget = customHtmlWidget;
+				break;
 			case this.MEDIA_AUDIO:
+			case this.MEDIA_GALLERY:
 			case this.MEDIA_IMAGE:
 			case this.MEDIA_VIDEO:
 				widget = mediaWidget;
@@ -7125,7 +7154,7 @@ var jsWidget = {
 
 module.exports = jsWidget;
 
-},{"./media-widget":31,"./text-widget":32}],31:[function(require,module,exports){
+},{"./custom-html-widget":30,"./media-widget":32,"./text-widget":33}],32:[function(require,module,exports){
 var $ = jQuery;
 
 var mediaWidget = {
@@ -7138,12 +7167,12 @@ var mediaWidget = {
 		}
 
 		var ModelConstructor = component.modelConstructors[ idBase ] || component.MediaWidgetModel;
-		var widgetContent = widgetContainer.find( '> .widget-content' );
+		var syncContainer = widgetContainer.find( '> .widget-content' );
 		var controlContainer = $( '<div class="media-widget-control"></div>' );
-		widgetContent.before( controlContainer );
+		syncContainer.before( controlContainer );
 
 		var modelAttributes = {};
-		widgetContent.find( '.media-widget-instance-property' ).each( function() {
+		syncContainer.find( '.media-widget-instance-property' ).each( function() {
 			var input = $( this );
 			modelAttributes[ input.data( 'property' ) ] = input.val();
 		});
@@ -7153,7 +7182,8 @@ var mediaWidget = {
 
 		var widgetControl = new ControlConstructor({
 			el: controlContainer,
-			model: widgetModel
+			syncContainer: syncContainer,
+			model: widgetModel,
 		});
 
 		widgetControl.render();
@@ -7164,16 +7194,35 @@ var mediaWidget = {
 
 module.exports = mediaWidget;
 
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 var $ = jQuery;
 
 var textWidget = {
 	addWidget: function( idBase, widgetContainer, widgetId ) {
 		var component = wp.textWidgets;
 
-		var widgetControl = new component.TextWidgetControl({
-			el: widgetContainer
-		});
+		var options = {};
+		var visualField = widgetContainer.find( '.visual' );
+		// 'visual' field and syncContainer were introduced together in 4.8.1
+		if ( visualField.length > 0 ) {
+			// If 'visual' field has no value it's a legacy text widget.
+			if ( ! visualField.val() ) {
+				return null;
+			}
+
+			var fieldContainer = $( '<div></div>' );
+			var syncContainer = widgetContainer.find( '.widget-content:first' );
+			syncContainer.before( fieldContainer );
+
+			options = {
+				el: fieldContainer,
+				syncContainer: syncContainer,
+			};
+		} else {
+			options = { el: widgetContainer };
+		}
+
+		var widgetControl = new component.TextWidgetControl( options );
 
 		widgetControl.initializeEditor();
 
