@@ -3,7 +3,7 @@ Contributors: abramsm, jgrodel, bradaddthis.com, addthis_paul, addthis_matt, rib
 Tags: bookmarking, email sharing, facebook, linkedin, pinterest, share, sharing buttons, social marketing, social tools, twitter, whatsapp
 Requires at least: 3.0
 Tested up to: 4.8.1
-Stable tag: 6.1.0
+Stable tag: 6.1.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -103,6 +103,10 @@ See our <a href="https://plugins.svn.wordpress.org/addthis-all/trunk/documentati
 
 
 == Changelog ==
+
+= 6.1.1 =
+* Fix for PHP notice from AddThisPlugin.php on line 610
+* Changing the permission capability used for determining when users can edit AddThis settings from activate_plugins to manage_options. This will allow most admins on multi-site instances to edit settings. <a href="https://codex.wordpress.org/Roles_and_Capabilities">More information on WordPress roles and capabilities.</a>
 
 = 6.1.0 =
 * Fix for PHP error from AddThisSharingButtonsMobileToolbarTool.php line 66
@@ -439,6 +443,9 @@ Fixed nondeterministic bug with the_title(), causing the title to occasionally a
 
 
 == Upgrade Notice ==
+
+= 6.1.1 =
+Fix for PHP notice from AddThisPlugin.php on line 610. Changing the permission capability used for determining when users can edit AddThis settings from activate_plugins to manage_options. This will allow most admins on multi-site instances to edit settings. <a href="https://codex.wordpress.org/Roles_and_Capabilities">More information on WordPress roles and capabilities.</a>
 
 = 6.1.0 =
 Fixs for PHP errors, whitespace issues, changes in default settings. Adding requested AddThisWidgetByDomClass functionality that will allow users adding a widget via PHP to customze the URL, title, description and image used for that share.

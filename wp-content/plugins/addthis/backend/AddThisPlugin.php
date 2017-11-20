@@ -604,21 +604,22 @@ if (!class_exists('AddThisPlugin')) {
                         $layers = array_replace_recursive($layers, $featureLayers);
                         $featureLayersTools = $featureObject->getAddThisLayersTools();
                         $layersTools = array_merge($layersTools, $featureLayersTools);
-                    }
-                    // save a layers json string for the sharing buttons plugin
-                    if (!empty($featureObject->globalLayersJsonField)) {
-                        $new = json_encode((object)$featureLayers);
-                        $field = $featureObject->globalLayersJsonField;
 
-                        if (isset($gooSettings[$field])) {
-                            $old = $gooSettings[$field];
-                        }
+                        // save a layers json string for the sharing buttons plugin
+                        if (!empty($featureObject->globalLayersJsonField)) {
+                            $new = json_encode((object)$featureLayers);
+                            $field = $featureObject->globalLayersJsonField;
 
-                        if ((empty($old) && !empty($featureLayers))
-                            || (!empty($old) && $old != $new)
-                        ) {
-                            $gooSettings[$field] = $new;
-                            $updateGlobalOptionsSettings = true;
+                            if (isset($gooSettings[$field])) {
+                                $old = $gooSettings[$field];
+                            }
+
+                            if ((empty($old) && !empty($featureLayers))
+                                || (!empty($old) && $old != $new)
+                            ) {
+                                $gooSettings[$field] = $new;
+                                $updateGlobalOptionsSettings = true;
+                            }
                         }
                     }
                 }
