@@ -10,5 +10,3 @@ RewriteRule . /index.php [L]
 </IfModule>
 
 # END WordPress
-
-php_value max_execution_time 300
