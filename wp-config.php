@@ -38,6 +38,13 @@ if ($_SERVER["HTTP_HOST"] === 'dev.marylandnature.org') {
   $host = 'localhost';
   define('WP_DEBUG', true);
   define('SITEORIGIN_PANELS_NOCACHE', true);
+} else if ($_SERVER["HTTP_HOST"] === 'box5104.temp.domains') {
+  $db_name = 'marylbb4_WPGGR';
+  $username = 'marylbb4_brellis';
+  $password = '1y(!bzC=O^UM';
+  $host = 'localhost';
+  define('WP_DEBUG', true);
+  define('SITEORIGIN_PANELS_NOCACHE', true);
 }
 /** The name of the database for WordPress */
 define('DB_NAME', $db_name);
