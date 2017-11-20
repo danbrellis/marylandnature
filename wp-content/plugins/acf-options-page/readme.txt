@@ -41,6 +41,9 @@ include_once('acf-options-page/acf-options-page.php');
 
 == Changelog ==
 
+= 2.0.1 =
+* Minor fixes and improvements
+
 = 2.0.0 =
 * Added support for ACF version 5
 * Added new settings to the acf_add_options_page() function https://www.advancedcustomfields.com/resources/acf_add_options_page/

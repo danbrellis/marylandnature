@@ -4,7 +4,7 @@ Plugin Name: Advanced Custom Fields: Options Page
 Plugin Slug: acf-options-page
 Plugin URI: http://www.advancedcustomfields.com/
 Description: This premium Add-on creates a static menu item for the Advanced Custom Fields plugin
-Version: 2.0.0
+Version: 2.0.1
 Author: Elliot Condon
 Author URI: http://www.elliotcondon.com/
 License: GPL
@@ -41,7 +41,7 @@ class acf_plugin_options_page {
 			
 			// basic
 			'name'				=> __('Advanced Custom Fields: Options Page', 'acf'),
-			'version'			=> '2.0.0',
+			'version'			=> '2.0.1',
 						
 			// urls
 			'slug'				=> dirname(plugin_basename( __FILE__ )),
