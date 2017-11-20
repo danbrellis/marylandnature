@@ -1,7 +1,6 @@
 <article id="post-<?php the_ID(); ?>" <?php post_class('archive'); ?> role="article" itemscope itemtype="http://schema.org/WebPage">
 					
   <header class="article-header">
-		<?php nhsm_the_cat_labels(); ?>
 		<h2 class="entry-title single-title" itemprop="headline"><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h2>
 		<p class="byline">
 			<span class="author">Written by <?php the_author_posts_link(); ?></span>&nbsp;<span class="middot">&middot;</span>&nbsp;
@@ -9,7 +8,7 @@
 			<?php if ( comments_open() ): ?>&nbsp;<span class="middot">&middot;</span>&nbsp;
 			<?php comments_popup_link( '0 Comments', '1 Comment', '% Comments', 'comments-link', ''); ?><?php endif; ?>
 		</p>
-		
+    <?php nhsm_the_cat_labels(); ?>
 		<?php nhsm_the_banner_image(); ?>
 		<?php the_tags('<p class="post_tags"><i class="fi-pricetag-multiple" title="Tagged with:"></i>&nbsp;', ', ', '</p>'); ?>
 

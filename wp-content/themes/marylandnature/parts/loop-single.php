@@ -2,7 +2,6 @@
 						
 	<header class="article-header">		
 		<?php nhsm_addthis(true); ?>
-		<?php nhsm_the_cat_labels(); ?>
 		<h1 class="entry-title single-title" itemprop="headline"><?php the_title(); ?></h1>
 		<p class="byline">
 			<span class="author">Written by <?php the_author_posts_link(); ?></span>&nbsp;<span class="middot">&middot;</span>&nbsp;
@@ -10,7 +9,7 @@
 			<?php if ( comments_open() ): ?>&nbsp;<span class="middot">&middot;</span>&nbsp;
 			<?php comments_popup_link( '0 Comments', '1 Comment', '% Comments', 'comments-link', ''); ?><?php endif; ?>
 		</p>
-		
+    <?php nhsm_the_cat_labels(); ?>
 		<?php nhsm_the_banner_image(); ?>
 		<?php the_tags('<p class="post_tags"><i class="fi-pricetag-multiple" title="Tagged with:"></i>&nbsp;', ', ', '</p>'); ?>
 
