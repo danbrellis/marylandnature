@@ -22,7 +22,7 @@
 		- optimize nav
 	* Single Pages
 		- Connecting Naturalists: http://localhost:3000/marylandnature/learn/connecting-naturalists/
-		
+		- add 'web' for downloads type
 */
 
 
