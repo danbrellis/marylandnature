@@ -4,7 +4,7 @@ $i = 0;
 $template = '<a href="%1$s" title="%2$s" class="collection"><p class="collection-info"><span class="collector">%3$s</span><span class="collection-title">%4$s</span></p><img src="%5$s" alt="%2$s" class="collection-img img-responsive" /></a>';
 if(have_posts()):
 	while( have_posts() ): the_post();
-		$collector = get_post_meta(get_the_ID(), 'nhsm_collection_owner', true);
+		$collector = get_post_meta(get_the_ID(), 'nhsm_active_curators_0_nhsm_curator', true);
 		$collection = get_the_title();
 
 		$thumbnail = has_post_thumbnail() ? get_the_post_thumbnail_url(get_the_ID(), 'medium_large') : 'http://placehold.it/733x280';
