@@ -22,6 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 // Load plugin class files
 require_once( 'includes/class-nhsm-meetup.php' );
 require_once( 'includes/class-nhsm-meetup-settings.php' );
+require_once( 'includes/Meetup/meetup.php' );
 
 // Load plugin libraries
 require_once( 'includes/lib/class-nhsm-meetup-admin-api.php' );
