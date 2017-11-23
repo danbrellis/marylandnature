@@ -211,7 +211,17 @@ NAVIGATION STYLES
 	}
 	
 	#menu-main-nav {
-		.menu-item {
+		& > .menu-item {
+			& > a {
+				height: $topbar-height - 1;
+				font-size: 115%;
+				text-transform: uppercase;
+				padding-right: 1rem;
+
+				&:after {
+					border: 0;
+				}
+			}
 			&:not(.create-button) {
 				a {
 					color: $black;
@@ -220,33 +230,38 @@ NAVIGATION STYLES
 			}
 			&.create-button {
 				a {
-					font-size: 85%;
+					font-size: 100%;
 					margin-bottom: 0;
 				}
-				
+
 				padding-left: 1rem;
 			}
-			
-			& > a {
-				height: $topbar-height - 1;
-			}
-			
-			
+
 			&.active, &.current, &:hover, &:active, &:focus {
 				&:not(.create-button) {
-					a {
-						border-bottom: 5px solid map-get($foundation-palette, primary);
-						transition: all .1s ease-in-out;
+					& > a {
+						border-bottom: 5px solid $primary;
+						transition: border .1s ease;
 						text-decoration: none;
 						background: $offwhite;
 					}
 				}
 			}
-						
-			font-size: 115%;
-			text-transform: uppercase;
+
+			.menu-item {
+				font-size: 90%;
+
+				&.active, &.current, &:hover, &:active, &:focus {
+					& > a {
+						border-bottom: none;
+						transition: all .1s ease-in-out;
+						text-decoration: none;
+						background: scale-color($primary, $lightness: 75%);
+					}
+				}
+
+			}
 		}
-		
 	}
 	
   -webkit-box-shadow: 0px 3px 7px rgba(0,0,0,0.35);

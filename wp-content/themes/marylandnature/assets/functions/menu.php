@@ -12,12 +12,12 @@ register_nav_menus(
 // The Top Menu
 function joints_top_nav() {
 	 wp_nav_menu(array(
-        'container' => false,                           // Remove nav container
-        'menu_class' => 'vertical medium-horizontal menu',       // Adding custom nav class
-        'items_wrap' => '<ul id="menu-main-nav" class="%2$s" data-responsive-menu="accordion medium-dropdown">%3$s</ul>',
-        'theme_location' => 'main-nav',        			// Where it's located in the theme
-        'depth' => 5,                                   // Limit the depth of the nav
-        'fallback_cb' => false,                         // Fallback function (see below)
+        'container' => false, // Remove nav container
+        'menu_class' => 'vertical medium-horizontal menu', // Adding custom nav class
+        'items_wrap' => '<ul id="menu-main-nav" class="%2$s" data-responsive-menu="accordion medium-dropdown">%3$s<li class="create-button menu-item" role="menuitem"><a href="'. site_url('/donate/').'">Donate</a></li></ul>',
+        'theme_location' => 'main-nav', // Where it's located in the theme
+        'depth' => 5, // Limit the depth of the nav
+        'fallback_cb' => false, // Fallback function (see below)
         'walker' => new Topbar_Menu_Walker()
     ));
 } 
