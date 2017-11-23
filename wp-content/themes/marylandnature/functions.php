@@ -7,7 +7,6 @@
 		- add calendar actions into url (change month?)
 	* Format templates/pages for:
 		- single event (adding meetup link, meta, and pull in resources related to that event cat)
-    - tag archive (http://marylandnature.local/tag/communications/#general) need to make the menu look nicer. maybe use underline instead of block bg like the main nav
 	* Resources
 	  - Add filter to cat pages (search by title, tag): http://localhost:3000/marylandnature/downloads/program-resources/
 	* Search
@@ -22,7 +21,6 @@
 		- optimize nav
 	* Single Pages
 		- Connecting Naturalists: http://localhost:3000/marylandnature/learn/connecting-naturalists/
-		- add 'web' for downloads type
 */
 
 

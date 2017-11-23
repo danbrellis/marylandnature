@@ -48,7 +48,7 @@ $previous_versions = '';
 		),
 		'filetype' => array(
 			'name'     => __( 'Type', 'chesnet' ),
-			'value'    => '<span class="filetype">' . $dlm_download->get_the_filetype() . '</span>'
+			'value'    => '<span class="filetype">' . nhsm_get_the_dlm_filetype($dlm_download->get_the_filetype()) . '</span>'
 		),
 		'filesize' => array(
 			'name'     => __( 'Size', 'chesnet' ),
