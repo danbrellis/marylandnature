@@ -25,8 +25,8 @@ require_once( 'includes/class-nhsm-meetup-settings.php' );
 
 // Load plugin libraries
 require_once( 'includes/lib/class-nhsm-meetup-admin-api.php' );
-require_once( 'includes/lib/class-nhsm-meetup-post-type.php' );
-require_once( 'includes/lib/class-nhsm-meetup-taxonomy.php' );
+//require_once( 'includes/lib/class-nhsm-meetup-post-type.php' );
+//require_once( 'includes/lib/class-nhsm-meetup-taxonomy.php' );
 
 /**
  * Returns the main instance of NHSM_Meetup to prevent the need to use globals.
