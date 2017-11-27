@@ -248,5 +248,8 @@ function nhsm_banner_style($post = 0, $fallback = '', array $styles = array()){
 }
 
 function nhsm_fuse_img_and_caption($img, $caption = false){
-  return sprintf("<div class='img-caption-container'>%s<span>%s</span></div>", $img, $caption);
+  if($img){
+    return sprintf("<div class='img-caption-container'>%s<span>%s</span></div>", $img, $caption);
+  }
+  else return;
 }

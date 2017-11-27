@@ -539,6 +539,9 @@ a .label {
 	display: inline;
 	font-size: 16px;
 }
+.sm_img_caption{
+	font-size: 14px;
+}
 
 .img-caption-container {
 	position: relative;
@@ -547,8 +550,6 @@ a .label {
 	img {
 		margin-bottom: 0px;
 	}
-
-
 }
 
 .img-caption-container span, .lg_img_caption {

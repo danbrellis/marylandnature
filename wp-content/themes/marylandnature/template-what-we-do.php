@@ -28,7 +28,9 @@ Template Name: What We Do
 										<?php //list event categories
 										$programs = new WP_Query( array(
 											'post_parent' => get_the_ID(),
-											'post_type' => 'page'
+											'post_type' => 'page',
+                      'order' => 'ASC',
+                      'orderby' => 'menu_order date'
 										) );
 
 										if ( $programs->have_posts() ): ?>
@@ -39,8 +41,12 @@ Template Name: What We Do
 													$programs->the_post(); ?>
 													
 													<div class="column column-block" data-equalizer-watch="terrapin">
-														<a href="<?php echo get_page_link($programs->post->ID); ?>">
-															<?php the_post_thumbnail( $programs->post->ID, 'nhsm_medium4x3', array('class' => 'img-responsive') ); ?><br />
+															<?php if(has_post_thumbnail($programs->post)): ?>
+                                <div class="img-caption-container">
+                                  <a href="<?php echo get_page_link($programs->post->ID); ?>"><?php echo get_the_post_thumbnail($programs->post, 'nhsm_medium4x3', array('class' => 'img-responsive')); ?></a>
+                                  <span class="sm_img_caption"><?php echo nhsm_img_title_and_credit(false, get_post_thumbnail_id($programs->post->ID)); ?></span>
+                                </div>
+                              <?php endif; ?>
 															<h3 class="widget-title stringbean" style="margin-top: 10px;"><?php echo get_the_title($programs->post->ID); ?></h3>
 														</a>
 														<p>
