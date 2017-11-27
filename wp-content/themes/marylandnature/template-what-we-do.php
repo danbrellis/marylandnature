@@ -25,6 +25,7 @@ Template Name: What We Do
 									</header> <!-- end article header -->
 
 									<section class="entry-content" itemprop="articleBody">
+                    <?php the_content(); ?>
 										<?php //list event categories
 										$programs = new WP_Query( array(
 											'post_parent' => get_the_ID(),
