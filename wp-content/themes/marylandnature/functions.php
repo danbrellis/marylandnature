@@ -481,6 +481,16 @@ function nhsm_homepage_collections_query($q){
 	}
 }
 
+add_filter('siteorigin_panels_postloop_query_args', 'nhsm_what_we_do_upcoming_events');
+function nhsm_what_we_do_upcoming_events($query_args){
+  if(isset($query_args['meta_query']) && isset($query_args['meta_query'][0]) && isset($query_args['meta_query'][0]['value'])){
+    if(strtolower($query_args['meta_query'][0]['value']) == 'now()'){
+      $query_args['meta_query'][0]['value'] = date('Y-m-d');
+    }
+  }
+  return $query_args;
+}
+
 /* Download Monitor */
 add_filter('dlm_download_category_args', 'nhsm_dlm_download_category_args');
 function nhsm_dlm_download_category_args($args){
