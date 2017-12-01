@@ -140,6 +140,13 @@ jQuery( document ).ready( function( $ ) {
 			searchModal.foundation('open');
 		});
 	}
+
+    $("#off-canvas").on("opened.zf.offcanvas", function(e) {
+        setTimeout(function(){ $('.toci').addClass('open'); }, 50);
+    });
+    $("#off-canvas").on("closed.zf.offcanvas", function(e) {
+        setTimeout(function(){ $('.toci').removeClass('open'); }, 50);
+    });
 	
 	//Full calendar JS functions
 	if($('#events-full-calendar').length){
