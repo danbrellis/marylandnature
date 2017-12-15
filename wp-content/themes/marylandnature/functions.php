@@ -17,8 +17,6 @@
 	  - sticky sidebar jumps to top of page when scroll down
 	* Newsletter
 		- Add signup link
-	* mobile
-		- optimize nav
 	* Single Pages
 		- Connecting Naturalists: http://localhost:3000/marylandnature/learn/connecting-naturalists/
 */
