@@ -149,8 +149,9 @@ jQuery( document ).ready( function( $ ) {
     });
 	
 	//Full calendar JS functions
-	if($('#events-full-calendar').length){
-		var cal = $('#events-full-calendar').fullCalendar('getCalendar');
+	var calCont = $('#events-full-calendar');
+	if(calCont.length){
+		var cal = calCont.fullCalendar('getCalendar');
 
 		cal.on('eventRender', function( event, element, view ) {
 			if(event.appendToTitle !== false){
@@ -177,6 +178,17 @@ jQuery( document ).ready( function( $ ) {
             window.location.href = nhsm_ajax.agenda_url;
 		});
 
+		$('.fc-center .fc-button').on('click', function(){
+			var newPath;
+			var hash = window.location.hash;
+			var m = calCont.fullCalendar( 'getDate' );
+			var pathname = window.location.pathname;
+			var vars = pathname.split('/');
+			newPath = '/' + vars[1] + '/' + vars[2] + '/' + m.format('YYYY[/]MM[/]');
+			if(hash) newPath = newPath + hash;
+            window.history.pushState(null, null, newPath);
+		});
+
 		setTimeout(function() {
 			var hash = window.location.hash;
 			var data = {
@@ -192,7 +204,7 @@ jQuery( document ).ready( function( $ ) {
 					console.log(r.output);
 				}
 				else {
-					$('#events-full-calendar').find('.fc-right').html(r.output);
+					calCont.find('.fc-right').html(r.output);
 				}
 				$(document).foundation();
 				var inputs = $('#event-cat-filter').find('input');
@@ -201,9 +213,9 @@ jQuery( document ).ready( function( $ ) {
 				if(hash){
 					var newSource = nhsm_ajax.ajax_url + '?action=get_events&cats=' + hash.substr(1);
 					$('.event-tooltip').remove();
-					$('#events-full-calendar').fullCalendar('removeEventSources');
-					$('#events-full-calendar').fullCalendar('removeEvents');
-					$('#events-full-calendar').fullCalendar('addEventSource', newSource);
+					calCont.fullCalendar('removeEventSources');
+					calCont.fullCalendar('removeEvents');
+					calCont.fullCalendar('addEventSource', newSource);
 					$('#cal-filtered').text('On');
 
 					var toCheck = hash.replace('#', '').split('+');
@@ -233,18 +245,19 @@ jQuery( document ).ready( function( $ ) {
 
 					var newSource = nhsm_ajax.ajax_url + '?action=get_events&cats=' + checked.join('+');
 					$('.event-tooltip').remove();
-					$('#events-full-calendar').fullCalendar('removeEventSources');
-					$('#events-full-calendar').fullCalendar('removeEvents');
-					$('#events-full-calendar').fullCalendar('addEventSource', newSource);
+					calCont.fullCalendar('removeEventSources');
+					calCont.fullCalendar('removeEvents');
+					calCont.fullCalendar('addEventSource', newSource);
 				});
 			});
 
 
-			$('#events-full-calendar').fullCalendar('rerenderEvents');
+			calCont.fullCalendar('rerenderEvents');
 		});
 	}
 
 	//old code (#calendar no longer used, replaced with #events-full-calendar)
+	/*
 	if($('#calendar').length){
 		$('#calendar').fullCalendar({
 			eventLimit: true,
@@ -294,6 +307,7 @@ jQuery( document ).ready( function( $ ) {
 			}
 		});
 	}
+	*/
 
 	//add credits/captions to images
 	if($('.add_caption_to_bg').length){

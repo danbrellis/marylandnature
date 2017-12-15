@@ -4,7 +4,7 @@
 
 /* @todo
  * Finish event calendar:
-		- add calendar actions into url (change month?)
+ *  - make responsive
 	* Format templates/pages for:
 		- single event (adding meetup link, meta, and pull in resources related to that event cat)
 	* Resources
@@ -13,10 +13,6 @@
 		- Remove homepage (and others) from results (maybe use plugin below)
 		- Add filtering (like tag archive) & incorporate plugin for better results
 		- Add better meta in results for specific post types (collections, evfents)
-	* Experts (http://localhost:3000/marylandnature/role/experts/)
-	  - sticky sidebar jumps to top of page when scroll down
-	* Newsletter
-		- Add signup link
 	* Single Pages
 		- Connecting Naturalists: http://localhost:3000/marylandnature/learn/connecting-naturalists/
 */
@@ -128,11 +124,15 @@ function nhsm_pre_get_posts( $query ) {
 }
 add_action('pre_get_posts', 'nhsm_pre_get_posts');
 
-
 /** Rewrites **/
 function nhsm_rewrite_tags() {
-    add_rewrite_tag( '%nhsm_events_year%', '([0-9]{4})' );
-    add_rewrite_tag( '%nhsm_events_month%', '([0-9]{2})' );
+  global $wp;
+  $wp->add_query_var( 'fc_year' );
+  $wp->add_query_var( 'fc_month' );
+
+  add_rewrite_tag( '%nhsm_events_year%', '([0-9]{4})' );
+  add_rewrite_tag( '%nhsm_events_month%', '([0-9]{2})' );
+  add_rewrite_rule('^get-involved/calendar(/([0-9]+))?(/([0-9]+))?/?', 'index.php?page_id=190&fc_year=$matches[2]&fc_month=$matches[4]', 'top');
 }
 add_action( 'init', 'nhsm_rewrite_tags' );
 
@@ -303,6 +303,11 @@ function nhsm_em_get_full_calendar_script_args($args){
 	$args['header']['right'] = '';
 	$args['header']['left'] = 'calview agendaview';
 	$args['header']['center'] = 'prev title next';
+  
+  $default_date = (($fc_year = get_query_var( 'fc_year' )) !== '') ? $fc_year : date('Y');
+  $default_date .= (($fc_month = get_query_var( 'fc_month' )) !== '') ? '-' . $fc_month : '-' . date('m');
+  $args['defaultDate'] = $default_date;
+  
 	return $args;	
 }
 
