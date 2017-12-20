@@ -254,6 +254,15 @@ jQuery( document ).ready( function( $ ) {
 
 			calCont.fullCalendar('rerenderEvents');
 		});
+
+        $('.fc-day-header span').each(function(){
+        	var day = $(this).html();
+        	var letters = day.split('');
+        	letters.splice(3, 0, '<span class="show-for-large">');
+        	letters.push('</span>');
+        	$(this).html(letters.join(''));
+        	console.log(letters);
+		});
 	}
 
 	//old code (#calendar no longer used, replaced with #events-full-calendar)

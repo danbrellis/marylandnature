@@ -1819,6 +1819,12 @@ PLUGIN STYLES
 			}
 		}
 	}
+
+	.fc-time {
+		@include breakpoint(medium down) {
+			display: none;
+		}
+	}
 	
 	.fc-cats {
 		position: absolute;

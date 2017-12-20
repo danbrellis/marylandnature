@@ -3,8 +3,6 @@
 
 
 /* @todo
- * Finish event calendar:
- *  - make responsive
 	* Format templates/pages for:
 		- single event (adding meetup link, meta, and pull in resources related to that event cat)
 	* Resources
