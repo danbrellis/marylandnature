@@ -1,9 +1,9 @@
 === SiteOrigin Widgets Bundle ===
 Tags: bundle, widget, button, slider, image, carousel, price table, google maps, tinymce, social links
 Requires at least: 4.2
-Tested up to: 4.9
-Stable tag: 1.11.0
-Build time: 2017-11-07T09:54:35+02:00
+Tested up to: 4.9.1
+Stable tag: 1.11.6
+Build time: 2018-03-14T15:47:12+02:00
 License: GPLv3 or later
 Contributors: gpriday, braam-genis
 Donate link: https://siteorigin.com/downloads/contribution/
@@ -31,6 +31,17 @@ The collection is growing, but here’s what we have so far.
 * Video Widget to get your videos out there.
 * Headline Widget to get you noticed.
 * Social Links Widget to show you're active.
+* Accordion Widget to compress your content.
+* Contact Form Widget to let people know you care.
+* Editor Widget let's you richly edit text anywhere.
+* Hero Widget that'll save your site design.
+* Icon Widget for when only icons will do.
+* Image Grid Widget that'll let you add images everywhere... in a grid.
+* Layout Slider Widget lets you build layouts on slides using SiteOrigin Page Builder.
+* Masonry Widget to add images in a masonry layout.
+* Tabs Widget that'll let you group content into tabbed sections.
+* Taxonomy Widget to display a post's taxonomies.
+* Testimonials Widget to show people what your users/customers think of you.
 
 Once you enable a widget, you'll be able to use it anywhere standard widgets are used. You can manage your widgets by going to Plugins > SiteOrigin Widgets in your WordPress admin.
 
@@ -53,6 +64,79 @@ The SiteOrigin Widgets Bundle is the perfect platform to build widgets for your 
 3. An example of the button widget.
 
 == Changelog ==
+
+= 1.11.6 - 14 March 2018 =
+* Hero: Add responsive height settings.
+* Added pikaday jQuery plugin and register pikaday scripts for front end too.
+* Features: item float clearing and padding mobile specific.
+
+= 1.11.5 - 13 March 2018 =
+* Features: Better feature padding removal on row ends.
+* Sliders: WCAG 2.4.4 compliance.
+* Tabs: Hide widget title when no title is set.
+* TinyMCE field: Added setting for `wpautop` processing which is on by default.
+* Contact: When Gradient disabled, set basic background.
+* Beaver Builder compat: Only set SOWB widget form values when editing a SOWB widget.
+* Contact: Option to log submitter's IP address.
+* Add random number and set `more_entropy` to increase chance of unique form ids.
+* Contact: Added 'tel' field type which should show numeric keyboard on mobile.
+* Media field: Trigger change event when removing selected image.
+* Renamed the PHP LESS parser to `SiteOrigin_LessC` to avoid conflicts.
+* Date range field: Prevent initializing date range fields multiple times and ensure date format consistent.
+* Register pikaday as common script and enqueue as needed in fields.
+* Google Map: Show satellite map type.
+* Translation: Add context to From strings.
+* Add missing semicolons to Ionicons codes.
+
+= 1.11.4 - 7 February 2018 =
+* Slider: Add playsinline for Video backgrounds for iOS.
+* Repeater field: Trigger change events for repeater when adding, removing or duplicating items.
+* TinyMCE field: Removed special handling for TinyMCE fields when retrieving data. Just use field value directly.
+* Fixed build overwriting some CSS files.
+
+= 1.11.3 - 10 January 2018 =
+* Hero: Add margin-top to so-widget-sow-button for spacing.
+* Accordion: Added overflow to prevent Image overlap.
+* Google Maps: Always register Google Maps script.
+* Social Buttons: Mobile Alignment global widget settings
+* Contact Form: Ability to control the width of the submit button.
+* Contact Form: Add alignment options for submit button.
+* Contact Form: Setting submit button gradient intensity to 0 removes gradient.
+* Contact Form: Add success and error hooks.
+* Accordion: Don't output widget title if not set.
+* Accordion: Icon title collapse fix.
+* Contact Form: Add placeholder for field type input.
+* Button: Icon placement setting.
+* Hero: Adjustable Paragraph text shadow.
+* Hero: Add font family setting for paragraphs.
+* Hero: Add link color picker.
+* Slider field: allow float values and allow specifying step size.
+* Contact Form: Add ability to set onclick and id for submit button.
+* Features: Add ability to control responsive breakpoint.
+* Global Settings: Add support for global settings added by themes.
+* Beaver Builder Compat: Don't enqueue assets when all widgets are deactivated.
+* Hero: Text font empty check.
+* Contact Form: Preserve existing location hash when contact form is submitted.
+* Post Selector: Only include current post id in exclusion if singular.
+* Copy correct radio values when duplicating repeater items.
+* Checkbox field: Parse string value 'false' in checkbox field sanitization.
+
+= 1.11.2 - 27 November 2017 =
+* Fix compatibility with Beaver Builder Lite.
+* Tabs: Recalculate height on resize.
+
+= 1.11.1 - 24 November 2017 =
+* Hero: Allow for shortcodes to work.
+* Fix posts field not displaying selected values when multiple selected.
+* Widgets Page: Fix missing icon issue on windows.
+* Trigger 'hide' and 'show' events in Accordion and Tabs widgets when toggling content.
+* Fix Google Maps widget not displaying when map is initially hidden.
+* Fix Beaver Builder compatibility.
+* Builder field: Pass builder type when setting up builder fields.
+* Tabs: Use correct variable for tab anchor.
+* Repeater field: Prevent radio inputs values being cleared in repeaters when sorting.
+* Accordion: Added title field.
+* Fix PHP version compatibility checker errors.
 
 = 1.11.0 - 7 November 2017 =
 * New Tabs widget!

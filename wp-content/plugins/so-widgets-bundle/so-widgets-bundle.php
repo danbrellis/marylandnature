@@ -2,7 +2,7 @@
 /*
 Plugin Name: SiteOrigin Widgets Bundle
 Description: A collection of all widgets, neatly bundled into a single plugin. It's also a framework to code your own widgets on top of.
-Version: 1.11.0
+Version: 1.11.6
 Text Domain: so-widgets-bundle
 Domain Path: /lang
 Author: SiteOrigin
@@ -12,7 +12,7 @@ License: GPL3
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
 */
 
-define('SOW_BUNDLE_VERSION', '1.11.0');
+define('SOW_BUNDLE_VERSION', '1.11.6');
 define('SOW_BUNDLE_BASE_FILE', __FILE__);
 
 // Allow JS suffix to be pre-set
@@ -48,6 +48,7 @@ class SiteOrigin_Widgets_Bundle {
 		add_action('admin_init', array($this, 'admin_activate_widget') );
 		add_action('admin_menu', array($this, 'admin_menu_init') );
 		add_action('admin_enqueue_scripts', array($this, 'admin_enqueue_scripts') );
+		add_action('admin_enqueue_scripts', array($this, 'admin_register_scripts') );
 
 		// All the ajax actions
 		add_action('wp_ajax_so_widgets_bundle_manage', array($this, 'admin_ajax_manage_handler') );
@@ -310,7 +311,7 @@ class SiteOrigin_Widgets_Bundle {
 			'toggleUrl' => wp_nonce_url( admin_url('admin-ajax.php?action=so_widgets_bundle_manage'), 'manage_so_widget' )
 		) );
 	}
-
+	
 	/**
 	 * The fallback (from ajax) URL handler for activating or deactivating a widget
 	 */
@@ -342,7 +343,23 @@ class SiteOrigin_Widgets_Bundle {
 
 		}
 	}
-
+	
+	/**
+	 * Register some common scripts used in forms.
+	 */
+	function admin_register_scripts() {
+		wp_register_script(
+			'sowb-pikaday',
+			plugin_dir_url( SOW_BUNDLE_BASE_FILE ) . 'js/lib/pikaday' . SOW_BUNDLE_JS_SUFFIX . '.js',
+			array( ),
+			'1.5.1'
+		);
+		wp_register_style(
+			'sowb-pikaday',
+			plugin_dir_url(__FILE__) . 'js/lib/pikaday.css'
+		);
+	}
+	
 	/**
 	 * Handler for activating and deactivating widgets.
 	 *
@@ -382,7 +399,7 @@ class SiteOrigin_Widgets_Bundle {
 
 		$widget_objects = $this->get_widget_objects();
 
-		$widget_path = empty( $_GET['id'] ) ? false : wp_normalize_path( WP_PLUGIN_DIR ) . $_GET['id'];
+		$widget_path = empty( $_GET['id'] ) ? false : wp_normalize_path( WP_CONTENT_DIR ) . $_GET['id'];
 
 		$widget_object = empty( $widget_objects[ $widget_path ] ) ? false : $widget_objects[ $widget_path ];
 		
@@ -424,7 +441,7 @@ class SiteOrigin_Widgets_Bundle {
 		}
 
 		$widget_objects = $this->get_widget_objects();
-		$widget_path = empty( $_GET['id'] ) ? false : wp_normalize_path( WP_PLUGIN_DIR ) . $_GET['id'];
+		$widget_path = empty( $_GET['id'] ) ? false : wp_normalize_path( WP_CONTENT_DIR ) . $_GET['id'];
 		$widget_object = empty( $widget_objects[ $widget_path ] ) ? false : $widget_objects[ $widget_path ];
 		
 		if ( empty( $widget_object ) || ! $widget_object->has_form( 'settings' ) ) {
@@ -732,7 +749,8 @@ class SiteOrigin_Widgets_Bundle {
 	}
 
 	function register_general_scripts() {
-		wp_register_script( 'sow-fittext',
+		wp_register_script(
+			'sowb-fittext',
 			plugin_dir_url( SOW_BUNDLE_BASE_FILE ) . 'js/sow.jquery.fittext' . SOW_BUNDLE_JS_SUFFIX . '.js',
 			array( 'jquery' ),
 			'1.2',
@@ -751,6 +769,28 @@ class SiteOrigin_Widgets_Bundle {
 			array( 'jquery' ),
 			'1.4.3',
 			true
+		);
+		wp_register_script(
+			'sow-google-map',
+			plugin_dir_url( SOW_BUNDLE_BASE_FILE ) . 'js/sow.google.map' . SOW_BUNDLE_JS_SUFFIX . '.js',
+			array( 'jquery' ),
+			SOW_BUNDLE_VERSION
+		);
+		wp_register_script(
+			'sowb-pikaday',
+			plugin_dir_url( SOW_BUNDLE_BASE_FILE ) . 'js/lib/pikaday' . SOW_BUNDLE_JS_SUFFIX . '.js',
+			array( ),
+			'1.6.1'
+		);
+		wp_register_script(
+			'sowb-pikaday-jquery',
+			plugin_dir_url( SOW_BUNDLE_BASE_FILE ) . 'js/lib/pikaday.jquery' . SOW_BUNDLE_JS_SUFFIX . '.js',
+			array( 'sowb-pikaday' ),
+			'1.6.1'
+		);
+		wp_register_style(
+			'sowb-pikaday',
+			plugin_dir_url(__FILE__) . 'js/lib/pikaday.css'
 		);
 	}
 

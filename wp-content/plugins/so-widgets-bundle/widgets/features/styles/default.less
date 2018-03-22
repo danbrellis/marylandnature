@@ -16,15 +16,15 @@
 @more_text_font_weight: 400;
 @more_text_size: default;
 @more_text_color: default;
+@per_row: 3;
 
 @container_size: 84px;
 @icon_size: 24px;
 @use_icon_size: false;
 
+@responsive_breakpoint: 520px;
+
 .sow-features-list {
-
-    margin: 0 -25px;
-
     .clearfix();
 
     .sow-features-feature {
@@ -33,6 +33,17 @@
         .box-sizing(border-box);
         padding: 0 25px;
         display: flex;
+
+        @media (min-width: @responsive_breakpoint) {
+            &:nth-of-type(@{per_row}n+1) {
+                padding-left: 0;
+                clear: left;
+            }
+
+            &:nth-of-type(@{per_row}n) {
+                padding-right: 0;
+            }
+        }
 
         &.sow-icon-container-position-top {
             flex-direction: column;
@@ -162,7 +173,7 @@
         clear: both;
     }
 
-    @media (max-width: 520px) {
+    @media (max-width: @responsive_breakpoint) {
         &.sow-features-responsive {
             margin: 0;
 
