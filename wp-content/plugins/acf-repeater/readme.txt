@@ -38,6 +38,9 @@ include_once('acf-repeater/acf-repeater.php');
 
 == Changelog ==
 
+= 2.0.1 =
+* Minor fixes and improvements
+
 = 2.0.0 =
 * Added support for ACF version 5
 
