@@ -551,7 +551,7 @@ add_filter('acf/fields/google_map/api', 'nhsm_acf_google_map_api');
  * @return void
  */
 function remove_anonymous_object_filter( $tag, $class, $method ){
-	$filters = $GLOBALS['wp_filter'][ $tag ];
+	$filters = isset($GLOBALS['wp_filter'][ $tag ]) ? $GLOBALS['wp_filter'][ $tag ] : array();
 
 	if ( empty ( $filters ) )
 	{
