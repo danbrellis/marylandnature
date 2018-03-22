@@ -14,9 +14,6 @@ class SiteOrigin_Panels_Live_Editor {
 
 		// Don't display the admin bar when in live editor mode
 		add_filter( 'show_admin_bar', '__return_false' );
-
-		// Don't use the cached version
-		add_filter( 'siteorigin_panels_use_cached', '__return_false' );
 	}
 
 	public static function single() {
@@ -90,7 +87,7 @@ class SiteOrigin_Panels_Live_Editor {
 
 		wp_enqueue_style(
 			'live-editor-front',
-			siteorigin_panels_url( 'css/live-editor-front.css' ),
+			siteorigin_panels_url( 'css/live-editor-front' . SITEORIGIN_PANELS_CSS_SUFFIX . '.css' ),
 			array(),
 			SITEORIGIN_PANELS_VERSION
 		);
