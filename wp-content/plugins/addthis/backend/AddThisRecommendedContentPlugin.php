@@ -34,7 +34,7 @@ if (!class_exists('AddThisRecommendedContentPlugin')) {
      */
     class AddThisRecommendedContentPlugin extends AddThisPlugin
     {
-        protected $version = '2.1.1';
+        protected $version = '2.1.2';
         protected $name = 'Related Posts by AddThis';
         protected $productPrefix = 'wprp';
         protected $pluginSlug = 'addthis-related-posts';

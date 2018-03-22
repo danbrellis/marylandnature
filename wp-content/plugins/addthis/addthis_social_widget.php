@@ -28,7 +28,7 @@
  * Plugin Name: Share Buttons by AddThis
  * Plugin URI:  https://wordpress.org/plugins/addthis/
  * Text Domain: addthis-backend
- * Version:     6.1.1
+ * Version:     6.1.2
  * Description: Set up sharing tools from AddThis right in WordPress. With AddThis you can see how your users are engaging with your content, provide a personalized experience for each user and encourage them to share your content in their social networks. Follow tools, recommended content, conversion tools and social analytics available to registered accounts at addthis.com.
  */
 

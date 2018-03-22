@@ -2,8 +2,8 @@
 Contributors: abramsm, jgrodel, bradaddthis.com, addthis_paul, addthis_matt, ribin_addthis, addthis_elsa, addthisleland
 Tags: bookmarking, email sharing, facebook, linkedin, pinterest, share, sharing buttons, social marketing, social tools, twitter, whatsapp
 Requires at least: 3.0
-Tested up to: 4.8.1
-Stable tag: 6.1.1
+Tested up to: 4.9
+Stable tag: 6.1.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -103,6 +103,10 @@ See our <a href="https://plugins.svn.wordpress.org/addthis-all/trunk/documentati
 
 
 == Changelog ==
+
+= 6.1.2 =
+* Updated error messaging that is no longer relevant regarding related post tools
+* Tested compatibility with Wordpress 4.9
 
 = 6.1.1 =
 * Fix for PHP notice from AddThisPlugin.php on line 610
@@ -443,6 +447,9 @@ Fixed nondeterministic bug with the_title(), causing the title to occasionally a
 
 
 == Upgrade Notice ==
+
+= 6.1.2 =
+Updated messaging and tested compatibility with Wordpress 4.9
 
 = 6.1.1 =
 Fix for PHP notice from AddThisPlugin.php on line 610. Changing the permission capability used for determining when users can edit AddThis settings from activate_plugins to manage_options. This will allow most admins on multi-site instances to edit settings. <a href="https://codex.wordpress.org/Roles_and_Capabilities">More information on WordPress roles and capabilities.</a>
