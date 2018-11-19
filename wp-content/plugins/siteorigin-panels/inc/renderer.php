@@ -50,6 +50,7 @@ class SiteOrigin_Panels_Renderer {
 		// Exit if we don't have panels data
 		if ( empty( $panels_data ) ) {
 			$panels_data = get_post_meta( $post_id, 'panels_data', true );
+			$panels_data = apply_filters( 'siteorigin_panels_data', $panels_data, $post_id );
 			if ( empty( $panels_data ) ) {
 				return '';
 			}
@@ -95,6 +96,35 @@ class SiteOrigin_Panels_Renderer {
 						str_replace( ',', '.', $calc_width ),
 					)
 				) );
+				
+				// Add in any widget specific CSS
+				foreach ( $cell['widgets'] as $wi => $widget ) {
+					$widget_style_data = ! empty( $widget['panels_info']['style'] ) ? $widget['panels_info']['style'] : array();
+					$widget_css = apply_filters(
+						'siteorigin_panels_css_widget_css',
+						array(),
+						$widget_style_data,
+						$row,
+						$ri,
+						$cell,
+						$ci - 1,
+						$widget,
+						$wi,
+						$panels_data,
+						$post_id
+					);
+
+					$css->add_widget_css(
+						$post_id,
+						$ri,
+						$ci,
+						$wi,
+						'',
+						$widget_css,
+						1920,
+						true
+					);
+				}
 			}
 
 			if (
@@ -236,10 +266,14 @@ class SiteOrigin_Panels_Renderer {
 	 *
 	 * @return string
 	 */
-	function render( $post_id = false, $enqueue_css = true, $panels_data = false, & $layout_data = array() ) {
+	function render( $post_id = false, $enqueue_css = true, $panels_data = false, & $layout_data = array(), $is_preview = false ) {
 
 		if ( empty( $post_id ) ) {
 			$post_id = get_the_ID();
+			
+			if ( class_exists( 'WooCommerce' ) && is_shop() ) {
+				$post_id = wc_get_page_id( 'shop' );
+			}
 		}
 
 		global $siteorigin_panels_current_post;
@@ -263,7 +297,11 @@ class SiteOrigin_Panels_Renderer {
 		if ( empty( $panels_data ) || empty( $panels_data['grids'] ) ) {
 			return '';
 		}
-
+		
+		if ( $is_preview ) {
+			$GLOBALS[ 'SITEORIGIN_PANELS_PREVIEW_RENDER' ] = true;
+		}
+		
 		$layout_data = $this->get_panels_layout_data( $panels_data );
 		$layout_data = apply_filters( 'siteorigin_panels_layout_data', $layout_data, $post_id );
 
@@ -302,8 +340,22 @@ class SiteOrigin_Panels_Renderer {
 
 		// Reset the current post
 		$siteorigin_panels_current_post = $old_current_post;
-
-		return apply_filters( 'siteorigin_panels_render', $html, $post_id, ! empty( $post ) ? $post : null );
+		
+		$rendered_layout = apply_filters( 'siteorigin_panels_render', $html, $post_id, ! empty( $post ) ? $post : null );
+		
+		if ( $is_preview ) {
+			$widget_css = '@import url(' . SiteOrigin_Panels::front_css_url() . '); ';
+			$widget_css .= SiteOrigin_Panels::renderer()->generate_css( $post_id, $panels_data, $layout_data );
+			$widget_css = preg_replace( '/\s+/', ' ', $widget_css );
+			$rendered_layout .= "\n\n" .
+								'<style type="text/css" class="panels-style" data-panels-style-for-post="' . esc_attr( $post_id ) . '">' .
+								$widget_css .
+								'</style>';
+		}
+		
+		unset( $GLOBALS[ 'SITEORIGIN_PANELS_PREVIEW_RENDER' ] );
+		
+		return $rendered_layout;
 	}
 
 	/**
@@ -409,6 +461,10 @@ class SiteOrigin_Panels_Renderer {
 
 		if ( empty( $post_id ) ) {
 			$post_id = get_the_ID();
+			
+			if ( class_exists( 'WooCommerce' ) && is_shop() ) {
+				$post_id = wc_get_page_id( 'shop' );
+			}
 		}
 
 		$classes = array( 'so-panel' );
@@ -666,6 +722,11 @@ class SiteOrigin_Panels_Renderer {
 
 		if ( ! empty( $row_style_wrapper ) ) {
 			echo $row_style_wrapper;
+		}
+
+		if( method_exists( $this, 'modify_row_cells' ) ) {
+			// This gives other renderers a chance to change the cell order
+			$row['cells'] = $cells = $this->modify_row_cells( $row['cells'], $row );
 		}
 
 		foreach ( $row['cells'] as $ci => & $cell ) {

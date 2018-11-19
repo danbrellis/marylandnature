@@ -7,7 +7,7 @@
  */
 class SiteOrigin_Panels_Admin_Layouts {
 	
-	const LAYOUT_URL = 'http://layouts.siteorigin.com/';
+	const LAYOUT_URL = 'https://layouts.siteorigin.com/';
 	
 	function __construct() {
 		// Filter all the available external layout directories.
@@ -83,6 +83,7 @@ class SiteOrigin_Panels_Admin_Layouts {
 		
 		$layouts = array();
 		foreach ( $layout_folders as $folder ) {
+			$folder = realpath($folder);
 			if ( file_exists( $folder ) && is_dir( $folder ) ) {
 				$files = list_files( $folder, 1 );
 				if ( empty( $files ) ) {
@@ -90,16 +91,32 @@ class SiteOrigin_Panels_Admin_Layouts {
 				}
 				
 				foreach ( $files as $file ) {
-					// get file mime type
-					$mime_type = mime_content_type( $file );
 					
-					// skip non text files.
-					if ( strpos( $mime_type, 'text/' ) !== 0 ) {
+					if ( function_exists( 'mime_content_type' ) ) {
+						// get file mime type
+						$mime_type = mime_content_type( $file );
+						
+						// Valid if text files.
+						$valid_file_type = strpos( $mime_type, 'text/' ) === 0;
+					} else {
+						// If `mime_content_type` isn't available, just check file extension.
+						$ext = pathinfo( $file, PATHINFO_EXTENSION );
+						
+						// skip files which don't have a `.json` extension.
+						$valid_file_type = ! empty( $ext ) && $ext === 'json';
+					}
+					
+					if ( ! $valid_file_type ) {
 						continue;
 					}
 					
 					// get file contents
 					$file_contents = file_get_contents( $file );
+					
+					// skip if file_get_contents fails
+					if ( $file_contents === false ) {
+						continue;
+					}
 					
 					// json decode
 					$panels_data = json_decode( $file_contents, true );
@@ -375,6 +392,12 @@ class SiteOrigin_Panels_Admin_Layouts {
 
 		} elseif ( current_user_can( 'edit_post', $_REQUEST['lid'] ) ) {
 			$panels_data = get_post_meta( $_REQUEST['lid'], 'panels_data', true );
+			
+			// Clear id and timestamp for SO widgets to prevent 'newer content version' notification in widget forms.
+			foreach ( $panels_data['widgets'] as &$widget ) {
+				unset( $widget['_sow_form_id'] );
+				unset( $widget['_sow_form_timestamp'] );
+			}
 		}
 
 		if( $raw_panels_data ) {
@@ -397,6 +420,10 @@ class SiteOrigin_Panels_Admin_Layouts {
 		if ( ! empty( $_FILES['panels_import_data']['tmp_name'] ) ) {
 			header( 'content-type:application/json' );
 			$json = file_get_contents( $_FILES['panels_import_data']['tmp_name'] );
+			$panels_data = json_decode( $json, true );
+			$panels_data = apply_filters( 'siteorigin_panels_data', $panels_data, false );
+			$panels_data['widgets'] = SiteOrigin_Panels_Admin::single()->process_raw_widgets( $panels_data['widgets'], array(), true, true );
+			$json = json_encode( $panels_data );
 			@unlink( $_FILES['panels_import_data']['tmp_name'] );
 			echo $json;
 		}
