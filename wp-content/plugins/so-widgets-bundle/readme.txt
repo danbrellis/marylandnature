@@ -2,8 +2,8 @@
 Tags: bundle, widget, button, slider, image, carousel, price table, google maps, tinymce, social links
 Requires at least: 4.2
 Tested up to: 4.9.1
-Stable tag: 1.11.6
-Build time: 2018-03-14T15:47:12+02:00
+Stable tag: 1.13.3
+Build time: 2018-11-15T16:26:45-08:00
 License: GPLv3 or later
 Contributors: gpriday, braam-genis
 Donate link: https://siteorigin.com/downloads/contribution/
@@ -47,7 +47,7 @@ Once you enable a widget, you'll be able to use it anywhere standard widgets are
 
 == Documentation ==
 
-[Documentation](https://siteorigin.com/css/getting-started/) is available on SiteOrigin.
+[Documentation](https://siteorigin.com/widgets-bundle/getting-started/) is available on SiteOrigin.
 
 == Support ==
 
@@ -64,6 +64,98 @@ The SiteOrigin Widgets Bundle is the perfect platform to build widgets for your 
 3. An example of the button widget.
 
 == Changelog ==
+
+= 1.13.3 - 15 November 2018 =
+* Contact: Fix checkboxes and radio alignment on android.
+* FitText: Set minimum font size to ensure readability.
+* TinyMCE field: Use correct editor when block editor is present.
+* Google maps: Use correct info window text for markers.
+* TinyMCE: Remove 'editor-buttons' style enqueue causing conflicts.
+* TinyMCE field: Prevent adding multiple copies of media buttons.
+* Image widget: if no alt text is supplied add an empty alt attribute.
+* Repeaters: Reverted some commits causing multiple issues.
+* WP 5: Fixed some styles in the block editor.
+* Only setup form fields in the dialog when a PB edit widget dialog is opened.
+* Multi-measurement field: Fix autoFill in block editor and attempt to fix in PHP <= 5.3.
+
+= 1.13.2 - 31 October 2018 =
+* Builder field: Prevent error in PHP <= 5.4
+* Avoid replacing repeater item id placeholders for child repeaters.
+* Repeaters: In repeater setup, don't setup child repeaters.
+
+= 1.13.1 - 29 October 2018 =
+* Gutenberg: Alert user that changes will be lost when changing the widget type.
+* Tabs: Keyboard navigation and more accessibility improvements.
+* Google maps: Better geocoding request management.
+* TinyMCE field: Use correct selector for checking whether click target is editor switching tab.
+* Slider: Option to prevent hiding video on mobile.
+* Accordion: Deep-linking for child accordions.
+* Use inline CSS fallback if writing to file failed.
+* Better FitText compressor description.
+* Delete old widget styles when updating widgets.
+* Layout Slider: Resoonsive height.
+* Accordion: Expand when user is printing.
+* Features: Text case adjustments and formatting.
+* Beaver Builder: Dark styling.
+* Builder field: Allow double-encoding to allow already encoded text in editors.
+* Contact form: Prevent adding the anchor again if it's already been added.
+* Contact form: Attempt to scroll to contact form after submitting, so result is visible.
+* Builder field: Set data correctly from JS.
+* Builder field: Don't encode already JSON encoded values.
+* Gutenberg: Allow editing page containing deactivated widget.
+* Gutenberg: Reset global `$post` after enqueueing widgets' scripts and styles, which might run secondary queries.
+
+= 1.13.0 - 13 September 2018 =
+* SiteOrigin Widgets Gutenberg block!
+* Google Map: Prevent script from running further if no map canvas elements found.
+* Removed style to set `p` margins to zero.
+* Check that fallback image for static maps is not an empty string before attempting to use it.
+* TinyMCE: Ensure target is one of the editor tabs when switching modes.
+* Set values for repeaters which are direct children of section fields.
+* Prevent unselected radio input state emitters from affecting form states, when form values are set programmatically.
+* Plugin Action Links: Check if edit link is present before removal.
+* Social Media Buttons: Added Phone and Angelist. Changed email title text.
+* Metabox manager: Set empty post meta string value to array. Ensure metabox widget form values are saved when saving drafts too.
+
+= 1.12.1 - 17 July 2018 =
+* Contact: Allow non-string values in required field validation.
+* Initialize CTA, Price Table and Video JS widgets correctly when in accordion/tabs widgets.
+
+= 1.12.0 - 11 July 2018 =
+* Contact: Add dedicated textarea height.
+* Social Media Buttons: Adds WhatsApp social network.
+* Features: Allow icon size to use a different unit of measurement.
+* Repeater field: Update editor id in media buttons when duplicating item with TinyMCE editor.
+* Posts field: taxonomy description.
+* Price Table: Disable equalized row heights on mobile.
+* Beaver Builder: Force icon fonts.
+* Slider widgets: Added autoplay option for background videos.
+* Maps: Renamed Google maps script to more sensible `sow.google-map.js`
+* Editor: Prevent errors when visual editing is disabled for a user.
+* Optimized images.
+* Accordion/tabs: Trigger 'setup_widgets' to ensure any widgets in panels are initialized correctly.
+* Contact: Use 'From' email address if there is no email field in the form.
+* Hero: Filter out the align field in the button sub-widget form.
+* Testimonials: Switch mobile and tablet resolution width field descriptions.
+* Posts field: Allow clearing dates.
+* Font field: Use correct value for 'Helvetica Neue' and added 'Arial' option.
+* TA: Additional setting to allow clearing the default background colors.
+* Contact: Allow a value of '0' for required fields and subject values.
+
+= 1.11.8 - 12 April 2018 =
+* Added action just before rendering widget previews.
+* Editor: Removed `unwpautop`.
+* Editor: Ensure TinyMCE field knows whether to apply `autop` or not.
+* Editor: Only apply `autop` on display when using HTML editor.
+* Editor: Prevent `widget_text` filters from running `do_shortcode`.
+
+= 1.11.7 - 23 March 2018 =
+* Image: Add title alignment setting.
+* Button: Add max-width to ensure buttons are responsive.
+* Hero: New filter for frame content 'siteorigin_hero_frame_content'
+* Features: Don't set margin for one column left/right feature.
+* Updated widget icons.
+* Updated google web fonts.
 
 = 1.11.6 - 14 March 2018 =
 * Hero: Add responsive height settings.

@@ -7,27 +7,37 @@ jQuery( function ( $ ) {
 	sowb.setupAccordion = function() {
 		$( '.sow-accordion' ).each( function ( index, element ) {
 			var $widget = $( this ).closest( '.so-widget-sow-accordion' );
+			if ( $widget.data( 'initialized' ) ) {
+				return $( this );
+			}
 			var useAnchorTags = $widget.data( 'useAnchorTags' );
-			
+			var initialScrollPanel = $widget.data( 'initialScrollPanel' );
+
 			var $accordionPanels = $( element ).find( '> .sow-accordion-panel' );
-			
 			$accordionPanels.not( '.sow-accordion-panel-open' ).find( '.sow-accordion-panel-content' ).hide();
-			
 			var openPanels = $accordionPanels.filter( '.sow-accordion-panel-open' ).toArray();
+
 			var updateHash = function () {
 				// noop
 			};
-			
+
 			var openPanel = function ( panel, preventHashChange ) {
 				var $panel = $( panel );
 				if ( ! $panel.is( '.sow-accordion-panel-open' ) ) {
 					$panel.find( '> .sow-accordion-panel-content' ).slideDown(
 						function() {
 							$( this ).trigger( 'show' );
+							$( sowb ).trigger( 'setup_widgets' );
 						}
 					);
 					$panel.addClass( 'sow-accordion-panel-open' );
 					openPanels.push( panel );
+
+					// Check if accordion is within an accordion and if it is, ensure parent is visible
+					var $parentPanel = $( panel ).parents( '.sow-accordion-panel' );
+					if ( $parentPanel.length && ! $parentPanel.hasClass( 'sow-accordion-panel-open' ) ) {
+						openPanel( $parentPanel.get( 0 ), true );
+					}
 					if ( ! preventHashChange ) {
 						updateHash();
 					}
@@ -59,18 +69,30 @@ jQuery( function ( $ ) {
 				} else {
 					openPanel( $panel.get( 0 ) );
 				}
+
 				if ( ! isNaN( maxOpenPanels ) && maxOpenPanels > 0 && openPanels.length > maxOpenPanels ) {
-					closePanel( openPanels[ 0 ] );
+					var skippedPanels = 0;
+					$.each( openPanels.reverse(), function( index, el ) {
+						if ( skippedPanels !== maxOpenPanels) {
+							skippedPanels++;
+						} else {
+							closePanel( openPanels[ index ] );
+						}
+					} );
 				}
 			} );
 			
 			if ( useAnchorTags ) {
 				updateHash = function () {
 					var anchors = [];
-					for ( var i = 0; i < openPanels.length; i++ ) {
-						var anchor = $( openPanels[ i ] ).data( 'anchor' );
+					var allOpenPanels = $( '.sow-accordion-panel-open' ).toArray();
+					for ( var i = 0; i < allOpenPanels.length; i++ ) {
+						var anchor = $( allOpenPanels[ i ] ).data( 'anchor' );
 						if ( anchor ) {
-							anchors[ i ] = anchor;
+							var $parentPanel = $( allOpenPanels[ i ] ).parents( '.sow-accordion-panel' );
+							if ( ! $parentPanel.length || ( $parentPanel.length && $parentPanel.hasClass( 'sow-accordion-panel-open' ) ) ) {
+								anchors[ i ] = anchor;
+							}
 						}
 					}
 					
@@ -84,7 +106,7 @@ jQuery( function ( $ ) {
 				var updatePanelStates = function () {
 					var panels = $accordionPanels.toArray();
 					for ( var i = 0; i < panels.length; i++ ) {
-						panel = panels[ i ];
+						var panel = panels[ i ];
 						var anchor = $( panel ).data( 'anchor' );
 						if ( anchor && window.location.hash.indexOf( anchor ) > -1 ) {
 							openPanel( panel, true );
@@ -99,7 +121,16 @@ jQuery( function ( $ ) {
 				} else {
 					updateHash();
 				}
+				if ( initialScrollPanel > 0 ) {
+					var $initialScrollPanel = initialScrollPanel > $accordionPanels.length ?
+						$accordionPanels.last() :
+						$accordionPanels.eq( initialScrollPanel - 1 );
+					var navOffset = 90;// Add some magic number offset to make space for possible nav menus etc.
+					window.scrollTo( 0, $initialScrollPanel.offset().top - navOffset );
+				}
 			}
+			
+			$widget.data( 'initialized', true );
 		} );
 	};
 	

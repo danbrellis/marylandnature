@@ -169,7 +169,7 @@
 .sow-slider-base.sow-slider-is-mobile .sow-slider-pagination {
   /* display: none; */
 }
-.sow-slider-base.sow-slider-is-mobile video.sow-background-element {
+.sow-slider-base.sow-slider-is-mobile video.sow-background-element:not(.sow-mobile-video_enabled) {
   visibility: hidden;
 }
 .sow-slider-base [class^="sow-sld-icon-"],

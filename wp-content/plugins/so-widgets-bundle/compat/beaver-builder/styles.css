@@ -66,6 +66,17 @@
   margin-left: 15px !important;
   max-width: 220px;
 }
+.fl-lightbox .siteorigin-widget-form .siteorigin-widget-field.siteorigin-widget-field-type-autocomplete .select-content-button,
+.siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field.siteorigin-widget-field-type-autocomplete .select-content-button,
+.fl-lightbox .siteorigin-widget-form .siteorigin-widget-field.siteorigin-widget-field-type-link .select-content-button,
+.siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field.siteorigin-widget-field-type-link .select-content-button {
+  height: 36px;
+  padding: 6px 0;
+}
+.fl-lightbox .siteorigin-widget-form .siteorigin-widget-field .siteorigin-widget-field-repeater .siteorigin-widget-field-repeater-items .siteorigin-widget-field-repeater-item .siteorigin-widget-field-repeater-item-top > h4,
+.siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field .siteorigin-widget-field-repeater .siteorigin-widget-field-repeater-items .siteorigin-widget-field-repeater-item .siteorigin-widget-field-repeater-item-top > h4 {
+  padding: initial;
+}
 .fl-lightbox .siteorigin-widget-form .sow-icon-elegantline,
 .siteorigin-widgets-query-builder.media-modal .sow-icon-elegantline,
 .fl-lightbox .siteorigin-widget-form .sow-icon-fontawesome,
@@ -90,27 +101,27 @@
 }
 .fl-lightbox .siteorigin-widget-form .sow-icon-elegantline,
 .siteorigin-widgets-query-builder.media-modal .sow-icon-elegantline {
-  font-family: 'sow-elegantline';
+  font-family: 'sow-elegantline' !important;
 }
 .fl-lightbox .siteorigin-widget-form .sow-icon-fontawesome,
 .siteorigin-widgets-query-builder.media-modal .sow-icon-fontawesome {
-  font-family: 'sow-fontawesome';
+  font-family: 'sow-fontawesome' !important;
 }
 .fl-lightbox .siteorigin-widget-form .sow-icon-genericons,
 .siteorigin-widgets-query-builder.media-modal .sow-icon-genericons {
-  font-family: 'sow-genericons';
+  font-family: 'sow-genericons' !important;
 }
 .fl-lightbox .siteorigin-widget-form .sow-icon-icomoon,
 .siteorigin-widgets-query-builder.media-modal .sow-icon-icomoon {
-  font-family: 'sow-icomoon';
+  font-family: 'sow-icomoon' !important;
 }
 .fl-lightbox .siteorigin-widget-form .sow-icon-ionicons,
 .siteorigin-widgets-query-builder.media-modal .sow-icon-ionicons {
-  font-family: 'sow-ionicons';
+  font-family: 'sow-ionicons' !important;
 }
 .fl-lightbox .siteorigin-widget-form .sow-icon-typicons,
 .siteorigin-widgets-query-builder.media-modal .sow-icon-typicons {
-  font-family: 'sow-typicons';
+  font-family: 'sow-typicons' !important;
 }
 .fl-lightbox .siteorigin-widget-form .button,
 .siteorigin-widgets-query-builder.media-modal .button,
@@ -208,4 +219,138 @@
 }
 .so-widgets-dialog .so-widgets-search-input {
   width: 100%;
+}
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form-notification,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal-notification {
+  background-color: #383f46;
+  border-color: transparent;
+}
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-type-widget > label,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-type-widget > label,
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-type-section > label,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-type-section > label {
+  background: #383f46;
+  border-color: #676d72;
+}
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-type-posts .siteorigin-widget-section,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-type-posts .siteorigin-widget-section,
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-type-widget .siteorigin-widget-section,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-type-widget .siteorigin-widget-section,
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-type-section .siteorigin-widget-section,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-type-section .siteorigin-widget-section {
+  background-color: transparent;
+  border-color: #676d72;
+}
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-type-icon .siteorigin-widget-icon-selector-current,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-type-icon .siteorigin-widget-icon-selector-current,
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-type-icon .siteorigin-widget-icon-selector,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-type-icon .siteorigin-widget-icon-selector {
+  background: #383f46;
+  border-color: #676d72;
+}
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-type-icon .siteorigin-widget-icon-selector-current .siteorigin-widget-icon,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-type-icon .siteorigin-widget-icon-selector-current .siteorigin-widget-icon,
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-type-icon .siteorigin-widget-icon-selector .siteorigin-widget-icon,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-type-icon .siteorigin-widget-icon-selector .siteorigin-widget-icon,
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-type-icon .siteorigin-widget-icon-selector-current .siteorigin-widget-icon-icons-icon,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-type-icon .siteorigin-widget-icon-selector-current .siteorigin-widget-icon-icons-icon,
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-type-icon .siteorigin-widget-icon-selector .siteorigin-widget-icon-icons-icon,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-type-icon .siteorigin-widget-icon-selector .siteorigin-widget-icon-icons-icon {
+  background-color: #131a22;
+  border-color: #676d72;
+}
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-type-icon .siteorigin-widget-icon-selector-current > label,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-type-icon .siteorigin-widget-icon-selector-current > label,
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-type-icon .siteorigin-widget-icon-selector > label,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-type-icon .siteorigin-widget-icon-selector > label {
+  text-shadow: none;
+}
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .wp-picker-container .wp-color-result.button .wp-color-result-text,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .wp-picker-container .wp-color-result.button .wp-color-result-text {
+  border-color: #424242;
+  background-color: #131a22;
+}
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .wp-picker-container .wp-picker-holder .iris-border,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .wp-picker-container .wp-picker-holder .iris-border {
+  border-color: #424242;
+  background-color: #131a22;
+}
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-type-media .media-field-wrapper,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-type-media .media-field-wrapper {
+  background: #383f46;
+  border-color: #676d72;
+}
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-type-media .media-field-wrapper > .current,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-type-media .media-field-wrapper > .current {
+  border-right: 1px solid #676d72;
+  box-shadow: none;
+}
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-type-media .media-field-wrapper > .current .thumbnail-wrapper,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-type-media .media-field-wrapper > .current .thumbnail-wrapper {
+  background: #131a22;
+  border-color: #676d72;
+}
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-type-media .media-field-wrapper .find-image-button,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-type-media .media-field-wrapper .find-image-button {
+  border-left: 1px solid #676d72;
+}
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-type-media .media-field-wrapper > a,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-type-media .media-field-wrapper > a {
+  text-shadow: none;
+}
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-type-media .media-field-wrapper > a:hover,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-type-media .media-field-wrapper > a:hover {
+  background-color: transparent;
+}
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-repeater .siteorigin-widget-field-repeater-top,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-repeater .siteorigin-widget-field-repeater-top {
+  background: #383f46;
+  border-color: #676d72;
+}
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-repeater .siteorigin-widget-field-repeater-items,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-repeater .siteorigin-widget-field-repeater-items {
+  background: #383f46;
+  border-color: #676d72;
+}
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-repeater .siteorigin-widget-field-repeater-items .siteorigin-widget-field-repeater-item,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-repeater .siteorigin-widget-field-repeater-items .siteorigin-widget-field-repeater-item {
+  background: #383f46;
+  border-color: #676d72;
+}
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-repeater .siteorigin-widget-field-repeater-items .siteorigin-widget-field-repeater-item .siteorigin-widget-field-repeater-item-top,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-repeater .siteorigin-widget-field-repeater-items .siteorigin-widget-field-repeater-item .siteorigin-widget-field-repeater-item-top {
+  background: #383f46;
+  border-color: #676d72;
+}
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-repeater .siteorigin-widget-field-repeater-items .siteorigin-widget-field-repeater-item .siteorigin-widget-field-repeater-item-form,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-repeater .siteorigin-widget-field-repeater-items .siteorigin-widget-field-repeater-item .siteorigin-widget-field-repeater-item-form {
+  border-top: 1px solid #676d72;
+}
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-repeater .siteorigin-widget-field-repeater-add,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-repeater .siteorigin-widget-field-repeater-add {
+  background: #383f46;
+  border-color: #676d72;
+}
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-type-posts .posts-container-label-wrapper,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-type-posts .posts-container-label-wrapper {
+  background: #383f46;
+  border-color: #676d72;
+}
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-type-posts .siteorigin-widget-section,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-type-posts .siteorigin-widget-section,
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-type-widget .siteorigin-widget-section,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-type-widget .siteorigin-widget-section,
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .siteorigin-widget-field-type-section .siteorigin-widget-section,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .siteorigin-widget-field-type-section .siteorigin-widget-section {
+  background: #32373c;
+  border-color: #424242;
+}
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .button,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .button,
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .wp-color-result-text,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .wp-color-result-text,
+.fl-builder-ui-skin--dark .fl-lightbox .siteorigin-widget-form .button.button-small,
+.fl-builder-ui-skin--dark .siteorigin-widgets-query-builder.media-modal .button.button-small {
+  border-color: #424242;
+  background-color: #131a22;
 }
