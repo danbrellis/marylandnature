@@ -4,6 +4,7 @@ add_action( 'after_setup_theme', 'nhsm_image_sizes' );
 function nhsm_image_sizes() {
 	add_image_size( 'nhsm_hbanner', 870, 378, true ); // (cropped)
 	add_image_size( 'nhsm_medium4x3', 800, 600, true ); // (cropped)
+    add_image_size( 'nhsm_headshot', 975, 975, true ); // (cropped)
 }
 
 //adds credit fields to media library

@@ -1861,11 +1861,11 @@ PLUGIN STYLES
 	}
 	.team-excerpt {
 		position: absolute;
-    height: 100%;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+		height: 100%;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
 		padding: $card-padding;
 		
 		div {
@@ -1879,6 +1879,8 @@ PLUGIN STYLES
 				text-align: center;
 				margin-bottom: 0;
 				vertical-align: middle;
+				color: $black;
+				font-weight: bold;
 			}
 		}
 	}
