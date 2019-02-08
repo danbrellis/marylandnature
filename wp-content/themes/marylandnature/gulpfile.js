@@ -37,16 +37,12 @@ gulp.task('styles', function() {
     
 // JSHint, concat, and minify JavaScript
 gulp.task('site-js', function() {
-  return gulp.src([	
-	  
-           // Grab your custom scripts
-  		  './assets/js/scripts/FitText.js/*.js',
-				'./assets/js/scripts/gridme/gridme.js',
-				'./assets/js/scripts/*.js',
-				'./node_modules/iframe-resizer/js/iframeResizer.js'
-				
-  		  
-  ])
+    return gulp.src([
+        // Grab your custom scripts
+        './assets/js/scripts/FitText.js/*.js',
+        './assets/js/scripts/*.js',
+        './node_modules/iframe-resizer/js/iframeResizer.js'
+    ])
     .pipe(plumber())
     .pipe(sourcemaps.init())
     .pipe(jshint())
