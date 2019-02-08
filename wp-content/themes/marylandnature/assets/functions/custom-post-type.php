@@ -247,6 +247,31 @@ function nhsm_colorpicker_field_edit_category( $term ) {
 }
 add_action( 'event-category_edit_form_fields', 'nhsm_colorpicker_field_edit_category' );
 
+function nhsm_role_category_add_form_fields($taxonomy) { ?>
+    <div class="form-field">
+        <label for="term-unique-url">
+        <input name="_has_unique_urls" type="checkbox" value="1" id="term-unique_url" checked /> Posts have unique URLs
+        </label>
+        <p>If checked, when posts are listed in templates they will link to unique pages.</p>
+    </div>
+    <?php
+}
+add_action( 'nhsm_role_add_form_fields', 'nhsm_role_category_add_form_fields' );
+
+function nhsm_role_category_edit_category( $term ) {
+    $checked = get_term_meta( $term->term_id, '_has_unique_urls', true ); ?>
+
+    <tr class="form-field term-colorpicker-wrap">
+        <th scope="row"><label for="term-unique-url">Posts have unique URLs</label></th>
+        <td>
+            <input name="_has_unique_urls" type="checkbox" value="1" id="term-unique_url" <?php checked($checked); ?> />
+            <p class="description">If checked, when posts are listed in templates they will link to unique pages.</p>
+        </td>
+    </tr>
+    <?php
+}
+add_action( 'nhsm_role_edit_form_fields', 'nhsm_role_category_edit_category' );
+
 function nhsm_save_termmeta( $term_id ) {
 
 	$color_keys = array('_label_bg_color', '_label_txt_color');
@@ -265,10 +290,18 @@ function nhsm_save_termmeta( $term_id ) {
 	} else {
 		update_term_meta ( $term_id, 'category_image_id', '' );
 	}
-
+//var_dump($_POST['_has_unique_urls']); exit();
+	if( isset( $_POST['_has_unique_urls'] ) && '' !== $_POST['_has_unique_urls'] ){
+		$checked = $_POST['_has_unique_urls'];
+		update_term_meta ( $term_id, '_has_unique_urls', true );
+	} else {
+		update_term_meta ( $term_id, '_has_unique_urls', '' );
+	}
 }
 add_action( 'created_event-category', 'nhsm_save_termmeta' );
 add_action( 'edited_event-category',  'nhsm_save_termmeta' );
+add_action( 'created_nhsm_role', 'nhsm_save_termmeta' );
+add_action( 'edited_nhsm_role',  'nhsm_save_termmeta' );
 
 function add_color_label_column( $columns ){
 	$columns['nhsm_label_colors'] = 'Label';
