@@ -35,10 +35,11 @@ class DLM_Admin {
 		// setup settings
 		$settings = new DLM_Admin_Settings();
 		add_action( 'admin_init', array( $settings, 'register_settings' ) );
+		add_filter( 'dlm_settings', array( $settings, 'backwards_compatibility_settings' ), 99, 1 );
 		$settings->register_lazy_load_callbacks();
 
 		// setup settings page
-        $settings_page = new DLM_Settings_Page();
+		$settings_page = new DLM_Settings_Page();
 		$settings_page->setup();
 
 		// setup logs
@@ -193,7 +194,17 @@ class DLM_Admin {
 		$enqueue = false;
 
 		if ( $hook == 'post-new.php' || $hook == 'post.php' || $hook == 'edit.php' ) {
-			if ( ( ! empty( $_GET['post_type'] ) && $_GET['post_type'] == 'dlm_download' ) || ( ! empty( $post->post_type ) && 'dlm_download' === $post->post_type ) ) {
+			if (
+				( ! empty( $_GET['post_type'] ) && in_array( $_GET['post_type'], array(
+						'dlm_download',
+						\Never5\DownloadMonitor\Shop\Util\PostType::KEY
+					) ) )
+				||
+				( ! empty( $post->post_type ) && in_array( $post->post_type, array(
+						'dlm_download',
+						\Never5\DownloadMonitor\Shop\Util\PostType::KEY
+					) ) )
+			) {
 				$enqueue = true;
 			}
 		}
@@ -206,6 +217,10 @@ class DLM_Admin {
 			$enqueue = true;
 		}
 
+		if ( isset( $_GET['page'] ) && 'download-monitor-orders' === $_GET['page'] ) {
+			$enqueue = true;
+		}
+
 		if ( ! $enqueue ) {
 			return;
 		}
@@ -213,7 +228,7 @@ class DLM_Admin {
 		wp_enqueue_script( 'jquery-blockui', download_monitor()->get_plugin_url() . '/assets/js/blockui.min.js', array( 'jquery' ), '2.61' );
 		wp_enqueue_script( 'jquery-ui-sortable' );
 		wp_enqueue_script( 'jquery-ui-datepicker' );
-		wp_enqueue_style( 'jquery-ui-style', ( is_ssl() ) ? 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css' : 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css' );
+		wp_enqueue_style( 'jquery-ui-style', download_monitor()->get_plugin_url() . '/assets/css/jquery-ui.css', array(), DLM_VERSION );
 		wp_enqueue_style( 'download_monitor_admin_css', download_monitor()->get_plugin_url() . '/assets/css/admin.css', array( 'dashicons' ), DLM_VERSION );
 	}
 

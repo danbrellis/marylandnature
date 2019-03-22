@@ -296,7 +296,7 @@ class DLM_Download {
 		if ( has_post_thumbnail( $this->id ) ) {
 			return get_the_post_thumbnail( $this->id, $size );
 		} else {
-			return '<img alt="Placeholder" class="wp-post-image" src="' . apply_filters( 'dlm_placeholder_image_src', download_monitor()->get_plugin_url() . '/assets/images/placeholder.png' ) . '" />';
+			return '<img alt="Placeholder" class="wp-post-image" src="' . apply_filters( 'dlm_placeholder_image_src', download_monitor()->get_plugin_url() . '/assets/images/placeholder.png', $this->id, $this ) . '" />';
 		}
 	}
 
@@ -372,7 +372,7 @@ class DLM_Download {
 	 * @return bool
 	 */
 	public function has_version() {
-		return ( null !== $this->get_version() );
+		return ( null !== $this->get_version() && $this->get_version()->get_id() > 0 );
 	}
 
 	/**
@@ -500,7 +500,7 @@ class DLM_Download {
 			}
 		}
 
-		return $this->versions;
+		return apply_filters( 'dlm_download_get_versions', $this->versions, $this );
 	}
 
 	/**

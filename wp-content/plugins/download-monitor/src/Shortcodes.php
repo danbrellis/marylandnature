@@ -64,6 +64,7 @@ class DLM_Shortcodes {
 	 * @access public
 	 *
 	 * @param array $atts
+	 * @param string $content
 	 *
 	 * @return string
 	 */
@@ -79,7 +80,7 @@ class DLM_Shortcodes {
 		), $atts ) );
 
 		// Make id filterable
-		$id = apply_filters( 'dlm_shortcode_download_id', $id );
+		$id = apply_filters( 'dlm_shortcode_download_id', $id, $atts );
 
 		// Check id
 		if ( empty( $id ) ) {
@@ -87,7 +88,7 @@ class DLM_Shortcodes {
 		}
 
 		// Allow third party extensions to hijack shortcode
-		$hijacked_content = apply_filters( 'dlm_shortcode_download_content', '', $id, $atts );
+		$hijacked_content = apply_filters( 'dlm_shortcode_download_content', '', $id, $atts, $content );
 
 		// If there's hijacked content, return it and be done with it
 		if ( '' !== $hijacked_content ) {
@@ -162,7 +163,7 @@ class DLM_Shortcodes {
 			'version'    => ''
 		), $atts ) );
 
-		$id = apply_filters( 'dlm_shortcode_download_id', $id );
+		$id = apply_filters( 'dlm_shortcode_download_id', $id, $atts );
 
 		if ( empty( $id ) || empty( $data ) ) {
 			return "";
@@ -219,7 +220,7 @@ class DLM_Shortcodes {
 					return wpautop( wptexturize( do_shortcode( $download->get_description() ) ) );
 				case 'post_date' :
 				case 'file_date' :
-					return date_i18n( get_option( 'date_format' ), $download->get_version()->get_date()->getTimestamp() );
+					return date_i18n( get_option( 'date_format' ), $download->get_version()->get_date()->format( 'U' ) );
 				case 'author' :
 					return $download->get_the_author();
 
@@ -415,6 +416,12 @@ class DLM_Shortcodes {
 				'key'   => '_featured',
 				'value' => 'yes'
 			);
+		} else {
+			$args['meta_query'][] = array(
+				'key'     => '_featured',
+				'value'   => 'yes',
+				'compare' => '!='
+			);
 		}
 
 		if ( $members_only === 'true' || $members_only === true ) {
@@ -427,7 +434,7 @@ class DLM_Shortcodes {
 		ob_start();
 
 		// Allow filtering of arguments
-		$args = apply_filters( 'dlm_shortcode_downloads_args', $args );
+		$args = apply_filters( 'dlm_shortcode_downloads_args', $args, $atts );
 
 		$offset = $paginate ? ( max( 1, get_query_var( 'paged' ) ) - 1 ) * $per_page : $offset;
 
@@ -527,7 +534,27 @@ class DLM_Shortcodes {
 		$template_handler = new DLM_Template_Handler();
 
 		try {
+			/** @var \DLM_Download $download */
 			$download = download_monitor()->service( 'download_repository' )->retrieve_single( absint( $wp->query_vars['download-id'] ) );
+
+			$version_id = '';
+
+			if ( ! empty( $_GET['version'] ) ) {
+				$version_id = $download->get_version_id_version_name( $_GET['version'] );
+			}
+
+			if ( ! empty( $_GET['v'] ) ) {
+				$version_id = absint( $_GET['v'] );
+			}
+
+			if ( null != $download && $version_id ) {
+				try {
+					$version = download_monitor()->service( 'version_repository' )->retrieve_single( $version_id );
+					$download->set_version( $version );
+				} catch ( Exception $e ) {
+
+				}
+			}
 
 			// load no access template
 			$template_handler->get_template_part( 'no-access', '', '', array(
