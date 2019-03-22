@@ -492,6 +492,15 @@ function nhsm_what_we_do_upcoming_events($query_args){
   return $query_args;
 }
 
+add_filter('siteorigin_widgets_posts_selector_query', 'nhsm_siteorigin_widgets_posts_selector_query');
+function nhsm_siteorigin_widgets_posts_selector_query($query){
+    //Change Tax Query relation to 'AND' for Team Pages
+    if($query['post_type'] === 'nhsm_team' && isset($query['tax_query']) && !empty($query['tax_query']))
+        $query['tax_query']['relation'] = 'AND';
+
+    return $query;
+}
+
 /* Download Monitor */
 add_filter('dlm_download_category_args', 'nhsm_dlm_download_category_args');
 function nhsm_dlm_download_category_args($args){

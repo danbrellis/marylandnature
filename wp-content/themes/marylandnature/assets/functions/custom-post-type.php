@@ -111,6 +111,26 @@ function nhsm_post_types() {
 		'query_var'         => true,
 		'rewrite'           => array( 'slug' => 'role' ),
 	) );
+
+    register_taxonomy( 'nhsm_team_cat', array( 'nhsm_team' ), array(
+        'hierarchical'      => true,
+        'labels'            => array(
+            'name'              => 'Team Categories',
+            'singular_name'     => 'Team Category',
+            'search_items'      => 'Search Categories',
+            'all_items'         => 'All Categories',
+            'parent_item'       => 'Parent Category',
+            'parent_item_colon' => 'Parent Category:',
+            'edit_item'         => 'Edit Category',
+            'update_item'       => 'Update Category',
+            'add_new_item'      => 'Add New Category',
+            'new_item_name'     => 'New Category Name',
+            'menu_name'         => 'Team Categories',
+        ),
+        'show_ui'           => true,
+        'show_admin_column' => true,
+        'query_var'         => true,
+    ) );
 	
 	/*register_post_type( 'nhsm_event',
 	 	// let's now add all the options for this post type
