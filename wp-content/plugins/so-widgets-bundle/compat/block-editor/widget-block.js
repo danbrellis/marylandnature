@@ -12,9 +12,9 @@
 	var __ = i18n.__;
 	
 	registerBlockType( 'sowb/widget-block', {
-		title: __( 'SiteOrigin Widget' ),
+		title: __( 'SiteOrigin Widget', 'so-widgets-bundle' ),
 		
-		description: __( 'Select a SiteOrigin widget from the dropdown.' ),
+		description: __( 'Select a SiteOrigin widget from the dropdown.', 'so-widgets-bundle' ),
 		
 		icon: function() {
 			return el(
@@ -26,6 +26,13 @@
 		},
 		
 		category: 'widgets',
+		
+		keywords: [sowbBlockEditorAdmin.widgets.reduce( function ( keywords, widgetObj ) {
+			if ( keywords.length > 0 ) {
+				keywords += ',';
+			}
+			return keywords + widgetObj.name;
+		}, '' )],
 		
 		supports: {
 			html: false,
@@ -41,31 +48,13 @@
 		},
 		
 		edit: withState( {
-			loadingWidgets: true,
 			editing: false,
 			formInitialized: false,
 			previewInitialized: false,
-			widgets: null,
 			widgetFormHtml: '',
 			widgetSettingsChanged: false,
 			widgetPreviewHtml: '',
 		} )( function ( props ) {
-			
-			if ( props.loadingWidgets ) {
-				$.get( {
-					url: sowbBlockEditorAdmin.restUrl + 'sowb/v1/widgets',
-					beforeSend: function ( xhr ) {
-						xhr.setRequestHeader( 'X-WP-Nonce', sowbBlockEditorAdmin.nonce );
-					}
-				} )
-				.then( function( widgets ) {
-					var newState = { widgets: widgets, loadingWidgets: false };
-					if ( !props.attributes.widgetClass ) {
-						newState.editing = true;
-					}
-					props.setState( newState );
-				} );
-			}
 			
 			function onWidgetClassChange( newWidgetClass ) {
 				if ( newWidgetClass !== '' ) {
@@ -74,6 +63,7 @@
 					}
 					props.setAttributes( { widgetClass: newWidgetClass, widgetData: null } );
 					props.setState( {
+						editing: true,
 						widgetFormHtml: null,
 						formInitialized: false,
 						widgetSettingsChanged: false,
@@ -101,11 +91,7 @@
 					} );
 					$mainForm.data( 'backupDisabled', true );
 					$mainForm.sowSetupForm();
-					if ( props.attributes.widgetData ) {
-						// If we call `setWidgetFormValues` with the last parameter ( `triggerChange` ) set to false,
-						// it won't show the correct values for some fields e.g. color and media fields.
-						sowbForms.setWidgetFormValues( $mainForm, props.attributes.widgetData );
-					} else {
+					if ( ! props.attributes.widgetData ) {
 						props.setAttributes( { widgetData: sowbForms.getWidgetFormValues( $mainForm ) } );
 					}
 					$mainForm.on( 'change', function () {
@@ -122,15 +108,15 @@
 			
 			function setupWidgetPreview() {
 				if ( ! props.previewInitialized ) {
-					$( window.sowb ).trigger( 'setup_widgets' );
+					$( window.sowb ).trigger( 'setup_widgets', { preview: true } );
 					props.setState( { previewInitialized: true } );
 				}
 			}
 			
-			if ( props.editing ) {
+			if ( props.editing || ! props.attributes.widgetClass ) {
 				var widgetsOptions = [];
-				if ( props.widgets ) {
-					props.widgets.sort( function ( a, b ) {
+				if ( sowbBlockEditorAdmin.widgets ) {
+					sowbBlockEditorAdmin.widgets.sort( function ( a, b ) {
 						if ( a.name < b.name ) {
 							return -1;
 						} else if ( a.name > b.name ) {
@@ -138,26 +124,32 @@
 						}
 						return 0;
 					} );
-					widgetsOptions = props.widgets.map( function ( widget ) {
+					widgetsOptions = sowbBlockEditorAdmin.widgets.map( function ( widget ) {
 						return { value: widget.class, label: widget.name };
 					} );
-					widgetsOptions.unshift( { value: '', label: __( 'Select widget type' ) } );
+					widgetsOptions.unshift( { value: '', label: __( 'Select widget type', 'so-widgets-bundle' ) } );
 				}
 				
-				var loadingWidgetForm = props.attributes.widgetClass && !props.widgetFormHtml;
-				if ( loadingWidgetForm ) {
-					$.get( {
+				var loadWidgetForm = props.attributes.widgetClass && ! props.widgetFormHtml;
+				if ( loadWidgetForm ) {
+					$.post( {
 						url: sowbBlockEditorAdmin.restUrl + 'sowb/v1/widgets/forms',
 						beforeSend: function ( xhr ) {
 							xhr.setRequestHeader( 'X-WP-Nonce', sowbBlockEditorAdmin.nonce );
 						},
 						data: {
-							widgetClass: props.attributes.widgetClass
+							widgetClass: props.attributes.widgetClass,
+							widgetData: props.attributes.widgetData,
 						}
 					} )
-					.then( function( widgetForm ) {
+					.done( function( widgetForm ) {
 						props.setState( { widgetFormHtml: widgetForm } );
-					} );
+					} )
+					.fail( function ( response ) {
+						var error = response.responseJSON;
+						
+						props.setState( { widgetFormHtml: '<div>' + error.message + '</div>', } );
+					});
 				}
 				
 				var widgetForm = props.widgetFormHtml ? props.widgetFormHtml : '';
@@ -173,7 +165,7 @@
 								IconButton,
 								{
 									className: 'components-icon-button components-toolbar__control',
-									label: __( 'Preview widget.' ),
+									label: __( 'Preview widget.', 'so-widgets-bundle' ),
 									onClick: switchToPreview,
 									icon: 'visibility'
 								}
@@ -185,10 +177,10 @@
 						{
 							key: 'placeholder',
 							className: 'so-widget-placeholder',
-							label: __( 'SiteOrigin Widget' ),
-							instructions: __( 'Select the type of widget you want to use:' )
+							label: __( 'SiteOrigin Widget', 'so-widgets-bundle' ),
+							instructions: __( 'Select the type of widget you want to use:', 'so-widgets-bundle' )
 						},
-						( props.loadingWidgets || loadingWidgetForm ?
+						( props.loadingWidgets || loadWidgetForm ?
 							el( Spinner ) :
 							el(
 								'div',
@@ -212,9 +204,9 @@
 				];
 			} else {
 				
-				var loadingWidgetPreview = !props.editing && !props.widgetPreviewHtml;
-				if ( loadingWidgetPreview ) {
-					$.get( {
+				var loadWidgetPreview = ! props.loadingWidgets && ! props.editing && ! props.widgetPreviewHtml && props.attributes.widgetClass;
+				if ( loadWidgetPreview ) {
+					$.post( {
 						url: sowbBlockEditorAdmin.restUrl + 'sowb/v1/widgets/previews',
 						beforeSend: function ( xhr ) {
 							xhr.setRequestHeader( 'X-WP-Nonce', sowbBlockEditorAdmin.nonce );
@@ -224,9 +216,19 @@
 							widgetData: props.attributes.widgetData || {}
 						}
 					} )
-					.then( function( widgetPreview ) {
-						props.setState( { widgetPreviewHtml: widgetPreview } );
-					} );
+					.done( function( widgetPreview ) {
+						props.setState( {
+							widgetPreviewHtml: widgetPreview,
+							previewInitialized: false,
+						} );
+					} )
+					.fail( function ( response ) {
+						var error = response.responseJSON;
+						
+						props.setState( {
+							widgetPreviewHtml: '<div>' + error.message + '</div>',
+						} );
+					});
 				}
 				var widgetPreview = props.widgetPreviewHtml ? props.widgetPreviewHtml : '';
 				return [
@@ -240,7 +242,7 @@
 								IconButton,
 								{
 									className: 'components-icon-button components-toolbar__control',
-									label: __( 'Edit widget.' ),
+									label: __( 'Edit widget.', 'so-widgets-bundle' ),
 									onClick: switchToEditing,
 									icon: 'edit'
 								}
@@ -253,7 +255,7 @@
 							key: 'preview',
 							className: 'so-widget-preview-container'
 						},
-						( loadingWidgetPreview ?
+						( loadWidgetPreview ?
 							el( 'div', {
 									className: 'so-widgets-spinner-container'
 								},

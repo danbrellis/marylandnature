@@ -5,6 +5,7 @@ Widget Name: Contact Form
 Description: A light weight contact form builder.
 Author: SiteOrigin
 Author URI: https://siteorigin.com
+Documentation: https://siteorigin.com/widgets-bundle/contact-form-widget/
 */
 
 class SiteOrigin_Widgets_ContactForm_Widget extends SiteOrigin_Widget {
@@ -218,20 +219,40 @@ class SiteOrigin_Widgets_ContactForm_Widget extends SiteOrigin_Widget {
 
 					'recaptcha' => array(
 						'type'   => 'section',
-						'label'  => __( 'reCAPTCHA', 'so-widgets-bundle' ),
+						'label'  => __( 'reCAPTCHA v2', 'so-widgets-bundle' ),
 						'fields' => array(
 							'use_captcha' => array(
 								'type'    => 'checkbox',
-								'label'   => __( 'Use reCAPTCHA', 'so-widgets-bundle' ),
+								'label'   => __( 'Use reCAPTCHA v2', 'so-widgets-bundle' ),
 								'default' => false,
+								'description' => sprintf(
+									__( 'Please make sure you register a new reCAPTCHA v2 key %shere%s.', 'so-widgets-bundle' ),
+									'<a href="https://www.google.com/recaptcha/admin/create" target="_blank" rel="noopener noreferrer">',
+									'</a>'
+								),
+								'state_emitter' => array(
+									'callback' => 'conditional',
+									'args'     => array(
+										'use_captcha[show]: val',
+										'use_captcha[hide]: ! val',
+									),
+								),
 							),
 							'site_key'    => array(
 								'type'  => 'text',
-								'label' => __( 'reCAPTCHA Site Key', 'so-widgets-bundle' ),
+								'label' => __( 'reCAPTCHA v2 Site Key', 'so-widgets-bundle' ),
+								'state_handler' => array(
+									'use_captcha[show]' => array( 'slideDown' ),
+									'use_captcha[hide]' => array( 'slideUp' ),
+								),
 							),
 							'secret_key'  => array(
 								'type'  => 'text',
-								'label' => __( 'reCAPTCHA Secret Key', 'so-widgets-bundle' ),
+								'label' => __( 'reCAPTCHA v2 Secret Key', 'so-widgets-bundle' ),
+								'state_handler' => array(
+									'use_captcha[show]' => array( 'slideDown' ),
+									'use_captcha[hide]' => array( 'slideUp' ),
+								),
 							),
 							'theme'       => array(
 								'type'    => 'select',
@@ -240,6 +261,10 @@ class SiteOrigin_Widgets_ContactForm_Widget extends SiteOrigin_Widget {
 								'options' => array(
 									'light' => __( 'Light', 'so-widgets-bundle' ),
 									'dark'  => __( 'Dark', 'so-widgets-bundle' ),
+								),
+								'state_handler' => array(
+									'use_captcha[show]' => array( 'slideDown' ),
+									'use_captcha[hide]' => array( 'slideUp' ),
 								),
 							),
 							'type'        => array(
@@ -250,6 +275,10 @@ class SiteOrigin_Widgets_ContactForm_Widget extends SiteOrigin_Widget {
 									'image' => __( 'Image', 'so-widgets-bundle' ),
 									'audio' => __( 'Audio', 'so-widgets-bundle' ),
 								),
+								'state_handler' => array(
+									'use_captcha[show]' => array( 'slideDown' ),
+									'use_captcha[hide]' => array( 'slideUp' ),
+								),
 							),
 							'size'        => array(
 								'type'    => 'select',
@@ -258,6 +287,10 @@ class SiteOrigin_Widgets_ContactForm_Widget extends SiteOrigin_Widget {
 								'options' => array(
 									'normal'  => __( 'Normal', 'so-widgets-bundle' ),
 									'compact' => __( 'Compact', 'so-widgets-bundle' ),
+								),
+								'state_handler' => array(
+									'use_captcha[show]' => array( 'slideDown' ),
+									'use_captcha[hide]' => array( 'slideUp' ),
 								),
 							),
 						)
@@ -753,6 +786,9 @@ class SiteOrigin_Widgets_ContactForm_Widget extends SiteOrigin_Widget {
 	}
 
 	function get_less_variables( $instance ) {
+		if ( empty( $instance['design'] ) ) {
+			return;
+		}
 		if ( empty( $instance['design']['labels']['font'] ) ) {
 			$instance['design']['labels'] = array( 'font' => '' );
 		}
@@ -965,11 +1001,10 @@ class SiteOrigin_Widgets_ContactForm_Widget extends SiteOrigin_Widget {
 	 * Ajax action handler to send the form
 	 */
 	function contact_form_action( $instance, $storage_hash ) {
-		if ( ! wp_verify_nonce( $_POST['_wpnonce'], '_contact_form_submit' ) ) {
+		if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], '_contact_form_submit' ) ) {
 			// Using `return false;` instead of `wp_die` because this function may sometimes be called as a side effect
-			// of trying to enqueue scripts required for the front end. In those cases `$_POST['_wpnonce']` doesn't exist
-			// and calling `wp_die` will halt script execution and break things. Ideally it should be possible to enqueue
-			// front end scripts without calling widgets' render functions, but that will mean a fairly large refactor.
+			// of trying to enqueue scripts required for the front end or when previewing widgets e.g. in the block editor.
+			// In those cases `$_POST['_wpnonce']` doesn't exist and calling `wp_die` will halt script execution and break things.
 			return false;
 		}
 		if ( empty( $_POST['instance_hash'] ) || $_POST['instance_hash'] != $storage_hash ) {

@@ -5,6 +5,7 @@ Widget Name: Google Maps
 Description: A highly customisable Google Maps widget. Help your site find its place and give it some direction.
 Author: SiteOrigin
 Author URI: https://siteorigin.com
+Documentation: https://siteorigin.com/widgets-bundle/google-maps-widget/
 */
 
 class SiteOrigin_Widget_GoogleMap_Widget extends SiteOrigin_Widget {
@@ -22,17 +23,26 @@ class SiteOrigin_Widget_GoogleMap_Widget extends SiteOrigin_Widget {
 			false,
 			plugin_dir_path(__FILE__)
 		);
+		
+		add_filter( 'siteorigin_widgets_field_class_paths', array( $this, 'add_location_field_path' ) );
+	}
+	
+	// Tell the autoloader where to look for the location field class.
+	function add_location_field_path( $class_paths ) {
+		
+		$class_paths[] = plugin_dir_path( __FILE__ ) . 'fields/';
+		
+		return $class_paths;
 	}
 
 	function initialize() {
-
-		add_action( 'siteorigin_widgets_before_widget_sow-google-map', array( $this, 'enqueue_widget_scripts' ) );
+		add_action( 'siteorigin_widgets_enqueue_frontend_scripts_sow-google-map', array( $this, 'enqueue_widget_scripts' ) );
 	}
 
 	function get_widget_form(){
 		return array(
 			'map_center'      => array(
-				'type'        => 'textarea',
+				'type'        => 'location',
 				'rows'        => 2,
 				'label'       => __( 'Map center', 'so-widgets-bundle' ),
 				'description' => sprintf(
@@ -40,23 +50,6 @@ class SiteOrigin_Widget_GoogleMap_Widget extends SiteOrigin_Widget {
 					'<a href="https://console.developers.google.com/apis/dashboard?project=_" target="_blank" rel="noopener noreferrer">',
 					'</a>'
 				),
-			),
-			'api_key_section' => array(
-				'type'   => 'section',
-				'label'  => __( 'API key', 'so-widgets-bundle' ),
-				'hide'   => false,
-				'fields' => array(
-					'api_key' => array(
-						'type'        => 'text',
-						'label'       => __( 'API key', 'so-widgets-bundle' ),
-						'required'    => true,
-						'description' => sprintf(
-							__( 'Enter your %sAPI key%s. Your map may not function correctly without one.', 'so-widgets-bundle' ),
-							'<a href="https://developers.google.com/maps/documentation/javascript/get-api-key" target="_blank" rel="noopener noreferrer">',
-							'</a>'
-						)
-					)
-				)
 			),
 			'settings'        => array(
 				'type'        => 'section',
@@ -89,8 +82,8 @@ class SiteOrigin_Widget_GoogleMap_Widget extends SiteOrigin_Widget {
 					),
 					'height'      => array(
 						'type'    => 'text',
+						'label'   => __( 'Height', 'so-widgets-bundle' ),
 						'default' => 480,
-						'label'   => __( 'Height', 'so-widgets-bundle' )
 					),
 					'destination_url' => array(
 						'type' => 'link',
@@ -112,6 +105,7 @@ class SiteOrigin_Widget_GoogleMap_Widget extends SiteOrigin_Widget {
 							'_else[map_type]' => array('hide'),
 						),
 					),
+					
 					'zoom'        => array(
 						'type'        => 'slider',
 						'label'       => __( 'Zoom level', 'so-widgets-bundle' ),
@@ -122,25 +116,40 @@ class SiteOrigin_Widget_GoogleMap_Widget extends SiteOrigin_Widget {
 						'integer'     => true,
 
 					),
-					'scroll_zoom' => array(
-						'type'        => 'checkbox',
-						'default'     => true,
-						'state_handler' => array(
-							'map_type[interactive]' => array('show'),
-							'_else[map_type]' => array('hide'),
-						),
-						'label'       => __( 'Scroll to zoom', 'so-widgets-bundle' ),
-						'description' => __( 'Allow scrolling over the map to zoom in or out.', 'so-widgets-bundle' )
+
+					'mobile_zoom'        => array(
+						'type'        => 'slider',
+						'label'       => __( 'Mobile zoom level', 'so-widgets-bundle' ),
+						'description' => __( 'A value from 0 (the world) to 21 (street level). This zoom is specific to mobile devices.', 'so-widgets-bundle' ),
+						'min'         => 0,
+						'max'         => 21,
+						'default'     => 12,
+						'integer'     => true,
+						'state_handler' => array(	
+ 							'map_type[interactive]' => array('show'),	
+ 							'_else[map_type]' => array('hide'),	
+ 						),
 					),
-					'draggable'   => array(
-						'type'        => 'checkbox',
-						'default'     => true,
+
+					'gesture_handling'   => array(
+						'type'        => 'radio',
+						'label'       => __( 'Gesture Handling', 'so-widgets-bundle' ),
+						'default'     => 'greedy',
 						'state_handler' => array(
 							'map_type[interactive]' => array('show'),
 							'_else[map_type]' => array('hide'),
 						),
-						'label'       => __( 'Draggable', 'so-widgets-bundle' ),
-						'description' => __( 'Allow dragging the map to move it around.', 'so-widgets-bundle' )
+						'options' => array(
+							'greedy'      => __( 'Greedy', 'so-widgets-bundle' ),
+							'cooperative' => __( 'Cooperative', 'so-widgets-bundle' ),
+							'none'        => __( 'None', 'so-widgets-bundle' ),
+							'auto'        => __( 'Auto', 'so-widgets-bundle' ),
+						),
+						'description' => sprintf(
+							__( 'For information on what these settings do, %sclick here%s.', 'so-widgets-bundle' ),
+							'<a href="https://developers.google.com/maps/documentation/javascript/interaction#gestureHandling" target="_blank" rel="noopener noreferrer">',
+							'</a>'
+						),
 					),
 					'disable_default_ui' => array(
 						'type' => 'checkbox',
@@ -203,16 +212,15 @@ class SiteOrigin_Widget_GoogleMap_Widget extends SiteOrigin_Widget {
 					'marker_positions'  => array(
 						'type'       => 'repeater',
 						'label'      => __( 'Marker positions', 'so-widgets-bundle' ),
-						'description' => __( 'Please be aware that adding more than 10 markers may cause a slight delay before they appear, due to Google Geocoding API rate limits.', 'so-widgets-bundle' ),
 						'item_name'  => __( 'Marker', 'so-widgets-bundle' ),
 						'item_label' => array(
-							'selector'     => "[id*='marker_positions-place']",
+							'selector'     => ".siteorigin-widget-location-input",
 							'update_event' => 'change',
 							'value_method' => 'val'
 						),
 						'fields'     => array(
 							'place' => array(
-								'type'  => 'textarea',
+								'type'  => 'location',
 								'rows'  => 2,
 								'label' => __( 'Place', 'so-widgets-bundle' )
 							),
@@ -274,7 +282,7 @@ class SiteOrigin_Widget_GoogleMap_Widget extends SiteOrigin_Widget {
 					'styled_map_name'     => array(
 						'type'       => 'text',
 						'state_handler' => array(
-							'style_method[default]' => array('hide'),
+							'style_method[normal]' => array('hide'),
 							'_else[style_method]' => array('show'),
 						),
 						'label'      => __( 'Styled map name', 'so-widgets-bundle' )
@@ -441,6 +449,13 @@ class SiteOrigin_Widget_GoogleMap_Widget extends SiteOrigin_Widget {
 					'<a href="https://developers.google.com/maps/documentation/javascript/get-api-key" target="_blank" rel="noopener noreferrer">',
 					'</a>'
 				)
+			),
+
+			'responsive_breakpoint' => array(
+				'type'        => 'number',
+				'label'       => __( 'Responsive breakpoint', 'so-widgets-bundle' ),
+				'default'     => '780',
+				'description' => __( 'This setting controls when the map will use the mobile zoom. This breakpoint will only be used if a mobile zoom is set in the SiteOrigin Google Maps settings. The default value is 780px', 'so-widgets-bundle' )
 			)
 		);
 	}
@@ -463,13 +478,6 @@ class SiteOrigin_Widget_GoogleMap_Widget extends SiteOrigin_Widget {
 
 		$styles = $this->get_styles( $instance );
 
-		if ( empty( $instance['api_key_section']['api_key'] ) ) {
-			$global_settings = $this->get_global_settings();
-			if ( ! empty( $global_settings['api_key'] ) ) {
-				$instance['api_key_section']['api_key'] = $global_settings['api_key'];
-			}
-		}
-
 		$fallback_image = '';
 		if ( ! empty ( $instance['settings']['fallback_image'] ) ) {
 			$fallback_image = siteorigin_widgets_get_attachment_image(
@@ -477,13 +485,17 @@ class SiteOrigin_Widget_GoogleMap_Widget extends SiteOrigin_Widget {
 				$instance['settings']['fallback_image_size'],
 				false );
 		}
+		$global_settings = $this->get_global_settings();
+		$breakpoint = ! empty( $global_settings['responsive_breakpoint'] ) ? $global_settings['responsive_breakpoint'] : '780';
 
 		if ( $settings['map_type'] == 'static' ) {
+
 			return array(
-				'src_url'             => $this->get_static_image_src( $instance, $settings['width'], $settings['height'], ! empty( $styles ) ? $styles['styles'] : array() ),
+				'src_url'             => $this->get_static_image_src( $instance, $settings['width'], $settings['height'], ! empty( $styles['styles'] ) ? $styles['styles'] : array() ),
 				'destination_url'     => $instance['settings']['destination_url'],
 				'new_window'          => $instance['settings']['new_window'],
 				'fallback_image_data' => array( 'img' => $fallback_image ),
+				'breakpoint'        => $breakpoint,
 			);
 		} else {
 			$markers         = $instance['markers'];
@@ -497,19 +509,24 @@ class SiteOrigin_Widget_GoogleMap_Widget extends SiteOrigin_Widget {
 
 			$markerpos = isset( $markers['marker_positions'] ) ? $markers['marker_positions'] : '';
 			if( ! empty($markerpos)) {
-				foreach ($markerpos as $key => $pos) {
-					if(! empty($pos['custom_marker_icon'])) {
+				foreach ($markerpos as &$pos) {
+					if ( ! empty( $pos['custom_marker_icon'] ) ) {
 						$icon_src = wp_get_attachment_image_src( $pos['custom_marker_icon'] );
-						$markerpos[$key]['custom_marker_icon'] = $icon_src[0];
+						$pos['custom_marker_icon'] = $icon_src[0];
+					}
+					if ( ! empty( $pos['place'] ) ) {
+						$pos['place'] = $this->get_location_string( $pos['place'] );
 					}
 				}
 			}
+      
+			$location = $this->get_location_string( $instance['map_center'] );
 
 			$map_data = siteorigin_widgets_underscores_to_camel_case( array(
-				'address'           => $instance['map_center'],
+				'address'           => $location,
 				'zoom'              => $settings['zoom'],
-				'scroll_zoom'       => $settings['scroll_zoom'],
-				'draggable'         => $settings['draggable'],
+				'mobileZoom'        => $settings['mobile_zoom'],
+				'gestureHandling'   => isset( $settings['gesture_handling'] ) ? $settings['gesture_handling'] : 'greedy',
 				'disable_ui'        => $settings['disable_default_ui'],
 				'keep_centered'     => $settings['keep_centered'],
 				'marker_icon'       => ! empty( $mrkr_src ) ? $mrkr_src[0] : '',
@@ -518,23 +535,39 @@ class SiteOrigin_Widget_GoogleMap_Widget extends SiteOrigin_Widget {
 				'marker_info_display' => $markers['info_display'],
 				'marker_info_multiple' => $markers['info_multiple'],
 				'marker_positions'  => ! empty( $markerpos ) ? $markerpos : '',
-				'map_name'          => ! empty( $styles ) ? $styles['map_name'] : '',
-				'map_styles'        => ! empty( $styles ) ? $styles['styles'] : '',
+				'map_name'          => ! empty( $styles['styles'] ) ? $styles['map_name'] : '',
+				'map_styles'        => ! empty( $styles['styles'] ) ? $styles['styles'] : '',
 				'directions'        => $directions,
-				'api_key'           => $instance['api_key_section']['api_key'],
+				'api_key'           => self::get_api_key( $instance ),
+				'breakpoint'        => $breakpoint,
 			));
 
 			return array(
-				'map_id'   => md5( $instance['map_center'] ),
+				'map_id'   => md5( json_encode( $instance ) ),
 				'height'   => $settings['height'],
 				'map_data' => $map_data,
 				'fallback_image_data' => array( 'img' => $fallback_image ),
 			);
 		}
 	}
+	
+	private function get_location_string( $location_data ) {
+		$location = '';
+		if ( ! empty( $location_data['location'] ) ) {
+			$location = $location_data['location'];
+			$location = preg_replace( '/[\(\)]/', '', $location );
+		} else if ( ! empty( $location_data['address'] ) ) {
+			$location = $location_data['address'];
+		} else if ( ! empty( $location_data['name'] ) ) {
+			$location = $location_data['name'];
+		}
+		
+		return $location;
+	}
 
 	public function enqueue_widget_scripts( $instance ) {
-		if ( $instance['settings']['map_type'] == 'interactive' ) {
+		if ( ! empty( $instance['settings']['map_type'] ) && $instance['settings']['map_type'] == 'interactive' ||
+			 $this->is_preview( $instance ) ) {
 			wp_enqueue_script( 'sow-google-map' );
 
 			wp_enqueue_style(
@@ -553,7 +586,10 @@ class SiteOrigin_Widget_GoogleMap_Widget extends SiteOrigin_Widget {
 					),
 				)
 			);
-		} else {
+		}
+		
+		if ( ! empty( $instance['settings']['map_type'] ) && $instance['settings']['map_type'] == 'static' ||
+			 $this->is_preview( $instance ) ) {
 			wp_enqueue_script(
 				'sow-google-map-static',
 				plugin_dir_url( __FILE__ ) . 'js/static-map' . SOW_BUNDLE_JS_SUFFIX . '.js',
@@ -566,14 +602,14 @@ class SiteOrigin_Widget_GoogleMap_Widget extends SiteOrigin_Widget {
 
 	private function get_styles( $instance ) {
 		$style_config = $instance['styles'];
+		$styles = array();
+		$styles['map_name'] = ! empty( $style_config['styled_map_name'] ) ? $style_config['styled_map_name'] : __( 'Custom Map', 'so-widgets-bundle' );
+		
 		switch ( $style_config['style_method'] ) {
 			case 'custom':
-				if ( empty( $style_config['custom_map_styles'] ) ) {
-					return array();
-				} else {
-					$map_name   = ! empty( $style_config['styled_map_name'] ) ? $style_config['styled_map_name'] : 'Custom Map';
+				if ( ! empty( $style_config['custom_map_styles'] ) ) {
 					$map_styles = $style_config['custom_map_styles'];
-					$styles     = array();
+					$style_values = array();
 					foreach ( $map_styles as $style_item ) {
 						$map_feature = $style_item['map_feature'];
 						unset( $style_item['map_feature'] );
@@ -589,38 +625,43 @@ class SiteOrigin_Widget_GoogleMap_Widget extends SiteOrigin_Widget {
 						}
 						$map_feature = str_replace( '_', '.', $map_feature );
 						$map_feature = str_replace( '-', '_', $map_feature );
-						array_push( $styles, array(
+						array_push( $style_values, array(
 							'featureType' => $map_feature,
 							'elementType' => $element_type,
 							'stylers'     => $stylers
 						) );
 					}
 
-					return array( 'map_name' => $map_name, 'styles' => $styles );
+					$styles['styles'] = $style_values;
 				}
+				break;
 			case 'raw_json':
-				if ( empty( $style_config['raw_json_map_styles'] ) ) {
-					return array();
-				} else {
-					$map_name      = ! empty( $style_config['styled_map_name'] ) ? $style_config['styled_map_name'] : __( 'Custom Map', 'so-widgets-bundle' );
+				if ( ! empty( $style_config['raw_json_map_styles'] ) ) {
+					
 					$styles_string = $style_config['raw_json_map_styles'];
 
-					return array( 'map_name' => $map_name, 'styles' => json_decode( $styles_string, true ) );
+					$styles['styles'] = json_decode( $styles_string, true );
 				}
+				break;
 			case 'normal':
 			default:
-				return array();
+				break;
 		}
+		
+		return apply_filters( 'siteorigin_widgets_google_maps_widget_styles', $styles, $instance );
 	}
 
 	private function get_static_image_src( $instance, $width, $height, $styles ) {
+		$location = $this->get_location_string( $instance['map_center'] );
 		$src_url = "https://maps.googleapis.com/maps/api/staticmap?";
-		$src_url .= "center=" . $instance['map_center'];
+		$src_url .= "center=" . $location;
 		$src_url .= "&zoom=" . $instance['settings']['zoom'];
 		$src_url .= "&size=" . $width . "x" . $height;
-
-		if ( ! empty( $instance['api_key_section']['api_key'] ) ) {
-			$src_url .= "&key=" . $instance['api_key_section']['api_key'];
+		
+		$api_key = self::get_api_key( $instance );
+		
+		if ( ! empty( $api_key ) ) {
+			$src_url .= "&key=" . $api_key;
 		}
 
 		if ( ! empty( $styles ) ) {
@@ -672,7 +713,7 @@ class SiteOrigin_Widget_GoogleMap_Widget extends SiteOrigin_Widget {
 				if ( ! empty( $markers_st ) ) {
 					$markers_st .= "|";
 				}
-				$markers_st .= $instance['map_center'];
+				$markers_st .= $location;
 			}
 
 			if ( ! empty( $markers['marker_positions'] ) ) {
@@ -680,7 +721,7 @@ class SiteOrigin_Widget_GoogleMap_Widget extends SiteOrigin_Widget {
 					if ( ! empty( $markers_st ) ) {
 						$markers_st .= "|";
 					}
-					$markers_st .= urlencode( $marker['place'] );
+					$markers_st .= urlencode( $this->get_location_string( $marker['place'] ) );
 				}
 			}
 			$markers_st = '&markers=' . $markers_st;
@@ -689,6 +730,105 @@ class SiteOrigin_Widget_GoogleMap_Widget extends SiteOrigin_Widget {
 
 		return $src_url;
 	}
+	
+	public function modify_instance( $instance ) {
+		if ( ! empty( $instance['settings'] ) ) {
+			if ( empty( $instance['settings']['mobile_zoom'] ) ) {
+				// Check if a zoom is set, and if it is, set the mobile zoom to that
+				if ( empty( $instance['settings']['zoom'] ) ) {
+					$instance['settings']['mobile_zoom'] = 12;
+				} else {
+					$instance['settings']['mobile_zoom'] = $instance['settings']['zoom'];
+				}
+			}
+
+			// Migrate draggable and scroll_zoom to gesture_handling
+			if ( isset( $instance['settings']['draggable'] ) && ! $instance['settings']['draggable'] ) {
+				$instance['settings']['gesture_handling'] = 'none';
+			} elseif ( isset( $instance['settings']['scroll_zoom'] ) && ! $instance['settings']['scroll_zoom'] ) {
+				$instance['settings']['gesture_handling'] = 'cooperative';
+			} else {
+				$instance['settings']['gesture_handling'] = 'greedy';
+			}
+			
+			// Remove draggable and scroll_zoom settings due to being deprecated
+			unset( $instance['settings']['draggable'] );
+			unset( $instance['settings']['scroll_zoom'] );
+
+			if ( empty( $instance['settings']['height'] ) ) {
+				$instance['settings']['height'] = 480;
+			}
+		}
+		
+		if ( ! empty( $instance['map_center'] ) && empty( $instance['map_center']['name'] ) ) {
+			$instance['map_center'] = $this->migrate_location( $instance['map_center'] );
+		}
+		
+		if ( ! empty( $instance['markers'] ) && ! empty( $instance['markers']['marker_positions'] ) ) {
+			foreach ( $instance['markers']['marker_positions'] as &$marker_position ) {
+				if ( ! empty( $marker_position['place'] ) && empty( $marker_position['place']['name'] ) ) {
+					$marker_position['place'] = $this->migrate_location( $marker_position['place'] );
+				}
+			}
+		}
+		
+		// The API key form field has been removed. Migrate any previously set API keys to the global settings.
+		if ( ! empty( $instance['api_key_section'] ) && ! empty( $instance['api_key_section']['api_key'] ) ) {
+			$global_settings = $this->get_global_settings();
+			
+			if ( empty( $global_settings['api_key'] ) ) {
+				$global_settings['api_key'] = $instance['api_key_section']['api_key'];
+				$this->save_global_settings( $global_settings );
+			}
+			unset( $instance['api_key_section'] );
+		}
+		return $instance;
+	}
+	
+	private function migrate_location( $location_data ) {
+		
+		if ( is_string( $location_data ) ) {
+			$raw_location = json_decode( $location_data, true );
+		} else {
+			$raw_location = $location_data;
+		}
+		
+		$location = array();
+		// If it's not valid JSON
+		if ( $raw_location == null ) {
+			$location = array( 'address' => $location_data );
+		} else if ( is_array( $raw_location ) ) {
+			$location = array();
+			
+			if ( ! empty( $raw_location['name'] ) ) {
+				$location['name'] = $raw_location['name'];
+			}
+			if ( ! empty( $raw_location['address'] ) ) {
+				$location['address'] = $raw_location['address'];
+			}
+			if ( ! empty( $raw_location['location'] ) ) {
+				$location['location'] = $raw_location['location'];
+			}
+		}
+		
+		return $location;
+	}
+	
+	static function get_api_key( $instance ) {
+		$widget = new self();
+		$global_settings = $widget->get_global_settings();
+		$api_key = '';
+		if ( ! empty( $global_settings['api_key'] ) ) {
+			$api_key = $global_settings['api_key'];
+		}
+		
+		if ( ! empty( $instance['api_key_section'] ) && ! empty( $instance['api_key_section']['api_key'] ) ) {
+			$api_key = $instance['api_key_section']['api_key'];
+		}
+		
+		return trim( $api_key );
+	}
 }
 
 siteorigin_widget_register( 'sow-google-map', __FILE__, 'SiteOrigin_Widget_GoogleMap_Widget' );
+

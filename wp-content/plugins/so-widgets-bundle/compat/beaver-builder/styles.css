@@ -103,9 +103,19 @@
 .siteorigin-widgets-query-builder.media-modal .sow-icon-elegantline {
   font-family: 'sow-elegantline' !important;
 }
-.fl-lightbox .siteorigin-widget-form .sow-icon-fontawesome,
-.siteorigin-widgets-query-builder.media-modal .sow-icon-fontawesome {
-  font-family: 'sow-fontawesome' !important;
+.fl-lightbox .siteorigin-widget-form .sow-fas,
+.siteorigin-widgets-query-builder.media-modal .sow-fas {
+  font-family: 'sow-fontawesome-free' !important;
+  font-weight: 900;
+}
+.fl-lightbox .siteorigin-widget-form .sow-fab,
+.siteorigin-widgets-query-builder.media-modal .sow-fab {
+  font-family: 'sow-fontawesome-brands' !important;
+}
+.fl-lightbox .siteorigin-widget-form .sow-far,
+.siteorigin-widgets-query-builder.media-modal .sow-far {
+  font-family: 'sow-fontawesome-free' !important;
+  font-weight: 400;
 }
 .fl-lightbox .siteorigin-widget-form .sow-icon-genericons,
 .siteorigin-widgets-query-builder.media-modal .sow-icon-genericons {
