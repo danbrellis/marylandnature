@@ -101,12 +101,12 @@ function removeHash () {
 	}
 	
 	//Make map with .so-widget-sow-google-map full width
-	var map = $(".so-widget-sow-google-map");
+	/*var map = $(".so-widget-sow-google-map");
 	var windowwidth = $(window).width();
 	map.css({
 		width: windowwidth,
 		marginLeft: -((windowwidth - map.width()) / 2)
-	});
+	});*/
 	
 	
 	//set icon width based on height
