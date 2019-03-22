@@ -1,13 +1,13 @@
 <?php
 
-class SiteOrigin_Panels_Compat_Gutenberg_Block {
+class SiteOrigin_Panels_Compat_Layout_Block {
 	
 	const BLOCK_NAME = 'siteorigin-panels/layout-block';
 	
 	/**
 	 * Get the singleton instance
 	 *
-	 * @return SiteOrigin_Panels_Compat_Gutenberg_Block
+	 * @return SiteOrigin_Panels_Compat_Layout_Block
 	 */
 	public static function single() {
 		static $single;
@@ -29,16 +29,7 @@ class SiteOrigin_Panels_Compat_Gutenberg_Block {
 	}
 	
 	public function enqueue_layout_block_editor_assets() {
-		// This is for the Gutenberg plugin.
-		$is_block_editor = function_exists( 'is_gutenberg_page' ) && is_gutenberg_page();
-		// This is for WP 5 with the integrated block editor. Let it override the Gutenberg plugin.
-		$current_screen = get_current_screen();
-		if ( $current_screen && method_exists( $current_screen, 'is_block_editor' ) ) {
-			$is_block_editor = $current_screen->is_block_editor();
-		}
-		
-		if ( $is_block_editor ) {
-			
+		if (  SiteOrigin_Panels_Admin::is_block_editor() ) {
 			$panels_admin = SiteOrigin_Panels_Admin::single();
 			$panels_admin->enqueue_admin_scripts();
 			$panels_admin->enqueue_admin_styles();
@@ -58,13 +49,23 @@ class SiteOrigin_Panels_Compat_Gutenberg_Block {
 				),
 				SITEORIGIN_PANELS_VERSION
 			);
+			
+			$current_screen = get_current_screen();
+			$is_panels_post_type = in_array( $current_screen->id, siteorigin_panels_setting( 'post-types' ) );
 			wp_localize_script(
 				'siteorigin-panels-layout-block',
-				'soPanelsGutenbergAdmin',
+				'soPanelsBlockEditorAdmin',
 				array(
-					'previewUrl' => wp_nonce_url( admin_url( 'admin-ajax.php' ), 'gutenberg-preview', '_panelsnonce' ),
+					'sanitizeUrl' => wp_nonce_url( admin_url( 'admin-ajax.php' ), 'layout-block-sanitize', '_panelsnonce' ),
+					'previewUrl' => wp_nonce_url( admin_url( 'admin-ajax.php' ), 'layout-block-preview', '_panelsnonce' ),
+					'defaultMode' => siteorigin_panels_setting( 'layout-block-default-mode' ),
+					'showAddButton' => $is_panels_post_type,
 				)
 			);
+			// This is only available in WP5.
+			if ( function_exists( 'wp_set_script_translations' ) ) {
+				wp_set_script_translations( 'siteorigin-panels-layout-block', 'siteorigin-panels' );
+			}
 			SiteOrigin_Panels_Styles::register_scripts();
 			wp_enqueue_script( 'siteorigin-panels-front-styles' );
 			
@@ -72,12 +73,15 @@ class SiteOrigin_Panels_Compat_Gutenberg_Block {
 			if ( class_exists( 'SiteOrigin_Widgets_Bundle' ) ) {
 				$sowb = SiteOrigin_Widgets_Bundle::single();
 				$sowb->register_general_scripts();
-				$sowb->enqueue_registered_widgets_scripts( true, false );
+				if ( method_exists( $sowb, 'enqueue_registered_widgets_scripts' ) ) {
+					$sowb->enqueue_registered_widgets_scripts( true, false );
+				}
 			}
 		}
 	}
 	
 	public function render_layout_block( $attributes ) {
+		
 		if ( empty( $attributes['panelsData'] ) ) {
 			return '<div>'.
 				   __( "You need to add a widget, row, or prebuilt layout before you'll see anything here. :)", 'siteorigin-panels' ) .
@@ -91,6 +95,8 @@ class SiteOrigin_Panels_Compat_Gutenberg_Block {
 	}
 	
 	private function sanitize_panels_data( $panels_data ) {
+		// We force calling widgets' update functions here, but a better solution is to ensure these are called when
+		// the block is saved, but there is currently no simple method to do so.
 		$panels_data['widgets'] = SiteOrigin_Panels_Admin::single()->process_raw_widgets( $panels_data['widgets'], false, true );
 		$panels_data = SiteOrigin_Panels_Styles_Admin::single()->sanitize_all( $panels_data );
 		return $panels_data;

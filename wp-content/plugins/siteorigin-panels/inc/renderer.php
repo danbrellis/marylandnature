@@ -86,6 +86,7 @@ class SiteOrigin_Panels_Renderer {
 				$weight = apply_filters( 'siteorigin_panels_css_cell_weight', $cell['weight'], $row, $ri, $cell, $ci - 1, $panels_data, $post_id );
 				$rounded_width = round( $weight * 100, 4 ) . '%';
 				$calc_width = 'calc(' . $rounded_width . ' - ( ' . ( 1 - $weight ) . ' * ' . $gutter . ' ) )';
+
 				// Add the width and ensure we have correct formatting for CSS.
 				$css->add_cell_css( $post_id, $ri, $ci, '', array(
 					'width' => array(
@@ -93,7 +94,7 @@ class SiteOrigin_Panels_Renderer {
 						// This seems to happen when a plugin calls `setlocale(LC_ALL, 'de_DE');` or `setlocale(LC_NUMERIC, 'de_DE');`
 						// This should prevent issues with column sizes in these cases.
 						str_replace( ',', '.', $rounded_width ),
-						str_replace( ',', '.', $calc_width ),
+						str_replace( ',', '.', intval($gutter) ? $calc_width : '' ), // Exclude if there's a zero gutter
 					)
 				) );
 				
@@ -449,14 +450,12 @@ class SiteOrigin_Panels_Renderer {
 	 */
 	function the_widget( $widget_info, $instance, $grid_index, $cell_index, $widget_index, $is_first, $is_last, $post_id = false, $style_wrapper = '' ) {
 
-		global $wp_widget_factory;
-
 		// Set widget class to $widget
 		$widget_class = $widget_info['class'];
 		$widget_class = apply_filters( 'siteorigin_panels_widget_class', $widget_class );
 
 		// Load the widget from the widget factory and give themes and plugins a chance to provide their own
-		$the_widget = ! empty( $wp_widget_factory->widgets[ $widget_class ] ) ? $wp_widget_factory->widgets[ $widget_class ] : false;
+		$the_widget = SiteOrigin_Panels::get_widget_instance( $widget_class );
 		$the_widget = apply_filters( 'siteorigin_panels_widget_object', $the_widget, $widget_class, $instance );
 
 		if ( empty( $post_id ) ) {

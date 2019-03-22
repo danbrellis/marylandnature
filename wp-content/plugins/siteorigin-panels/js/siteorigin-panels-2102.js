@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 var panels = window.panels;
 
 module.exports = Backbone.Collection.extend( {
@@ -841,6 +841,7 @@ module.exports = panels.view.dialog.extend({
 			}
 
 			this.regenerateRowPreview();
+			this.renderStyles();
 		}, this);
 
 		// This is the default row layout
@@ -903,32 +904,12 @@ module.exports = panels.view.dialog.extend({
 		}
 		this.$( '.so-edit-title' ).val( titleElt.text() );
 
-		// Now we need to attach the style window
-		this.styles = new panels.view.styles();
-		this.styles.model = this.model;
-		this.styles.render('row', this.builder.config.postId, {
-			builderType: this.builder.config.builderType,
-			dialog: this
-		});
-
 		if (!this.builder.supports('addRow')) {
 			this.$('.so-buttons .so-duplicate').remove();
 		}
 		if (!this.builder.supports('deleteRow')) {
 			this.$('.so-buttons .so-delete').remove();
 		}
-
-		var $rightSidebar = this.$('.so-sidebar.so-right-sidebar');
-		this.styles.attach( $rightSidebar );
-
-		// Handle the loading class
-		this.styles.on('styles_loaded', function (hasStyles) {
-			// If we don't have styles remove the empty sidebar.
-			if ( ! hasStyles ) {
-				$rightSidebar.closest('.so-panels-dialog').removeClass('so-panels-dialog-has-right-sidebar');
-				$rightSidebar.remove();
-			}
-		}, this);
 
 		if (!_.isUndefined(this.model)) {
 			// Set the initial value of the
@@ -946,6 +927,38 @@ module.exports = panels.view.dialog.extend({
 		});
 
 		return this;
+	},
+	
+	renderStyles: function () {
+		if ( this.styles ) {
+			this.styles.off( 'styles_loaded' );
+			this.styles.remove();
+		}
+		
+		// Now we need to attach the style window
+		this.styles = new panels.view.styles();
+		this.styles.model = this.model;
+		this.styles.render('row', this.builder.config.postId, {
+			builderType: this.builder.config.builderType,
+			dialog: this
+		});
+		
+		var $rightSidebar = this.$('.so-sidebar.so-right-sidebar');
+		this.styles.attach( $rightSidebar );
+		
+		// Handle the loading class
+		this.styles.on('styles_loaded', function (hasStyles) {
+			if ( ! hasStyles ) {
+				// If we don't have styles remove the view.
+				this.styles.remove();
+				
+				// If the sidebar is empty, hide it.
+				if ( $rightSidebar.children().length === 0 ) {
+					$rightSidebar.closest('.so-panels-dialog').removeClass('so-panels-dialog-has-right-sidebar');
+					$rightSidebar.hide();
+				}
+			}
+		}, this);
 	},
 
 	/**
@@ -1287,6 +1300,12 @@ module.exports = panels.view.dialog.extend({
 		if ( this.cellStyles ) {
 			var $rightSidebar = this.$( '.so-sidebar.so-right-sidebar' );
 			this.cellStyles.attach( $rightSidebar );
+			this.cellStyles.on( 'styles_loaded', function ( hasStyles ) {
+				if ( hasStyles ) {
+					$rightSidebar.closest('.so-panels-dialog').addClass('so-panels-dialog-has-right-sidebar');
+					$rightSidebar.show();
+				}
+			} );
 		}
 	},
 
@@ -2609,6 +2628,16 @@ jQuery( function ( $ ) {
 			$( '.siteorigin-page-builder-widget' ).soPanelsSetupBuilderWidget();
 		} );
 	}
+
+	// A global escape handler
+	$(window).on('keyup', function(e){
+		// [Esc] to close
+		if ( e.which === 27 ) {
+			// Trigger a click on the last visible Page Builder window
+			$( '.so-panels-dialog-wrapper, .so-panels-live-editor' ).filter(':visible')
+				.last().find('.so-title-bar .so-close, .live-editor-close').click();
+		}
+	});
 } );
 
 },{"./collection/cells":1,"./collection/history-entries":2,"./collection/rows":3,"./collection/widgets":4,"./dialog/builder":5,"./dialog/history":6,"./dialog/prebuilt":7,"./dialog/row":8,"./dialog/widget":9,"./dialog/widgets":10,"./helpers/clipboard":11,"./helpers/page-scroll":12,"./helpers/serialize":13,"./helpers/utils":14,"./jquery/setup-builder-widget":15,"./model/builder":17,"./model/cell":18,"./model/history-entry":19,"./model/row":20,"./model/widget":21,"./utils/menu":22,"./view/builder":23,"./view/cell":24,"./view/dialog":25,"./view/live-editor":26,"./view/row":27,"./view/styles":28,"./view/widget":29}],17:[function(require,module,exports){
@@ -3513,6 +3542,10 @@ module.exports = Backbone.Model.extend( {
 		var titleFields = ['title', 'text'];
 
 		for ( var k in values ) {
+			if(k.charAt(0) === '_' || k === 'so_sidebar_emulator_id'  || k === 'option_name'){
+				// Skip Widgets Bundle supporting fields
+				continue;
+			}
 			if ( values.hasOwnProperty( k ) ) {
 				titleFields.push( k );
 			}
@@ -3974,8 +4007,7 @@ module.exports = Backbone.View.extend( {
 				this.displayAttachedBuilder( { confirm: false } );
 			}, this );
 		}
-		
-		
+
 		return this;
 	},
 	
@@ -4102,7 +4134,7 @@ module.exports = Backbone.View.extend( {
 			thisView.trigger( 'hide_builder' );
 		} ).end()
 		.append(
-			$( '<a id="content-panels" class="hide-if-no-js wp-switch-editor switch-panels">' + metabox.find( '.hndle span' ).html() + '</a>' )
+			$( '<button type="button" id="content-panels" class="hide-if-no-js wp-switch-editor switch-panels">' + metabox.find( '.hndle span' ).html() + '</button>' )
 			.click( function ( e ) {
 				if ( thisView.displayAttachedBuilder( { confirm: true } ) ) {
 					e.preventDefault();
@@ -4263,10 +4295,10 @@ module.exports = Backbone.View.extend( {
 			appendTo: '#wpwrap',
 			items: '.so-row-container',
 			handle: '.so-row-move',
-			// For Gutenberg, where it's possible to have multiple Page Builder blocks on a page.
-			// Also specify builderID when not in gutenberg to prevent being able to drop rows from builder in a dialog
+			// For the block editor, where it's possible to have multiple Page Builder blocks on a page.
+			// Also specify builderID when not in the block editor to prevent being able to drop rows from builder in a dialog
 			// into builder on the page under the dialog.
-			connectWith: '#' + builderID + '.so-rows-container,.gutenberg .so-rows-container',
+			connectWith: '#' + builderID + '.so-rows-container,.block-editor .so-rows-container',
 			axis: 'y',
 			tolerance: 'pointer',
 			scroll: false,
@@ -4736,7 +4768,7 @@ module.exports = Backbone.View.extend( {
 			return this;
 		}
 		
-		if ( width < 480 ) {
+		if ( width < 575 ) {
 			this.$el.addClass( 'so-display-narrow' );
 		} else {
 			this.$el.removeClass( 'so-display-narrow' );
@@ -4781,33 +4813,8 @@ module.exports = Backbone.View.extend( {
 	activateContextMenu: function ( e, menu ) {
 		var builder = this;
 		
-		// Of all the visible builders, find the topmost
-		var topmostBuilder = $( '.siteorigin-panels-builder:visible' )
-		.sort( function ( a, b ) {
-			return $( a ).zIndex() > $( b ).zIndex() ? 1 : -1;
-		} )
-		.last();
-		
-		var topmostDialog = $( '.so-panels-dialog-wrapper:visible' )
-		.sort( function ( a, b ) {
-			return $( a ).zIndex() > $( b ).zIndex() ? 1 : -1;
-		} )
-		.last();
-		
-		var closestDialog = builder.$el.closest( '.so-panels-dialog-wrapper' );
-		
-		// Only run this if its element is the topmost builder, in the topmost dialog
-		if (
-			(
-				builder.$el.is( topmostBuilder ) ||
-				builder.$el.parent().is( '.siteorigin-panels-layout-block-container' ) // Gutenberg builder
-			)
-				&&
-			(
-				topmostDialog.length === 0 ||
-				topmostDialog.is( closestDialog )
-			)
-		) {
+		// Only run this if the event target is a descendant of this builder's DOM element.
+		if ( $.contains( builder.$el.get( 0 ), e.target ) ) {
 			// Get the element we're currently hovering over
 			var over = $( [] )
 			.add( builder.$( '.so-panels-welcome-message:visible' ) )
@@ -4820,7 +4827,7 @@ module.exports = Backbone.View.extend( {
 			
 			var activeView = over.last().data( 'view' );
 			if ( activeView !== undefined && activeView.buildContextualMenu !== undefined ) {
-				// We'll pass this to the current active view so it can popular the contextual menu
+				// We'll pass this to the current active view so it can populate the contextual menu
 				activeView.buildContextualMenu( e, menu );
 			}
 			else if ( over.last().hasClass( 'so-panels-welcome-message' ) ) {
@@ -4933,7 +4940,7 @@ module.exports = Backbone.View.extend( {
 		// Create a widget sortable that's connected with all other cells
 		this.widgetSortable = this.$( '.widgets-container' ).sortable( {
 			placeholder: "so-widget-sortable-highlight",
-			connectWith: '#' + builderID + ' .so-cells .cell .widgets-container,.gutenberg .so-cells .cell .widgets-container',
+			connectWith: '#' + builderID + ' .so-cells .cell .widgets-container,.block-editor .so-cells .cell .widgets-container',
 			tolerance: 'pointer',
 			scroll: false,
 			over: function ( e, ui ) {
@@ -5290,6 +5297,8 @@ module.exports = Backbone.View.extend( {
 		if ( ! _.isUndefined( this.initializeDialog ) ) {
 			this.initializeDialog();
 		}
+		
+		_.bindAll( this, 'initSidebars', 'hasSidebar', 'onResize', 'toggleLeftSideBar', 'toggleRightSideBar' );
 	},
 
 	/**
@@ -5389,22 +5398,44 @@ module.exports = Backbone.View.extend( {
 
 		if ( this.parentDialog !== false ) {
 			// Add a link to the parent dialog as a sort of crumbtrail.
-			var thisDialog = this;
 			var dialogParent = $( '<h3 class="so-parent-link"></h3>' ).html( this.parentDialog.text + '<div class="so-separator"></div>' );
 			dialogParent.click( function ( e ) {
 				e.preventDefault();
-				thisDialog.closeDialog();
-				thisDialog.parentDialog.openDialog();
-			} );
-			this.$( '.so-title-bar' ).prepend( dialogParent );
+				this.closeDialog();
+				this.parentDialog.dialog.openDialog();
+			}.bind(this) );
+			this.$( '.so-title-bar .so-title' ).before( dialogParent );
 		}
 
 		if( this.$( '.so-title-bar .so-title-editable' ).length ) {
 			// Added here because .so-edit-title is only available after the template has been rendered.
 			this.initEditableLabel();
 		}
+		
+		setTimeout( this.initSidebars, 1 );
 
 		return this;
+	},
+	
+	initSidebars: function () {
+		var $leftButton = this.$( '.so-show-left-sidebar' ).hide();
+		var $rightButton = this.$( '.so-show-right-sidebar' ).hide();
+		var hasLeftSidebar = this.hasSidebar( 'left' );
+		var hasRightSidebar = this.hasSidebar( 'right' );
+		// Set up resize handling
+		if ( hasLeftSidebar || hasRightSidebar ) {
+			$( window ).on( 'resize', this.onResize );
+			if ( hasLeftSidebar ) {
+				$leftButton.show();
+				$leftButton.on( 'click', this.toggleLeftSideBar );
+			}
+			if ( hasRightSidebar ) {
+				$rightButton.show();
+				$rightButton.on( 'click', this.toggleRightSideBar );
+			}
+		}
+		
+		this.onResize();
 	},
 
 	/**
@@ -5574,8 +5605,7 @@ module.exports = Backbone.View.extend( {
 		// Stop scrolling for the main body
 		panels.helpers.pageScroll.lock();
 
-		// Start listen for keyboard keypresses.
-		$( window ).on( 'keyup', this.keyboardListen );
+		this.onResize();
 
 		this.$el.show();
 
@@ -5607,23 +5637,10 @@ module.exports = Backbone.View.extend( {
 		this.$el.hide();
 		panels.helpers.pageScroll.unlock();
 
-		// Stop listen for keyboard keypresses.
-		$( window ).off( 'keyup', this.keyboardListen );
-
 		if ( ! options.silent ) {
 			// This triggers once everything is hidden
 			this.trigger( 'close_dialog_complete' );
 			this.builder.trigger( 'close_dialog', this );
-		}
-	},
-
-	/**
-	 * Keyboard events handler
-	 */
-	keyboardListen: function ( e ) {
-		// [Esc] to close
-		if ( e.which === 27 ) {
-			$( '.so-panels-dialog-wrapper .so-close' ).trigger( 'click' );
 		}
 	},
 
@@ -5800,7 +5817,57 @@ module.exports = Backbone.View.extend( {
 			text: text,
 			dialog: dialog
 		};
-	}
+	},
+	
+	onResize: function () {
+		var mediaQuery = window.matchMedia( '(max-width: 980px)' );
+		var sides = [ 'left', 'right' ];
+		
+		sides.forEach( function ( side ) {
+			var $sideBar = this.$( '.so-' + side + '-sidebar' );
+			var $showSideBarButton = this.$( '.so-show-' + side + '-sidebar' );
+			if ( this.hasSidebar( side ) ) {
+				$showSideBarButton.hide();
+				if ( mediaQuery.matches ) {
+					$showSideBarButton.show();
+					$showSideBarButton.closest( '.so-title-bar' ).addClass( 'so-has-' + side + '-button' );
+					$sideBar.hide();
+					$sideBar.closest( '.so-panels-dialog' ).removeClass( 'so-panels-dialog-has-' + side + '-sidebar' );
+				} else {
+					$showSideBarButton.hide();
+					$showSideBarButton.closest( '.so-title-bar' ).removeClass( 'so-has-' + side + '-button' );
+					$sideBar.show();
+					$sideBar.closest( '.so-panels-dialog' ).addClass( 'so-panels-dialog-has-' + side + '-sidebar' );
+				}
+			} else {
+				$sideBar.hide();
+				$showSideBarButton.hide();
+			}
+		}.bind( this ) );
+	},
+	
+	hasSidebar: function ( side ) {
+		return this.$( '.so-' + side + '-sidebar' ).children().length > 0;
+	},
+	
+	toggleLeftSideBar: function () {
+		this.toggleSidebar( 'left' );
+	},
+	
+	toggleRightSideBar: function () {
+		this.toggleSidebar( 'right' );
+	},
+	
+	toggleSidebar: function ( side ) {
+		var sidebar = this.$( '.so-' + side + '-sidebar' );
+		
+		if ( sidebar.is( ':visible' ) ) {
+			sidebar.hide();
+		} else {
+			sidebar.show();
+		}
+	},
+	
 } );
 
 },{}],26:[function(require,module,exports){
@@ -5818,6 +5885,7 @@ module.exports = Backbone.View.extend( {
 
 	events: {
 		'click .live-editor-close': 'close',
+		'click .live-editor-save': 'closeAndSave',
 		'click .live-editor-collapse': 'collapse',
 		'click .live-editor-mode': 'mobileToggle'
 	},
@@ -5845,6 +5913,11 @@ module.exports = Backbone.View.extend( {
 	render: function () {
 		this.setElement( this.template() );
 		this.$el.hide();
+		
+		if ( $( '#submitdiv #save-post' ).length > 0 ) {
+			var $saveButton = this.$el.find( '.live-editor-save' );
+			$saveButton.text( $saveButton.data( 'save' ) );
+		}
 
 		var isMouseDown = false;
 		$( document )
@@ -5934,7 +6007,7 @@ module.exports = Backbone.View.extend( {
 	},
 
 	/**
-	 * Close the live editor
+	 * Close the Live Editor
 	 */
 	close: function () {
 		if ( ! this.$el.is( ':visible' ) ) {
@@ -5951,13 +6024,19 @@ module.exports = Backbone.View.extend( {
 	},
 
 	/**
+	 * Close the Live Editor and save the post.
+	 */
+	closeAndSave: function(){
+		this.close();
+		// Finds the submit input for saving without publishing draft posts.
+		$('#submitdiv input[type="submit"][name="save"]').click();
+	},
+
+	/**
 	 * Collapse the live editor
 	 */
 	collapse: function () {
 		this.$el.toggleClass( 'so-collapsed' );
-
-		var text = this.$( '.live-editor-collapse span' );
-		text.html( text.data( this.$el.hasClass( 'so-collapsed' ) ? 'expand' : 'collapse' ) );
 	},
 
 	/**
@@ -6006,7 +6085,7 @@ module.exports = Backbone.View.extend( {
 		contentWindow.liveEditorScrollTo( over );
 	},
 
-	handleRefreshData: function ( newData, args ) {
+	handleRefreshData: function ( newData ) {
 		if ( ! this.$el.is( ':visible' ) ) {
 			return this;
 		}
@@ -6081,7 +6160,7 @@ module.exports = Backbone.View.extend( {
 				'id' : iframeId,
 				'name' : iframeId,
 			} )
-			.appendTo( target )
+			.appendTo( target );
 
 		this.setupPreviewFrame( this.previewIframe );
 
@@ -6430,7 +6509,7 @@ module.exports = Backbone.View.extend( {
 
 		// The user clicked on the dashicon
 		if ( $$.hasClass( 'dashicons' ) ) {
-			$$ = $.parent();
+			$$ = $$.parent();
 		}
 
 		if ( $$.hasClass( 'so-confirmed' ) ) {
@@ -6636,12 +6715,13 @@ module.exports = Backbone.View.extend( {
 	initialize: function () {
 
 	},
-
+	
 	/**
 	 * Render the visual styles object.
 	 *
-	 * @param type
+	 * @param stylesType
 	 * @param postId
+	 * @param args
 	 */
 	render: function ( stylesType, postId, args ) {
 		if ( _.isUndefined( stylesType ) ) {
@@ -6959,7 +7039,8 @@ module.exports = Backbone.View.extend( {
 
 		this.setElement( this.template( {
 			title: this.model.getWidgetField( 'title' ),
-			description: this.model.getTitle()
+			description: this.model.getTitle(),
+			widget_class: this.model.attributes.class
 		} ) );
 
 		this.$el.data( 'view', this );

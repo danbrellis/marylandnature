@@ -1,5 +1,5 @@
 <?php
-global $wp_widget_factory, $post;
+global $post;
 $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 ?>
 
@@ -39,9 +39,9 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 			<?php endif; ?>
 
 			<?php if( SiteOrigin_Panels::display_premium_teaser() ) : ?>
-				<a class="so-tool-button so-learn" title="<?php echo esc_attr_e( 'Page Builder Addons', 'siteorigin-panels' ) ?>" href="<?php echo esc_url( SiteOrigin_Panels::premium_url() ) ?>" target="_blank" rel="noopener noreferrer" style="margin-left: 10px;">
+				<a class="so-tool-button so-learn" title="<?php esc_attr_e( 'Page Builder Addons', 'siteorigin-panels' ) ?>" href="<?php echo esc_url( SiteOrigin_Panels::premium_url() ) ?>" target="_blank" rel="noopener noreferrer" style="margin-left: 10px;">
 					<span class="so-panels-icon so-panels-icon-addons"></span>
-					<span class="so-button-text"><?php echo esc_html_e( 'Addons', 'siteorigin-panels' ) ?></span>
+					<span class="so-button-text"><?php esc_html_e( 'Addons', 'siteorigin-panels' ) ?></span>
 				</a>
 			<?php endif; ?>
 			
@@ -133,7 +133,7 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 </script>
 
 <script type="text/template" id="siteorigin-panels-builder-widget">
-	<div class="so-widget ui-draggable">
+	<div class="so-widget ui-draggable" data-widget-class="{{%- widget_class %}}">
 		<div class="so-widget-wrapper">
 			<div class="title">
 				<h4>{{%= title %}}</h4>
@@ -154,15 +154,19 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 		<div class="so-overlay"></div>
 
 		<div class="so-title-bar {{% if ( dialogIcon ) print( 'so-has-icon' ) %}}">
+			<a class="so-show-left-sidebar"><span class="so-dialog-icon"></span></a>
 			{{% if ( ! _.isEmpty( dialogIcon ) ) { %}}
 				<div class="so-panels-icon so-panels-icon-{{%- dialogIcon %}}" />
 			{{% } %}}
 			<h3 class="so-title{{% if ( editableLabel ) print(' so-title-editable')%}}"
 			    {{% if ( editableLabel ) print('contenteditable="true" spellcheck="false" tabIndex="1"')%}}
 				>{{%= title %}}</h3>
-			<a class="so-previous so-nav"><span class="so-dialog-icon"></span></a>
-			<a class="so-next so-nav"><span class="so-dialog-icon"></span></a>
-			<a class="so-close"><span class="so-dialog-icon"></span></a>
+			<div class="so-title-bar-buttons">
+				<a class="so-previous so-nav"><span class="so-dialog-icon"></span></a>
+				<a class="so-next so-nav"><span class="so-dialog-icon"></span></a>
+				<a class="so-show-right-sidebar"><span class="so-dialog-icon"></span></a>
+				<a class="so-close"><span class="so-dialog-icon"></span></a>
+			</div>
 		</div>
 
 		<div class="so-toolbar">
@@ -541,13 +545,15 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 
 		<div class="live-editor-collapse">
 			<div class="collapse-icon"></div>
-			<span data-collapse="<?php esc_attr_e( 'Collapse', 'siteorigin-panels' ) ?>" data-expand="<?php esc_attr_e( 'Expand', 'siteorigin-panels' ) ?>">
-				<?php _e( 'Collapse', 'siteorigin-panels' ) ?>
-			</span>
 		</div>
 
 		<div class="so-sidebar-tools">
-			<button class="live-editor-close button-primary"><?php esc_html_e('Done', 'siteorigin-panels') ?></button>
+			<button
+				class="live-editor-save button-primary"
+				data-save="<?php esc_html_e('Save Draft', 'siteorigin-panels') ?>"
+				data-update="<?php esc_html_e('Update', 'siteorigin-panels') ?>"
+			><?php esc_html_e('Update', 'siteorigin-panels') ?></button>
+			<button class="live-editor-close button-secondary"><?php esc_html_e('Close', 'siteorigin-panels') ?></button>
 
 			<a class="live-editor-mode live-editor-desktop so-active" title="<?php esc_attr_e( 'Toggle desktop mode', 'siteorigin-panels' ) ?>" data-mode="desktop">
 				<span class="dashicons dashicons-desktop"></span>
@@ -597,5 +603,14 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 			<?php _e('No Results', 'siteorigin-panels') ?>
 		</div>
 		{{% } %}}
+	</div>
+</script>
+
+<script type="text/template" id="siteorigin-panels-add-layout-block-button">
+	<div class="siteorigin-panels-add-layout-block wp-block">
+		<button class="components-button is-button is-primary">
+			<span class="siteorigin-panels-block-icon white"/>
+			<?php _e( 'Add SiteOrigin Layout Block', 'siteorigin-panels' ) ?>
+		</button>
 	</div>
 </script>
