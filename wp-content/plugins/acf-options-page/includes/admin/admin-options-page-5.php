@@ -293,7 +293,8 @@ if( typeof acf !== 'undefined' ) {
 		
 		// render post data
 		acf_form_data(array( 
-			'post_id'	=> $post_id, 
+			'post_id'	=> $post_id,
+			'screen'	=> 'options',
 			'nonce'		=> 'options',
 		));
 		
