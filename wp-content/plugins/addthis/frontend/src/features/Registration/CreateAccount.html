@@ -91,6 +91,26 @@
                 >
 
                 <div
+                    setting-title-and-description
+                    label="Country"
+                    name="registrationEmail"
+                >
+                </div>
+
+                <select
+                    name="country"
+                    ng-model="registrationFormModel.country"
+                >
+                    <option
+                        ng-repeat="country in countryOptions"
+                        value="{{country.value}}"
+                        ng-disabled="{{country.disabled}}"
+                    >
+                        {{country.display}}
+                    </option>
+                </select>
+
+                <div
                     class="input-feedback"
                     ng-show="createaccount.confirmPassword.$error.match && (createaccount.confirmPassword.$touched || createaccount.$submitted)"
                     ng-class="{'bad-choice': createaccount.confirmPassword.$error.match && (createaccount.confirmPassword.$touched || createaccount.$submitted)}"

@@ -53,16 +53,6 @@
   -webkit-transform: rotate(-45deg);
 }
 
-.addthis-settings-page .tool-gallery-card .tool-gallery-example.pro:after {
-  content: 'Pro';
-  background: #F8694D;
-}
-
-.addthis-settings-page .tool-gallery-card .tool-gallery-example.free:after {
-  content: 'Free';
-  background: #1EC6CE ;
-}
-
 .addthis-settings-page .tool-gallery-card div.description{
   display: inline-block;
   width: calc(100% - 357px);

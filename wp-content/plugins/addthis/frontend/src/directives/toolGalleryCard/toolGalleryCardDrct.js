@@ -11,12 +11,8 @@ appAddThisWordPress.directive('toolGalleryCard', function($wordpress) {
       toggleEvent: '=toggleEvent'
     },
     transclude: true,
-    link: function($scope, el, attrs) {
+    link: function($scope) {
       $scope.templateBaseUrl = $wordpress.templateBaseUrl();
-
-      $scope.isProTool = function() {
-        return (typeof attrs.pro !== 'undefined');
-      };
     },
     templateUrl: '/directives/toolGalleryCard/toolGalleryCard.html'
   };

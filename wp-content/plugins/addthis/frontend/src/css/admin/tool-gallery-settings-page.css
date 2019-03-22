@@ -117,21 +117,3 @@
 .addthis-settings-page .custom-hex-color-wrapper label {
   margin: 5px 0 0 0;
 }
-
-.addthis-settings-page label.pro:after {
-  content: 'Pro';
-  display: inline;
-  background: #ff5c3d;
-  margin: 0 5px;
-  padding: 2px 5px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  font-weight: 300;
-  height: 16px;
-  line-height: 16px!important;
-  margin-right: 4px;
-  font-size: .9em;
-  color: #fff!important;
-  letter-spacing: 1px;
-}

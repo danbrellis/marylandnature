@@ -731,11 +731,6 @@ msgstr ""
 msgid "forgot_password_link"
 msgstr "Forgot Password?"
 
-#. used on buttons when a user needs to upgrade to a pro account to use a feature (in place of a save or activate button)
-#, include in addthis-wordpress-plugin domain
-msgid "go_pro_button"
-msgstr "Go Pro"
-
 #. A short explinations of how to use WordPress shortcodes
 #, include in addthis-wordpress-plugin domain
 msgid "gtc_copy_in_the_shortcode"
@@ -1169,7 +1164,7 @@ msgstr "This mode is not compatible with this plugin."
 msgid "manual_registration_wordpress_mode_warning_limited_tools"
 msgstr ""
 "A limited set of tools will be available to you in this mode. For more "
-"tools (including Pro tools for Pro account), select the other mode."
+"tools, select the other mode."
 
 #. Used as the text for a menu item that when clicked takes the user to a settings page for advanced settings / global options
 #. Used as the header on the settings page with advanced settings

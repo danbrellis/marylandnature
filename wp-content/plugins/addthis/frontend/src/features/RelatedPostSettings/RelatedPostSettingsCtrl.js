@@ -53,14 +53,8 @@ appAddThisWordPress.controller('RelatedPostSettingsCtrl', function(
       $scope.saving = false;
 
       if ($scope.globalOptions.addthis_plugin_controls === 'AddThis') {
-        return $darkseid.isProProfile().then(function(isPro) {
-          if (isPro) {
-            return setPromotedUrls().then(function() {
-              return result;
-            });
-          } else {
-            return result;
-          }
+        return setPromotedUrls().then(function() {
+          return result;
         });
       } else {
         return result;

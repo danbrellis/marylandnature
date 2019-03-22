@@ -625,7 +625,11 @@ if (!class_exists('AddThisGlobalOptionsFeature')) {
                 && !empty($this->configs['darkseid_environment'])
             ) {
                 $env = $this->configs['darkseid_environment'];
-                $url = 'https://www-'. $env .'.addthis.com/darkseid/';
+                if ($env == 'local') {
+                    $url = 'http://docker.for.mac.host.internal:8019/darkseid/';
+                } else {
+                    $url = 'http://www-'. $env .'.addthis.com/darkseid/';
+                }
             } else {
                 $url = 'https://www.addthis.com/darkseid/';
             }

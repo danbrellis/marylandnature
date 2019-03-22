@@ -35,7 +35,7 @@ if (!class_exists('AddThisMinimumPlugin')) {
      */
     class AddThisMinimumPlugin extends AddThisPlugin
     {
-        protected $version = '3.1.2';
+        protected $version = '3.1.8';
         protected $name = 'Website Tools by AddThis';
         protected $productPrefix = 'wpwt';
         protected $pluginSlug = 'addthis-all';

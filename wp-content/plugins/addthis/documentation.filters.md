@@ -97,7 +97,7 @@ The filters for any particular tool run in the following order:
 * follow button
   * addthis_horizontal_follow_toolbox: (default) standard horizontal follow buttons
   * addthis_vertical_follow_toolbox: standard vertical follow buttons
-  * addthis_custom_follow: Pro custom horizontal follow buttons. This will only render when used with a Pro AddThis profile.
+  * addthis_custom_follow: custom horizontal follow buttons
 * recommended content
   * addthis_recommended_vertical: vertical recommended content
   * at-below-post-recommended: (default) horizontal recommended content
@@ -147,13 +147,13 @@ Here are the tool names for normal (non-WordPress) profile types:
 * sharing buttons
   * addthis_sharing_toolbox: square sharing buttons
   * addthis_native_toolbox: classic sharing buttons
-  * addthis_custom_sharing: Pro custom sharing buttons. This will only render when used with a Pro AddThis profile.
-  * addthis_responsive_sharing: Pro responsive sharing buttons. This will only render when used with a Pro AddThis profile.
-  * addthis_jumbo_share: Pro sharing buttons with jumbo share counter. This will only render when used with a Pro AddThis profile.
+  * addthis_custom_sharing: custom sharing buttons
+  * addthis_responsive_sharing: responsive sharing buttons
+  * addthis_jumbo_share: sharing buttons with jumbo share counter
 * follow button
   * addthis_horizontal_follow_toolbox: (default) standard horizontal follow buttons
   * addthis_vertical_follow_toolbox: standard vertical follow buttons
-  * addthis_custom_follow: Pro custom horizontal follow buttons. This will only render when used with a Pro AddThis profile.
+  * addthis_custom_follow: custom horizontal follow buttons
 * recommended content
   * addthis_recommended_vertical: vertical recommended content
   * addthis_recommended_horizontal: horizontal recommended content

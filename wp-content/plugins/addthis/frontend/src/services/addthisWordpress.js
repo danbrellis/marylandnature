@@ -277,10 +277,11 @@ angular.module('addthisWordpress').factory('$wordpress', function(
     return promise;
   };
 
-  wordpress.addThisCreateAccount = function(email, password, newsletter) {
+  wordpress.addThisCreateAccount = function(email, password, country, newsletter) {
     var inputData = {
       email: email,
       password: password,
+      country: country,
       newsletter: newsletter
     };
 

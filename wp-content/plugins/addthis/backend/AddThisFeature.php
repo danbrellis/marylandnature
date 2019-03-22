@@ -467,14 +467,10 @@ if (!class_exists('AddThisFeature')) {
                 return $this->configs;
             }
 
-            if ($this->isPreviewMode()) {
-                $this->configs = get_transient($this->settingsVariableName);
-            } else {
-                $this->configs = get_option($this->settingsVariableName);
-                $this->configs = $this->addDefaultConfigs($this->configs);
-                if ($this->addedDefaultValue) {
-                    $this->saveConfigs();
-                }
+            $this->configs = get_option($this->settingsVariableName);
+            $this->configs = $this->addDefaultConfigs($this->configs);
+            if ($this->addedDefaultValue) {
+                $this->saveConfigs();
             }
 
             return $this->configs;
@@ -723,20 +719,6 @@ if (!class_exists('AddThisFeature')) {
 
             $this->addedDefaultValue = false;
             return $this->configs;
-        }
-
-        /**
-         * Checks if you're in preview mode.
-         *
-         * @return boolean true if in preview, false otherwise
-         */
-        public function isPreviewMode()
-        {
-            if (isset($_GET['preview']) && $_GET['preview'] == 1) {
-                return true;
-            }
-
-            return false;
         }
 
         /**

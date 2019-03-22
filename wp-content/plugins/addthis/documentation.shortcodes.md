@@ -9,13 +9,13 @@ Short codes can be used by any user when creating or editing a post or page. To 
 1. sharing button short codes:
   1. addthis_sharing_buttons
   1. addthis_original_sharing_buttons
-  1. addthis_custom_sharing_buttons - Pro. This will only render when used on a page with a Pro AddThis profile.
-  1. addthis_jumbo_sharing_buttons - Pro. This will only render when used on a page with a Pro AddThis profile.
-  1. addthis_responsive_sharing_buttons - Pro. This will only render when used on a page with a Pro AddThis profile.
+  1. addthis_custom_sharing_buttons
+  1. addthis_jumbo_sharing_buttons
+  1. addthis_responsive_sharing_buttons
 1. follow button short codes
   1. addthis_horizontal_follow_buttons
   1. addthis_vertical_follow_buttons
-  1. addthis_custom_follow_buttons - Pro. This will only render when used on a page with a Pro AddThis profile.
+  1. addthis_custom_follow_buttons
 1. recommended content short codes
   1. addthis_horizontal_recommended_content
   1. addthis_vertical_recommended_content
