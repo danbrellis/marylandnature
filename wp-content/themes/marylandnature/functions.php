@@ -501,6 +501,12 @@ function nhsm_siteorigin_widgets_posts_selector_query($query){
     return $query;
 }
 
+add_filter( 'siteorigin_widgets_template_file_sow-image', 'nhsm_image_template_file', 10, 3 );
+function nhsm_image_template_file() {
+    $filename = get_stylesheet_directory() . '/widgets/image/tpl/default.php';
+    return $filename;
+}
+
 /* Download Monitor */
 add_filter('dlm_download_category_args', 'nhsm_dlm_download_category_args');
 function nhsm_dlm_download_category_args($args){
