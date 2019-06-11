@@ -675,7 +675,8 @@ a .label {
 	right: 5px;
 	text-align: right;
 	background: rgba(255, 255, 255, 0.9);
-	padding: 0px 6px;
+	padding: 0 6px;
+	font-size: 80%;
 
 	a {
 		color: $reading;
