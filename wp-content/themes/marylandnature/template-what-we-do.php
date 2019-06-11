@@ -51,8 +51,8 @@ Template Name: What We Do
 															<h3 class="widget-title stringbean" style="margin-top: 10px;"><?php echo get_the_title($programs->post->ID); ?></h3>
 														</a>
 														<p>
-															<?php echo get_the_excerpt($programs->post->ID); ?><br />
-															<a class="more-link button small" href="<?php the_permalink($programs->post->ID); ?>" style="margin-top:10px"><span aria-label="Continue reading <?php the_title($programs->post->ID); ?>">Read more</span></a>
+															<?php echo get_the_excerpt($programs->post->ID); ?><br /><br />
+															<a class="more-link button small" href="<?php the_permalink($programs->post->ID); ?>"><span aria-label="Continue reading <?php echo get_the_title($programs->post->ID); ?>">Read more</span></a>
 														</p>
 													</div>
 												<?php endwhile;
