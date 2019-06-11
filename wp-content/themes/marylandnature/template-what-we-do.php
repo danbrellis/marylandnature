@@ -45,7 +45,7 @@ Template Name: What We Do
 															<?php if(has_post_thumbnail($programs->post)): ?>
                                 <div class="img-caption-container">
                                   <a href="<?php echo get_page_link($programs->post->ID); ?>"><?php echo get_the_post_thumbnail($programs->post, 'nhsm_medium4x3', array('class' => 'img-responsive')); ?></a>
-                                  <span class="sm_img_caption"><?php echo nhsm_img_title_and_credit(false, get_post_thumbnail_id($programs->post->ID)); ?></span>
+                                  <span class="sm_img_caption"><?php echo nhsm_img_credit_and_caption(false, get_post_thumbnail_id($programs->post->ID)); ?></span>
                                 </div>
                               <?php endif; ?>
 															<h3 class="widget-title stringbean" style="margin-top: 10px;"><?php echo get_the_title($programs->post->ID); ?></h3>

@@ -131,7 +131,7 @@ function ajax_get_img_credit(){
     foreach($items as $item){
       $post_id = attachment_url_to_postid($item->bg);
       if($post_id){
-        $credit = nhsm_img_title_and_credit(false, $post_id, true, true);
+        $credit = nhsm_img_credit_and_caption(false, $post_id);
         $credits[] = '<span class="lg_img_caption">' . $credit . '</span>';
       }
     }

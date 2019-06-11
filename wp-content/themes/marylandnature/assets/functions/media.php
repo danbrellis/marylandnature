@@ -62,17 +62,20 @@ function caption_shortcode_with_credits($empty, $attr, $content) {
 }
 
 //for displaying image credits
-function nhsm_img_title_and_credit($credit = false, $img_id = false, $link = true, $small = true){
-  $post = get_post($img_id);
-  $credit = nhsm_format_image_credit_line($credit, $img_id, $link, $small);
-  return sprintf("%s. %s", get_the_title($post), $credit);
+function nhsm_img_credit_and_caption($credit = false, $img_id = false, $link = true){
+  $caption = wp_get_attachment_caption($img_id);
+  $credit = nhsm_format_image_credit_line($credit, $img_id, $link);
+  if($credit && $caption) return sprintf("%s. %s", $credit, $caption);
+  if($credit) return $credit;
+  if($caption) return $caption;
+  return false;
 }
 
-function nhsm_format_image_credit_line($credit = false, $img_id = false, $link = true, $small = true){
+function nhsm_format_image_credit_line($credit = false, $img_id = false, $link = true){
 	if(!$credit) $credit = nhsm_get_image_credit($img_id, $link);
-	$ret = sprintf(__('Image courtesy: %s', 'rys'), $credit);
+	$ret = $credit ? sprintf('Photo by %s', $credit) : false;
 	
-	return $credit ? $small ? '<small>' . $ret . '</small>' : $ret : '';
+	return $ret;
 }
 
 function nhsm_image_has_credit($thumbnail_id){
@@ -195,7 +198,7 @@ function nhsm_get_the_banner_image($post = 0, $atts = array()){
 	);
 	$atts = wp_parse_args( $atts, $defaults );
 	if(has_post_thumbnail($post)){
-		return nhsm_fuse_img_and_caption(get_the_post_thumbnail($post, 'nhsm_hbanner', $atts), nhsm_img_title_and_credit(false, get_post_thumbnail_id($post->ID)));
+		return nhsm_fuse_img_and_caption(get_the_post_thumbnail($post, 'nhsm_hbanner', $atts), nhsm_img_credit_and_caption(false, get_post_thumbnail_id($post->ID)));
 	}
 }
 
@@ -213,7 +216,7 @@ function nhsm_get_the_category_banner_image($cat_id = 0, $taxonomy = 'category',
 		'class' => 'single_page_banner'
 	);
 	$atts = wp_parse_args( $atts, $defaults );
-	return nhsm_fuse_img_and_caption(wp_get_attachment_image($image_id, 'nhsm_hbanner', false, $atts), nhsm_img_title_and_credit(false, $image_id));
+	return nhsm_fuse_img_and_caption(wp_get_attachment_image($image_id, 'nhsm_hbanner', false, $atts), nhsm_img_credit_and_caption(false, $image_id));
 }
 
 function nhsm_banner_style($post = 0, $fallback = '', array $styles = array()){
