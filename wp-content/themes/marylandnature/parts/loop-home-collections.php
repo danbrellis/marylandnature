@@ -4,8 +4,29 @@ $i = 0;
 $template = '<div title="%2$s" class="collection"><p class="collection-info"><span class="collector">%3$s</span><span class="collection-title">%4$s</span></p><img src="%5$s" alt="%2$s" class="collection-img img-responsive" /></div>';
 if(have_posts()):
 	while( have_posts() ): the_post();
-		$collector = get_post_meta(get_the_ID(), 'nhsm_active_curators_0_nhsm_curator', true);
+		$collectors = [];
 		$collection = get_the_title();
+
+		if( have_rows('nhsm_active_curators') ):
+			while ( have_rows('nhsm_active_curators') ) : the_row();
+				$c = trim(get_sub_field('nhsm_curator'));
+				if($c) $collectors[] = $c;
+			endwhile;
+		endif;
+
+		switch (count($collectors)) {
+			case 0:
+				$collector = '';
+				break;
+			case 1:
+				$collector = $collectors[0];
+				break;
+			case 2:
+				$collector = $collectors[0] . " & " . $collectors[1];
+				break;
+			default:
+				$collector = substr(implode(', ', $collectors), 0, -3);
+		}
 
 		$thumbnail = has_post_thumbnail() ? get_the_post_thumbnail_url(get_the_ID(), 'medium_large') : 'http://placehold.it/733x280';
 		
