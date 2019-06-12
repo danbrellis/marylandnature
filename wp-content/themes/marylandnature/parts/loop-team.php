@@ -23,7 +23,25 @@ if(have_posts()): ?>
                     </div>
                     <div class="card-section card-divider text-center" data-equalizer-watch>
                         <strong><?php the_title(); ?></strong>
-                        <p><?php the_field('team_member_role'); ?></p>
+                        <?php
+                        //get appropriate role position title
+
+                        $group = '';
+                        if(is_tax('nhsm_role')){
+                            if(is_tax('nhsm_role', 'board-of-directors')){
+                                $group = 'board-of-directors';
+                            }
+                            elseif(is_tax('nhsm_role', 'team')){
+                                $group = 'team_' . $wp_query->tax_query->queried_terms['nhsm_team_cat']['terms'][0];
+                            }
+                        }
+                        $rows = get_field('team_member_role');
+                        //var_dump($rows);
+                        if($rows) {
+                            foreach($rows as $row)
+                                if($row['group_position']['group'] === $group) echo '<p>' . $row['group_position']['position'] . '</p>';
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
