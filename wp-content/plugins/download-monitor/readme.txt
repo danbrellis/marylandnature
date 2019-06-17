@@ -3,8 +3,8 @@ Contributors: never5, barrykooij, hchouhan, mikejolley
 Donate link: http://www.barrykooij.com/donate/
 Tags: download, downloads, monitor, hits, download monitor, tracking, admin, count, counter, files, versions, download count, logging, AJAX, digital, documents, download category, download manager, download template, downloadmanager, file manager, file tree, grid, hits, ip-address, manager, media, monitor, password, protect downloads, tracker, sell, shop, ecommerce, paypal
 Requires at least: 3.8
-Tested up to: 5.1.0
-Stable tag: 4.4.0
+Tested up to: 5.1.1
+Stable tag: 4.4.2
 License: GPLv3
 Text Domain: -
 Requires PHP: 5.3
@@ -117,6 +117,12 @@ More documentation can be found in our [Knowledge Base](https://www.download-mon
 4. The quick add panel can be opened via a link about the post editor. This lets you quickly add a file and insert it into a post.
 
 == Changelog ==
+
+= 4.4.2: April 3, 2019 =
+* Tweak: Fixed an relative inclusion bug that sometimes caused bootstrap not to properly load. (Undefined function dlm_is_shop_enabled()).
+
+= 4.4.1: March 27, 2019 =
+* Tweak: Added proper html escaping to order overview page, props Nam.Dinh.
 
 = 4.4.0: March 8, 2019 =
 * Feature: Added a new product post type to create a clear separation between downloads and the products you can sell. Read more about this here: https://www.download-monitor.com/kb/products/
