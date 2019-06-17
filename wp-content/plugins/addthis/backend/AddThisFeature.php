@@ -19,6 +19,8 @@
  * +--------------------------------------------------------------------------+
  */
 
+require_once 'AddThisAmp.php';
+
 if (!class_exists('AddThisFeature')) {
     /**
      * AddThis' root parent class for all its features
@@ -80,6 +82,8 @@ if (!class_exists('AddThisFeature')) {
             } else {
                 $this->globalOptionsObject = new AddThisGlobalOptionsFeature();
             }
+
+            AddThisAdminUtilities::setGlobalOptions($this->globalOptionsObject);
         }
 
         /**
@@ -289,6 +293,7 @@ if (!class_exists('AddThisFeature')) {
 
             $this->registerContentFilters();
             $this->registerExcerptFilters();
+            $this->registerFooterFilters();
         }
 
         /**
@@ -409,6 +414,15 @@ if (!class_exists('AddThisFeature')) {
             $text = esc_html__($text, self::$l10n_domain);
             $link = '<a href="'.$url.'">'.$text.'</a>';
             return $link;
+        }
+
+        /**
+         * Returns the user capability required for editing options
+         *
+         * @return string
+         */
+        public function getEditOptionsCapability() {
+            return $this->editOptionsCapability;
         }
 
         /**
@@ -1115,7 +1129,6 @@ if (!class_exists('AddThisFeature')) {
             return $featureLayers;
         }
 
-
         /**
          * Returns tool specific settings for the JavaScript variable for each
          * tool in this feature set
@@ -1283,6 +1296,16 @@ if (!class_exists('AddThisFeature')) {
         }
 
         /**
+         * Registers filters for HTML filtering or insertion into the footer
+         *
+         * @return null
+         */
+        public function registerFooterFilters() {
+            add_filter('wp_footer', array($this, 'addHtmlFilterAmpFloating'));
+            add_filter('amp_post_template_footer', array($this, 'addHtmlFilterAmpFloating'));
+        }
+
+        /**
          * Calls addHtmlFilter and passes the name of the filter that it
          * is associated with. This feels hacky, but it will help the AddThis
          * Support troubleshoot user issues with themes.
@@ -1348,6 +1371,18 @@ if (!class_exists('AddThisFeature')) {
             $filterName = 'wp_trim_excerpt';
             $outputHtml = $this->addHtmlFilter($inputHtml, $filterName);
             return $outputHtml;
+        }
+
+        /**
+         * Inserts element for floating share tools when using AMP
+         *
+         * @return null
+         */
+        public function addHtmlFilterAmpFloating() {
+            if (AddThisAmp::inAmpMode()) {
+                $profileId = $this->globalOptionsObject->getUsableProfileId();
+                echo AddThisAmp::getFloatingHtml($profileId);
+            }
         }
 
         /**
@@ -1487,11 +1522,21 @@ if (!class_exists('AddThisFeature')) {
          */
         public function getHtmlForFilter($class, &$track = false)
         {
+            $gooSettings = $this->globalOptionsObject->getConfigs();
+
+            if (AddThisAmp::inAmpMode()) {
+                $profileId = $this->globalOptionsObject->getUsableProfileId();
+                $widgetType = 'shin';
+                $width = $gooSettings['amp_inline_share_width'];
+                $height = $gooSettings['amp_inline_share_height'];
+
+                return AddThisAmp::getAmpHtml($profileId, null, $widgetType, $class, $width, $height);
+            }
+
             $htmlTemplate = '<div class="%1$s addthis_tool" %2$s></div>';
             $attrString = $this->getInlineLayersAttributes($track);
             $html = sprintf($htmlTemplate, $class, $attrString);
 
-            $gooSettings = $this->globalOptionsObject->getConfigs();
             if (!empty($gooSettings['ajax_support'])) {
                 $html .= '<script>if (typeof window.atnt !== \'undefined\') { window.atnt(); }</script>';
             }

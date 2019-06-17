@@ -538,5 +538,11 @@
    "advanced_settings_enqueue_false_label": "advanced_settings_enqueue_false_label",
    "warning_message_advanced_settings_enqueue_client": "warning_message_advanced_settings_enqueue_client",
    "warning_message_advanced_settings_enqueue_local_settings": "warning_message_advanced_settings_enqueue_local_settings",
-   "advanced_settings_enqueue_local_settings_description": "advanced_settings_enqueue_local_settings_description"
+   "advanced_settings_enqueue_local_settings_description": "advanced_settings_enqueue_local_settings_description",
+   "advanced_settings_amp_options_header": "advanced_settings_amp_options_header",
+   "advanced_settings_amp_options_description": "advanced_settings_amp_options_description",
+   "advanced_settings_amp_inline_width_label": "advanced_settings_amp_inline_width_label",
+   "advanced_settings_amp_inline_width_description": "advanced_settings_amp_inline_width_description",
+   "advanced_settings_amp_inline_height_label": "advanced_settings_amp_inline_height_label",
+   "advanced_settings_amp_inline_height_description": "advanced_settings_amp_inline_height_description"
 }

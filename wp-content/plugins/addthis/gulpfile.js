@@ -25,6 +25,9 @@ var path = {
     'frontend/src/**/*.js',
     'frontend/build/templates.js'
   ],
+  adminJs: [
+    'frontend/admin/**/*.js'
+  ],
   addThisPublicCss: [
     'frontend/src/css/public/*.css'
   ],
@@ -88,6 +91,7 @@ var path = {
   },
   buildRoot: 'frontend/build',
   minifiedJsFileName: 'addthis_wordpress.min.js',
+  minifiedAdminJsFileName: 'addthis_wordpress_admin.min.js',
   minifiedPublicCssFileName: 'addthis_wordpress_public.min.css',
   minifiedAdminCssFileName: 'addthis_wordpress_admin.min.css',
   minifiedVendorJsFileName: 'vendor.min.js',
@@ -123,6 +127,23 @@ gulp.task('minify-addthis-js', ['clean-minify-addthis-js', 'concat-templates'], 
   return gulp.src(path.addThisJs)
     .pipe(sourcemaps.init())
     .pipe(concat(path.minifiedJsFileName))
+    .pipe(uglify({
+      mangle: false,
+    }))
+    .pipe(sourcemaps.write('../../' + path.buildRoot))
+    .pipe(gulp.dest(path.buildRoot));
+});
+
+gulp.task('clean-minify-admin-js', function() {
+  var file = path.buildRoot + '/' + path.minifiedAdminJsFileName;
+  return gulp.src(file, { read: false })
+    .pipe(clean());
+});
+
+gulp.task('minify-admin-js', ['clean-minify-admin-js'], function() {
+  return gulp.src(path.adminJs)
+    .pipe(sourcemaps.init())
+    .pipe(concat(path.minifiedAdminJsFileName))
     .pipe(uglify({
       mangle: false,
     }))
@@ -456,6 +477,7 @@ gulp.task('lint-js', function() {
 gulp.task('build', ['lint-js', 'make-folders'], function(){
   return gulp.start(
     'minify-addthis-js',
+    'minify-admin-js',
     'minify-addthis-public-css',
     'minify-addthis-admin-css',
     'minify-vendor-js',
@@ -467,6 +489,7 @@ gulp.task('build', ['lint-js', 'make-folders'], function(){
 
 gulp.task('watch', ['build'], function() {
   gulp.watch(path.addThisJs, ['minify-addthis-js']);
+  gulp.watch(path.adminJs, ['minify-admin-js']);
   gulp.watch(path.addThisPublicCss, ['minify-addthis-public-css']);
   gulp.watch(path.addThisAdminCss, ['minify-addthis-admin-css']);
   gulp.watch(path.vendorJs, ['minify-vendor-js']);

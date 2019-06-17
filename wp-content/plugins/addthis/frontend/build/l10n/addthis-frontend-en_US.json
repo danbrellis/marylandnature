@@ -538,5 +538,11 @@
    "advanced_settings_enqueue_false_label": "wp_footer/wp_head",
    "warning_message_advanced_settings_enqueue_client": "If wp_enqueue_scripts is selected, then asynchronous loading of this script will not be available.",
    "warning_message_advanced_settings_enqueue_local_settings": "If wp_enqueue_scripts is selected, then (a) asynchronous loading of this script will not be available, (b) control over which floating tools appear on which templates will not be available.",
-   "advanced_settings_enqueue_local_settings_description": "How should the script with your local AddThis settings be added onto your site?"
+   "advanced_settings_enqueue_local_settings_description": "How should the script with your local AddThis settings be added onto your site?",
+   "advanced_settings_amp_options_header": "AMP Options",
+   "advanced_settings_amp_options_description": "In this section, you can override some options for AMP tools.",
+   "advanced_settings_amp_inline_width_label": "Inline Width",
+   "advanced_settings_amp_inline_width_description": "Override the width of Inline Sharing Tools on AMP",
+   "advanced_settings_amp_inline_height_label": "Inline Height",
+   "advanced_settings_amp_inline_height_description": "Override the height of Inline Sharing Tools on AMP"
 }

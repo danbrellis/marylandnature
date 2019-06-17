@@ -99,7 +99,6 @@ appAddThisWordPress.directive('shareServicePicker', function(
               'facebook_like',
               'tweet',
               'pinterest_pinit',
-              'google_plusone',
               'counter'
             ];
           }

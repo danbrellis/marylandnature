@@ -1,19 +1,19 @@
 === WordPress Share Buttons Plugin – AddThis  ===
-Contributors: abramsm, jgrodel, bradaddthis.com, addthis_paul, addthis_matt, ribin_addthis, addthis_elsa, addthisleland, sirius226
-Tags: share buttons, social sharing, social share, social, social marketing, social tools, WhatsApp
+Contributors: abramsm, jgrodel, bradaddthis.com, addthis_paul, addthis_matt, ribin_addthis, addthis_elsa, addthisleland, sirius226, addthisjhilts
+Tags: share buttons, social sharing, social share, social, social marketing, social tools, WhatsApp, AMP
 Requires at least: 3.0
-Tested up to: 4.9.8
-Stable tag: 6.1.8
+Tested up to: 5.1.1
+Stable tag: 6.2.3
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Share buttons from AddThis help you get more traffic from sharing through social networks.
+Now compatible with the AMP Plugin! Free Share Buttons from AddThis. Share to Messenger, WhatsApp, Facebook, Twitter, Pinterest and many more.
 
 
 
 == Description ==
 
-The WordPress Share Buttons Plugin from AddThis (absolutely FREE) makes it easier than ever for your audience to spread your content around the web. Our quick-loading Share Buttons Plugin lets you connect to over 200 social channels including Messenger, WhatsApp, Facebook, Twitter, Pinterest and many more.
+Now compatible with the AMP Plugin! The Free WordPress Share Buttons Plugin from AddThis makes it easier than ever for your audience to spread your content around the web. Our quick-loading Share Buttons Plugin lets you connect to over 200 social channels including Messenger, WhatsApp, Facebook, Twitter, Pinterest and many more.
 
 Our clean, customizable and simple share buttons are beautiful, quick to load and recognized all over the web.
 
@@ -170,6 +170,19 @@ See our <a href="https://plugins.svn.wordpress.org/addthis-all/trunk/documentati
 
 
 == Changelog ==
+
+= 6.2.3 =
+* Removed notices regarding AMP
+
+= 6.2.2 =
+* Added compatibility detection with official AMP plugin
+
+= 6.2.1 =
+* Fixed an incompatibility with PHP < 5.4
+
+= 6.2.0 =
+* Added support for AMP in registered mode when used in conjunction with the official AMP plugin
+* Removed references for Google+
 
 = 6.1.8 =
 * Fixed a bug where a script tag causes browser errors in certain circumstances

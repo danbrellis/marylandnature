@@ -485,7 +485,6 @@ angular.module('addthisWordpress').factory('$wordpress', function(
         var exclude = [
           'facebook_like',
           'foursquare',
-          'google_plusone',
           'pinterest',
           'addressbar',
           'googleplus'
@@ -575,12 +574,6 @@ angular.module('addthisWordpress').factory('$wordpress', function(
       icon: 'pinterest_share',
       name: 'Pinterest Pin It',
       searchString: 'Pinterest Pin It'
-    },
-    {
-      code: 'google_plusone',
-      icon: 'google_plusone_share',
-      name: 'Google+1 ',
-      searchString: 'Google+1 Google Plus'
     },
     {
       code: 'counter',
@@ -739,7 +732,6 @@ angular.module('addthisWordpress').factory('$wordpress', function(
         'facebook_like',
         'tweet',
         'pinterest_pinit',
-        'google_plusone',
         'counter'
       ],
       elements: [

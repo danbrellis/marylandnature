@@ -19,6 +19,7 @@
  * +--------------------------------------------------------------------------+
  */
 
+require_once 'AddThisAmp.php';
 require_once 'AddThisRegistrationFeature.php';
 require_once 'AddThisGlobalOptionsFeature.php';
 require_once 'AddThisFollowButtonsFeature.php';
@@ -59,6 +60,10 @@ if (!class_exists('AddThisPlugin')) {
         protected static $cmsName = 'WordPress';
         // adminJavaScriptAction needs to match here and in AddThisFeature
         protected $adminJavaScriptAction = 'addthis_admin_variables';
+
+        // RegEx pattern that can be used to extract the type and ID of a widget from
+        // a shortcode class
+        protected $shortcodeIdPattern = '/^addthis_(.+)_(.{4})$/';
 
         protected $metaBoxId = 'at_widget';
         public static $metaBoxKey = '_at_widget';
@@ -1221,6 +1226,25 @@ if (!class_exists('AddThisPlugin')) {
          */
         public function getInlineCodeForShortCode($cssClass)
         {
+            $gooConfigs = $this->globalOptionsObject->getConfigs();
+
+            if (AddThisAmp::inAmpMode()) {
+                $profileId = $this->globalOptionsObject->getUsableProfileId();
+                $widgetId = null;
+                $widgetType = 'shin';
+                $width = $gooSettings['amp_inline_share_width'];
+                $height = $gooSettings['amp_inline_share_height'];
+
+                if (!empty($cssClass)) {
+                    preg_match($this->shortcodeIdPattern, $cssClass, $matches);
+                    if (count($matches) >= 3) {
+                        $widgetId = $matches[2];
+                    }
+                }
+
+                return AddThisAmp::getAmpHtml($profileId, $widgetId, $widgetType, $cssClass, $width, $height);
+            }
+
             $html  = '<!-- Created with a shortcode from an AddThis plugin -->';
 
             if (!empty($cssClass)) {
@@ -1229,7 +1253,6 @@ if (!class_exists('AddThisPlugin')) {
                 $html .= '<!-- No CSS class provided. Nothing to do here.-->';
             }
 
-            $gooConfigs = $this->globalOptionsObject->getConfigs();
             if (!empty($gooSettings['ajax_support'])) {
                 $html .= '<script>if (typeof window.atnt !== \'undefined\') { window.atnt(); }</script>';
             }

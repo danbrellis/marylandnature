@@ -110,6 +110,9 @@ if (!class_exists('AddThisGlobalOptionsFeature')) {
             'addthis_config_recommended_json',
             'addthis_config_trending_json',
             'addthis_config_welcome_json',
+            // AMP options
+            'amp_inline_share_width',
+            'amp_inline_share_height',
         );
 
         protected $defaultConfigs = array(
@@ -164,6 +167,9 @@ if (!class_exists('AddThisGlobalOptionsFeature')) {
             'addthis_config_recommended_json'       => '',
             'addthis_config_trending_json'          => '',
             'addthis_config_welcome_json'           => '',
+            // AMP options
+            'amp_inline_share_width'                => 380,
+            'amp_inline_share_height'               => 65,
         );
 
         // require the files with the tool and widget classes at the top of this
@@ -452,6 +458,17 @@ if (!class_exists('AddThisGlobalOptionsFeature')) {
             foreach ($checkAndSanitize as $field) {
                 if (isset($input[$field])) {
                     $output[$field] = sanitize_text_field($input[$field]);
+                }
+            }
+
+            $numberFieds = array(
+                'amp_inline_share_width',
+                'amp_inline_share_height',
+            );
+
+            foreach ($numberFieds as $field) {
+                if (isset($input[$field])) {
+                    $output[$field] = intval($input[$field]);
                 }
             }
 

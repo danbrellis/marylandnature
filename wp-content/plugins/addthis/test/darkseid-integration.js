@@ -1708,7 +1708,7 @@ describe('WordPress backward compatibility pco translation for share tools (depr
       "widgetId": "0sps",
       "thirdPartyButtons": "true",
       "elements": ".addthis_native_toolbox",
-      "services": "tweet,google_plusone,counter,pinterest_pinit"
+      "services": "tweet,counter,pinterest_pinit"
   };
 
   var legacyShareButtons = {
@@ -2205,7 +2205,7 @@ describe('Multi-tool support (new consolidated PCO) for Share Tools', function()
       //'counts': 'none',
       'shareCountThreshold': 10,
       'originalServices':
-        'facebook_like,tweet,pinterest_pinit,google_plusone,counter',
+        'facebook_like,tweet,pinterest_pinit,counter',
       'label': 'SHARES',
       '__hideOnHomepage': false,
       'numPreferredServices': 3,
@@ -2231,7 +2231,7 @@ describe('Multi-tool support (new consolidated PCO) for Share Tools', function()
       //'counts': 'none',
       'shareCountThreshold': 5,
       'originalServices':
-        'facebook_like,tweet,pinterest_pinit,google_plusone,counter',
+        'facebook_like,tweet,pinterest_pinit,counter',
       'label': 'SHARES',
       '__hideOnHomepage': false,
       'numPreferredServices': 9,

@@ -979,3 +979,33 @@ msgstr ""
 #, include in addthis-wordpress-plugin-backend domain
 msgid "widget_title_input_label"
 msgstr "Tytuł:"
+
+#. Advanced Settings >> AMP Options header
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_amp_options_header"
+msgstr "AMP Options"
+
+#. Advanced Settings >> AMP Options section description
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_amp_options_description"
+msgstr "In this section, you can override some options for AMP tools."
+
+#. Advanced Settings >> AMP Options inline width label
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_amp_inline_width_label"
+msgstr "Inline Width"
+
+#. Advanced Settings >> AMP Options inline width description
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_amp_inline_width_description"
+msgstr "Override the width of Inline Sharing Tools on AMP"
+
+#. Advanced Settings >> AMP Options inline height label
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_amp_inline_height_label"
+msgstr "Inline Height"
+
+#. Advanced Settings >> AMP Options inline height description
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_amp_inline_height_description"
+msgstr "Override the height of Inline Sharing Tools on AMP"

@@ -34,7 +34,7 @@ if (!class_exists('AddThisSharingButtonsPlugin')) {
      */
     class AddThisSharingButtonsPlugin extends AddThisPlugin
     {
-        protected $version = '6.1.8';
+        protected $version = '6.2.3';
         protected $name = 'Share Buttons by AddThis';
         protected $productPrefix = 'wpp';
         protected $pluginSlug = 'addthis';

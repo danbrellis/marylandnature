@@ -58,7 +58,7 @@ appAddThisWordPress.controller('AdvancedSettingsCtrl', function(
     example: {
       share: {
         services:
-          'facebook,twitter,google_plusone_share,pinterest_share,print,more'
+          'facebook,twitter,pinterest_share,print,more'
       }
     },
     linkText: 'addthis.layers()',
