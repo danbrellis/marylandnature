@@ -78,7 +78,9 @@ class SiteOrigin_Panels_Admin {
 			add_filter( 'gutenberg_can_edit_post_type', array( $this, 'show_classic_editor_for_panels' ), 10, 2 );
 			add_filter( 'use_block_editor_for_post_type', array( $this, 'show_classic_editor_for_panels' ), 10, 2 );
 			add_action( 'admin_print_scripts-edit.php', array( $this, 'add_panels_add_new_button' ) );
-			add_filter( 'display_post_states', array( $this, 'add_panels_post_state' ), 10, 2 );
+			if( siteorigin_panels_setting( 'admin-post-state' ) ) {
+				add_filter( 'display_post_states', array( $this, 'add_panels_post_state' ), 10, 2 );
+			}
 		}
 	}
 
@@ -1255,8 +1257,9 @@ class SiteOrigin_Panels_Admin {
 		$post_types = siteorigin_panels_setting( 'post-types' );
 		$is_panels_type = in_array( $typenow, $post_types );
 		$use_classic = siteorigin_panels_setting( 'use-classic' );
-		
-		if ( $is_new && $is_panels_type && $use_classic ) {
+		$show_classic_admin_notice = $is_new && $is_panels_type && $use_classic;
+		$show_classic_admin_notice = apply_filters( 'so_panels_show_classic_admin_notice', $show_classic_admin_notice );
+		if ( $show_classic_admin_notice ) {
 			$settings_url = self_admin_url( 'options-general.php?page=siteorigin_panels' );
 			$notice = sprintf(
 				__( 'This post type is set to use the Classic Editor by default for new posts. If you’d like to change this to the block editor, please go to <a href="%s" class="components-notice__action is-link">Page Builder Settings</a> and uncheck <strong>Use Classic Editor for new posts</strong>' ),
@@ -1285,9 +1288,10 @@ class SiteOrigin_Panels_Admin {
 			return false;
 		}
 		
-		// If the `$post_type` is set to be used by Page Builder.
 		$post_types = siteorigin_panels_setting( 'post-types' );
-		$is_panels_type = in_array( $post_type, $post_types );
+        global $pagenow;
+		// If the `$post_type` is set to be used by Page Builder for new posts.
+		$is_new_panels_type = $pagenow == 'post-new.php' && in_array( $post_type, $post_types );
 		$use_classic = siteorigin_panels_setting( 'use-classic' );
 		// For existing posts.
 		global $post;
@@ -1295,13 +1299,11 @@ class SiteOrigin_Panels_Admin {
 			// If the post has blocks just allow `$use_block_editor` to decide.
 			if ( ! has_blocks( $post ) ) {
 				$panels_data = get_post_meta( $post->ID, 'panels_data', true );
-				global $pagenow;
-				$is_new = $pagenow == 'post-new.php';
-				if ( ! empty( $panels_data ) || ( $use_classic && $is_new && $is_panels_type ) ) {
+				if ( ! empty( $panels_data ) || ( $use_classic && $is_new_panels_type ) ) {
 					$use_block_editor = false;
 				}
 			}
-		} else if ( $is_panels_type ) {
+		} else if ( $is_new_panels_type ) {
 			$use_block_editor = false;
 		}
 		
@@ -1468,7 +1470,7 @@ class SiteOrigin_Panels_Admin {
 			$show = $show && ! isset( $so_custom_types[ $post_type ] );
 		}
 		
-		return $show;
+		return apply_filters( 'so_panels_show_add_new_dropdown_for_type', $show, $post_type );
 	}
 	
 	public function add_panels_post_state( $post_states, $post ) {

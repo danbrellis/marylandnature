@@ -1,9 +1,9 @@
 === Page Builder by SiteOrigin ===
 Tags: page builder, responsive, widget, widgets, builder, page, admin, gallery, content, cms, pages, post, css, layout, grid
 Requires at least: 4.4
-Tested up to: 5.1
-Stable tag: 2.10.2
-Build time: 2019-02-28T11:29:02-08:00
+Tested up to: 5.2
+Stable tag: 2.10.6
+Build time: 2019-06-12T11:06:03-07:00
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Donate link: https://siteorigin.com/downloads/premium/
@@ -95,6 +95,32 @@ Page Builder is actively developed and updated, so generally I'd recommend that 
 We've tried to ensure that Page Builder is compatible with most plugin widgets. It's best to just download Page Builder and test for yourself.
 
 == Changelog ==
+
+= 2.10.6 - 12 June 2019 =
+* Add admin filter for whether to show the 'add new' dropdown and classic editor admin notice.
+* Trigger new event before initial panels setup.
+* Yoast compat.
+* Pass new widget view as parameter in 'widget_added' event.
+* Layout Builder widget: Use preview parameter and remove redundant style rendering for Post Content and Preview rendering.
+* Layout Block: Support for custom class names.
+* Layout styles: Add contain as option for background image display.
+* Block editor: Only go to PB interface for _new_ PB post types.
+* Layout block: Use `jQuery` instead of alias `$` for odd cases where `$` is undefined.
+
+= 2.10.5 - 5 April 2019 =
+* Live Editor: Fix styles in live editor previews.
+* Render cell styles after row styles.
+
+= 2.10.4 - 3 April 2019 =
+* New welcome page.
+* Include row style wrapper in cell CSS direct child selectors.
+
+= 2.10.3 - 2 April 2019 =
+* Layout builder widget: Call styles sanitization in update.
+* Live editor: Only call `process_raw_widgets` once for preview data.
+* Add a setting for whether to display SiteOrigin Page Builder post state.
+* Sidebars emulator: Cache the result of url_to_postid().
+* Prevent affecting child layouts with parent layouts' CSS.
 
 = 2.10.2 - 28 February 2019 =
 * Don't remove left/right border when Full Width Stretch Padding is enabled on row.
