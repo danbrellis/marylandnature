@@ -15,8 +15,10 @@ class SiteOrigin_Widget_Field_Location extends SiteOrigin_Widget_Field_Base {
 		$address = '';
 		if ( ! empty( $value['address'] ) ) {
 			$address = $value['address'];
-		} else if ( ! empty( $value['name'] ) ) {
-			$address = $value['name'];
+		}
+
+		if ( ! empty( $value['name'] ) && strpos( $address, $value['name'] ) !== 0) {
+			$address = $value['name'] . ', ' . $address;
 		}
 		
 		$api_key = SiteOrigin_Widget_GoogleMap_Widget::get_api_key( $instance );
@@ -53,7 +55,13 @@ class SiteOrigin_Widget_Field_Location extends SiteOrigin_Widget_Field_Base {
 			'so-location-field',
 			'soLocationField',
 			array(
-				'missingApiKey' => __( 'This widget requires a Google Maps API key. Please ensure you have set yours in the Google Maps Widget settings.', 'so-widgets-bundle' ),
+				'missingApiKey' => __( 'This widget requires a Google Maps API key. Please ensure you have set yours in Google Maps Widget settings.', 'so-widgets-bundle' ),
+				'invalidApiKey' => __( 'The Google Maps API key appears to be invalid. Please ensure you have set the correct key in Google Maps Widget settings.', 'so-widgets-bundle' ),
+				'apiNotEnabled' => sprintf(
+					__( 'The Google Maps API key appears to be valid, but the required APIs are either disabled or restricted. Please %scheck the API key configuration%s.', 'so-widgets-bundle' ),
+					'<a href="https://console.developers.google.com/apis/dashboard?project=_" target="_blank" rel="noopener noreferrer">',
+					'</a>'
+				),
 				'globalSettingsButtonLabel' => __( 'Go to Google Maps Widget settings', 'so-widgets-bundle' ),
 				'globalSettingsButtonUrl' => admin_url( 'plugins.php?page=so-widgets-plugins' ),
 			)
@@ -64,12 +72,15 @@ class SiteOrigin_Widget_Field_Location extends SiteOrigin_Widget_Field_Base {
 		if ( empty( $value ) ) {
 			return array();
 		}
+
 		if ( is_string( $value ) ) {
 			$decoded_value = json_decode( $value, true );
 			// If it's not valid JSON
 			if ( $decoded_value == null ) {
 				$decoded_value = array( 'address' => $value );
 			}
+		} else if ( is_array( $value ) ) {
+			$decoded_value = $value;
 		}
 		$location = array();
 		

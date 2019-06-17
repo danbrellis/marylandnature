@@ -91,7 +91,11 @@
 					} );
 					$mainForm.data( 'backupDisabled', true );
 					$mainForm.sowSetupForm();
-					if ( ! props.attributes.widgetData ) {
+					if ( props.attributes.widgetData ) {
+						// If we call `setWidgetFormValues` with the last parameter ( `triggerChange` ) set to false,
+						// it won't show the correct values for some fields e.g. color and media fields.
+						sowbForms.setWidgetFormValues( $mainForm, props.attributes.widgetData );
+					} else {
 						props.setAttributes( { widgetData: sowbForms.getWidgetFormValues( $mainForm ) } );
 					}
 					$mainForm.on( 'change', function () {
@@ -113,7 +117,7 @@
 				}
 			}
 			
-			if ( props.editing || ! props.attributes.widgetClass ) {
+			if ( props.editing || ! props.attributes.widgetClass || ! props.attributes.widgetData ) {
 				var widgetsOptions = [];
 				if ( sowbBlockEditorAdmin.widgets ) {
 					sowbBlockEditorAdmin.widgets.sort( function ( a, b ) {
@@ -146,9 +150,15 @@
 						props.setState( { widgetFormHtml: widgetForm } );
 					} )
 					.fail( function ( response ) {
-						var error = response.responseJSON;
 						
-						props.setState( { widgetFormHtml: '<div>' + error.message + '</div>', } );
+						var errorMessage = '';
+						if ( response.hasOwnProperty( 'responseJSON' ) ) {
+							errorMessage = response.responseJSON.message;
+						} else if ( response.hasOwnProperty( 'responseText' ) ) {
+							errorMessage = response.responseText;
+						}
+						
+						props.setState( { widgetFormHtml: '<div>' + errorMessage + '</div>', } );
 					});
 				}
 				
@@ -204,7 +214,11 @@
 				];
 			} else {
 				
-				var loadWidgetPreview = ! props.loadingWidgets && ! props.editing && ! props.widgetPreviewHtml && props.attributes.widgetClass;
+				var loadWidgetPreview = ! props.loadingWidgets &&
+					! props.editing &&
+					! props.widgetPreviewHtml &&
+					props.attributes.widgetClass &&
+					props.attributes.widgetData;
 				if ( loadWidgetPreview ) {
 					$.post( {
 						url: sowbBlockEditorAdmin.restUrl + 'sowb/v1/widgets/previews',
@@ -223,10 +237,16 @@
 						} );
 					} )
 					.fail( function ( response ) {
-						var error = response.responseJSON;
+						
+						var errorMessage = '';
+						if ( response.hasOwnProperty( 'responseJSON' ) ) {
+							errorMessage = response.responseJSON.message;
+						} else if ( response.hasOwnProperty( 'responseText' ) ) {
+							errorMessage = response.responseText;
+						}
 						
 						props.setState( {
-							widgetPreviewHtml: '<div>' + error.message + '</div>',
+							widgetPreviewHtml: '<div>' + errorMessage + '</div>',
 						} );
 					});
 				}
