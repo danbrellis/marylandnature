@@ -397,6 +397,54 @@ function nhsm_em_the_event_archive_filters(){
 	<?php
 }
 
+/**
+ * In the post meta box, show the event occurrences
+ * @param string $pagenow
+ */
+add_action( 'admin_enqueue_scripts', 'nhsm_em_admin_styles' );
+function nhsm_em_admin_styles( $pagenow ) {
+    global $post, $post_type;
+
+    if ( in_array( $pagenow, array( 'post-new.php', 'post.php' ), true ) && in_array( $post_type, apply_filters( 'em_event_post_type', array( 'event' ) ) ) ) {
+        $recurrence = get_post_meta($post->ID, '_event_recurrence', true);
+        if(isset($recurrence['type']) && $recurrence['type'] !== 'once') {
+            add_action('em_before_metabox_event_datetime', 'nhsm_em_before_metabox_event_datetime');
+            add_action('em_after_metabox_event_datetime', 'nhsm_em_after_metabox_event_datetime');
+            wp_enqueue_style( 'nhsm-events-admin', get_stylesheet_directory_uri() . '/assets/css/events-admin.css' );
+        };
+
+
+    }
+}
+
+function nhsm_em_before_metabox_event_datetime(){
+    echo '<div class="fields">';
+}
+
+/**
+ * @var WP_Post $post
+ */
+function nhsm_em_after_metabox_event_datetime(){
+    global $post;
+
+    //Get occurrences and sort by date
+    $occurrences = get_post_meta($post->ID, '_event_occurrence_date', false);
+    $os = [];
+    foreach($occurrences as $occurrence){
+        $dates = explode('|', $occurrence);
+        $os[strtotime($dates[0])] = $occurrence;
+    }
+    ksort($os);
+    $sessions = '<h3>Occurrences</h3>';
+    $df = 'D, j F Y g:ia';
+    foreach($os as $start => $o) {
+        $dates = explode('|', $o);
+        $end = strtotime($dates[1]);
+        $sessions .= sprintf("<p><span class='start'>%s</span><span class='end'>%s</span></p>", date($df,$start), date($df,$end));
+    }
+    echo '</div><!-- //.fields --><div class="occurrences">'.$sessions.'</div>';
+}
+
 /* Site Origin */
 add_filter('siteorigin_panels_row_style_attributes', 'nhsm_siteorigin_panels_row_style_attributes', 10, 2);
 function nhsm_siteorigin_panels_row_style_attributes($style_attributes, $style_args){
