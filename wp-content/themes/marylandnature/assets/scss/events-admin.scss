@@ -1,0 +1,13 @@
+#event-date-time-box {
+  .inside {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .occurrences p {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-column-gap: 25px;
+    }
+  }
+}
