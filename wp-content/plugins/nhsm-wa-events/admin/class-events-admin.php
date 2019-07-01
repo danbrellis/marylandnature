@@ -29,8 +29,7 @@ class Events_Admin {
         //hook into events save action
         add_action('wp_insert_post', array($this, 'event_saved'), 100, 3); //@todo pull post_type from settings
 
-        add_action( 'admin_notices', array($this, 'admin_notices') );
-        add_filter('removable_query_args', array($this, 'add_removable_arg'));
+        add_filter( 'removable_query_args', array($this, 'add_removable_arg') );
 
         add_action( 'admin_head', array($this, 'admin_head') );
     }
@@ -38,6 +37,7 @@ class Events_Admin {
     function admin_head(){
         $screen = get_current_screen();
         if($screen->base === 'post' && $screen->post_type === 'event'){
+            add_action( 'admin_notices', array($this, 'admin_notices') );
             add_action( 'admin_notices', array($this, 'admin_notices__warning') );
         }
     }
@@ -331,8 +331,8 @@ class Events_Admin {
      */
     public function admin_notices() {
         global $post;
+        $wa_event_id = get_post_meta($post->ID, '_wa_event_id', true);
         if ( isset( $_GET['WA_EVENT_MSG'] ) ):
-            $wa_event_id = get_post_meta($post->ID, '_wa_event_id', true);
             if($_GET['WA_EVENT_MSG'] === 'create__success' && $wa_event_id): ?>
             <div class="notice notice-success is-dismissible">
                 <p>Event Successfully added to WildApricot with ID: <?php echo $wa_event_id; ?>.</p>
@@ -354,13 +354,12 @@ class Events_Admin {
                     <p>Unable to update event in WildApricot. Please try to update again through Wordpress, otherwise, contact the site admin.</p>
                 </div>
             <?php endif;
-
-            if(!$wa_event_id): ?>
-                <div class="notice notice-error is-dismissible">
-                    <p>Unable to find reference to event in WildApricot. Try to save it again through Wordpress, otherwise, contact the site admin.</p>
-                </div>
-            <?php endif;
         endif;
+        if(!$wa_event_id): ?>
+            <div class="notice notice-error is-dismissible">
+                <p>Unable to find reference to event in WildApricot. Try to save it again through Wordpress, otherwise, contact the site admin.</p>
+            </div>
+        <?php endif;
     }
 
     /**
