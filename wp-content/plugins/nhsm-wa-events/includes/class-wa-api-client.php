@@ -67,7 +67,7 @@ class WaApiClient
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $jsonResult = curl_exec($ch);
         if ($jsonResult === false) {
-            throw new \Exception(curl_errno($ch) . ': ' . curl_error($ch));
+            throw new \Exception("CURL Error. " . curl_errno($ch) . ': ' . curl_error($ch));
         }
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         // var_dump($jsonResult); // Uncomment line to debug response
