@@ -163,7 +163,8 @@ class Events_Admin {
 
             $payment_instr = get_field('payment_instructions', $post_id);
 
-            $content = $post->post_content;
+            $photo = get_the_post_thumbnail($post, 'medium');
+            $content = $photo . "\n\n" . $post->post_content;
             //remove_filter( 'the_content', 'wpautop' );
             $content = apply_filters('the_content', $content);
             //add_filter( 'the_content', 'wpautop' );
@@ -175,7 +176,7 @@ class Events_Admin {
                 "EndTimeSpecified" => false,
                 "RegistrationEnabled" => $reg_enabled,
                 "Details" => [
-                    "DescriptionHtml" => $content, //@todo add some photos?
+                    "DescriptionHtml" => $content,
                     "PaymentInstructions" => htmlspecialchars($payment_instr),
                     "TimeZone" => [
                         "ZoneId" => "Eastern Standard Time",
