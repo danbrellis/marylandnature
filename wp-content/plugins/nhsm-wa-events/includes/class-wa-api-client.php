@@ -48,7 +48,7 @@ class WaApiClient
     public function makeRequest($url, $verb = 'GET', $data = null)
     {
         if (!$this->token) {
-            throw new Exception('Access token is not initialized. Call initTokenByApiKey or initTokenByContactCredentials before performing requests.');
+            throw new \Exception('Access token is not initialized. Call initTokenByApiKey or initTokenByContactCredentials before performing requests.');
         }
         $ch = curl_init();
         $headers = array(
@@ -67,15 +67,16 @@ class WaApiClient
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $jsonResult = curl_exec($ch);
         if ($jsonResult === false) {
-            throw new Exception(curl_errno($ch) . ': ' . curl_error($ch));
+            throw new \Exception(curl_errno($ch) . ': ' . curl_error($ch));
         }
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         // var_dump($jsonResult); // Uncomment line to debug response
         curl_close($ch);
-        return [
-            'code' => $code,
-            'data' => json_decode($jsonResult, true)
-        ];
+        $result = json_decode($jsonResult, true);
+        if($code !== 200){
+            throw new \Exception($code . ": " . $result['message'] . " " . json_encode($result['details']));
+        }
+        return $result;
     }
     private function getAuthTokenByAdminCredentials($login, $password)
     {
