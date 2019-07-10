@@ -133,6 +133,27 @@
             "button_label": "",
             "sub_fields": [
                 {
+                    "key": "field_5d26151b33379",
+                    "label": "Registration Type ID",
+                    "name": "registration_type_id",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "hidden",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "min": "",
+                    "max": "",
+                    "step": ""
+                },
+                {
                     "key": "field_5d1a5e9405d75",
                     "label": "Registration type details",
                     "name": "",
@@ -251,7 +272,14 @@
                     "type": "true_false",
                     "instructions": "Enable waitlist when limit is reached",
                     "required": 0,
-                    "conditional_logic": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_5d1a55fe9d380",
+                                "operator": "!=empty"
+                            }
+                        ]
+                    ],
                     "wrapper": {
                         "width": "",
                         "class": "",
@@ -277,8 +305,8 @@
                         "id": ""
                     },
                     "choices": {
-                        "no_cancel": "Do not allow cancellation by registrants",
-                        "can_cancel": "Allow cancellation before start of the event."
+                        "DoNotAllow": "Do not allow cancellation by registrants",
+                        "AllowUpToPeriodBeforeEvent": "Allow cancellation before start of the event."
                     },
                     "allow_null": 0,
                     "other_choice": 0,
@@ -299,7 +327,7 @@
                             {
                                 "field": "field_5d1a56789d382",
                                 "operator": "==",
-                                "value": "can_cancel"
+                                "value": "AllowUpToPeriodBeforeEvent"
                             }
                         ]
                     ],
@@ -311,7 +339,7 @@
                     "default_value": "",
                     "placeholder": "",
                     "prepend": "",
-                    "append": "",
+                    "append": "days",
                     "min": 0,
                     "max": "",
                     "step": ""
@@ -373,9 +401,9 @@
                         "id": ""
                     },
                     "choices": {
-                        "guestNumber": "Only total number of guests",
-                        "guestContact": "Contact information for each guest",
-                        "guestFull": "Full registration information for each guest"
+                        "NumberOfGuests": "Only total number of guests",
+                        "CollectContactDetails": "Contact information for each guest",
+                        "CollectFullInfo": "Full registration information for each guest"
                     },
                     "allow_null": 0,
                     "other_choice": 0,
@@ -504,9 +532,9 @@
                         "id": ""
                     },
                     "choices": {
-                        "everyone": "Everyone",
-                        "members": "Members Only",
-                        "code": "Registration code required"
+                        "Everyone": "Everyone",
+                        "MembersOnly": "Members Only",
+                        "CodeRequired": "Registration code required"
                     },
                     "allow_null": 0,
                     "other_choice": 0,
@@ -527,7 +555,7 @@
                             {
                                 "field": "field_5d1a598228d4b",
                                 "operator": "==",
-                                "value": "members"
+                                "value": "MembersOnly"
                             }
                         ]
                     ],
@@ -537,12 +565,12 @@
                         "id": ""
                     },
                     "choices": {
-                        "Individual": "Individual",
-                        "Family": "Family",
-                        "Contributing": "Contributing",
-                        "Sustaining": "Sustaining",
-                        "Life": "Life",
-                        "Corporate": "Corporate"
+                        "1 - Individual": "1 - Individual",
+                        "2- Family": "2- Family",
+                        "3 - Contributing": "3 - Contributing",
+                        "4 - Sustaining": "4 - Sustaining",
+                        "5 - Life": "5 - Life",
+                        "6 - Corporate": "6 - Corporate"
                     },
                     "allow_custom": 0,
                     "default_value": [
@@ -570,7 +598,7 @@
                             {
                                 "field": "field_5d1a598228d4b",
                                 "operator": "==",
-                                "value": "code"
+                                "value": "CodeRequired"
                             }
                         ]
                     ],
@@ -650,8 +678,8 @@
                         "id": ""
                     },
                     "choices": {
-                        "show": "Show with special formatting indicating unavailable",
-                        "hide": "Hide"
+                        "ShowDisabled": "Show with special formatting indicating unavailable",
+                        "Hide": "Hide"
                     },
                     "allow_null": 0,
                     "other_choice": 0,
@@ -699,5 +727,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1562015088
+    "modified": 1562781641
 }

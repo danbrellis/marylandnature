@@ -23,8 +23,8 @@ class Events_Admin {
 
         $this->setAccountUrl($this->waApiClient);
 
-        $r = $this->waApiClient->makeRequest($this->account_url . '/events/3466080', 'GET');
-        //echo '<pre>'; var_dump($r); echo '</pre>'; exit();
+        //$r = $this->waApiClient->makeRequest($this->account_url . '/events/3470106', 'GET');
+        //echo '<pre>'; var_dump($rt); echo '</pre>'; exit();
 
         //hook into events save action
         add_action('wp_insert_post', array($this, 'event_saved'), 100, 3); //@todo pull post_type from settings
@@ -64,8 +64,14 @@ class Events_Admin {
      */
     function getAccountDetails($waApiClient) {
         $url = 'https://api.wildapricot.org/v2/Accounts/';
-        $response = $waApiClient->makeRequest($url);
-        return $response['data'][0]; // usually you have access to one account
+        $response = false;
+        try{
+            $response = $waApiClient->makeRequest($url);
+        }
+        catch(\Exception $e){
+            $this->send_error("getAccountDetails\n" . $e->getMessage());
+        }
+        return $response[0]; // usually you have access to one account
     }
 
     /**
@@ -82,32 +88,53 @@ class Events_Admin {
 
     /**
      * @param array $data
+     * @param \WP_Post $post
      * @return array
      */
-    public function createEvent($data = []){
+    public function createEvent($data = [], $post){
         $event_url = $this->getEventUrl();
-        $response = $this->waApiClient->makeRequest($event_url, 'POST', $data);
+        $response = false;
+        try{
+            $response = $this->waApiClient->makeRequest($event_url, 'POST', $data);
+        }
+        catch(\Exception $e){
+            $this->send_error("createEvent\n" . $e->getMessage(),$data, $post);
+        }
         return $response;
     }
 
     /**
      * @param array $data
+     * @param \WP_Post $post
      * @param int $event_id
      * @return array
      */
-    public function updateEvent($data = [], $event_id){
+    public function updateEvent($data = [], $post, $event_id){
         $event_url = $this->getEventUrl($event_id);
-        $response = $this->waApiClient->makeRequest($event_url, 'PUT', $data);
+        $response = false;
+        try{
+            $response = $this->waApiClient->makeRequest($event_url, 'PUT', $data);
+        }
+        catch(\Exception $e){
+            $this->send_error("updateEvent\n" . $e->getMessage(), $data, $post, $event_id);
+        }
         return $response;
     }
 
     /**
      * @param int $event_id
+     * @param \WP_Post $post
      * @return array
      */
-    public function getEvent($event_id){
+    public function getEvent($event_id, $post){
         $event_url = $this->getEventUrl($event_id);
-        $response = $this->waApiClient->makeRequest($event_url, 'GET');
+        $response = false;
+        try{
+            $response = $this->waApiClient->makeRequest($event_url, 'GET');
+        }
+        catch(\Exception $e){
+            $this->send_error("getEvent\n" . $e->getMessage(), [], $post, $event_id);
+        }
         return $response;
     }
 
@@ -117,6 +144,7 @@ class Events_Admin {
      * @param boolean $update
      * @var \WP_Term $location_data
      * @var \WP_Term $tag
+     * @throws \Exception
      * @return int
      */
     public function event_saved($post_id, $post, $update) {
@@ -126,11 +154,14 @@ class Events_Admin {
             //check if WA event id exists in the meta
             $wa_event_id = get_post_meta($post_id, '_wa_event_id', true);
 
-            $reg_enabled = get_post_meta( $post->ID, '_nhsm_wa_events_registration_enabled', true );
-            $reg_limit = get_post_meta( $post->ID, '_nhsm_wa_events_registration_limit', true );
-            $reg_confirm_extra_info = get_post_meta( $post->ID, '_nhsm_wa_events_reg_confirm_extra_info', true );
-            $reg_msg = get_post_meta( $post->ID, '_nhsm_wa_events_registration_msg', true );
-            $payment_instr = get_post_meta( $post->ID, '_nhsm_wa_events_payment_instr', true );
+            $reg_enabled = get_field('enable_registration', $post_id);
+
+            $reg_details = get_field('registration_details', $post_id);
+            $reg_limit = $reg_details['registration_limit'];
+            $reg_confirm_extra_info = $reg_details['registration_extra_information'];
+            $reg_msg = $reg_details['registration_message'];
+
+            $payment_instr = get_field('payment_instructions', $post_id);
 
             $content = $post->post_content;
             //remove_filter( 'the_content', 'wpautop' );
@@ -142,7 +173,7 @@ class Events_Admin {
                 "Name" => get_the_title($post),
                 "StartTimeSpecified" => false,
                 "EndTimeSpecified" => false,
-                "RegistrationEnabled" => boolval($reg_enabled),
+                "RegistrationEnabled" => $reg_enabled,
                 "Details" => [
                     "DescriptionHtml" => $content, //@todo add some photos?
                     "PaymentInstructions" => htmlspecialchars($payment_instr),
@@ -230,56 +261,177 @@ class Events_Admin {
             }
             if(!empty($sessions)) $data['Sessions'] = $sessions;
 
-
             //echo '<pre>'; var_dump($data); echo '</pre>'; exit();
 
             if($wa_event_id){ //update
                 $data["Id"] = $wa_event_id;
-                $response = $this->updateEvent($data, $wa_event_id);
-                if($response['code'] === 200) {
+                try{
+                    $event_data = $this->updateEvent($data, $post, $wa_event_id);
                     add_filter('redirect_post_location', array($this, 'add_update_success_query_var'), 99);
+                    if($reg_enabled) $this->addEventRegistrationTypes($wa_event_id, $post);
+
+                    //clean up old reg types
+                    $this->purgeRegTypes($event_data, $wa_event_id, $post);
                 }
-                else {
+                catch(\Exception $e){
                     add_filter('redirect_post_location', array($this, 'add_update_error_query_var'), 99);
-                    $this->send_error($response, $post, $wa_event_id);
                 }
             }
             else { //add new
-                $response = $this->createEvent($data);
-                //echo '<pre>'; var_dump($response); echo '</pre>';
-
-                if($response['code'] === 200){
-                    $event_id = $response['data'];
+                try{
+                    $event_id = $this->createEvent($data, $post);
                     update_post_meta($post_id, '_wa_event_id', $event_id);
                     add_filter( 'redirect_post_location', array( $this, 'add_create_success_query_var' ), 99 );
+                    if($reg_enabled) $this->addEventRegistrationTypes($event_id, $post);
                 }
-                else {
+                catch(\Exception $e){
                     add_filter( 'redirect_post_location', array( $this, 'add_create_error_query_var' ), 99 );
-                    $this->send_error($response, $post);
                 }
+            }
+        }
 
-                //echo '<pre>'; var_dump($event_id); echo '</pre>'; exit();
+        return $post_id;
+    }
+
+    /**
+     * @param int $wa_event_id
+     * @param \WP_Post $post
+     * @throws \Exception
+     */
+    public function addEventRegistrationTypes($wa_event_id, $post) {
+        try{
+            $membership_levels = $this->waApiClient->makeRequest($this->account_url . '/membershiplevels');
+        }
+        catch(\Exception $e){
+            $this->send_error("GET membershiplevels\n" . $e->getMessage(), [], $post, $wa_event_id);
+            //use hardcoded defaults
+            $membership_levels = [
+                [
+                    'Name' => '1 - Individual',
+                    'Id' => 313349
+                ],
+                [
+                    'Name' => '2 - Family',
+                    'Id' => 313508
+                ],
+                [
+                    'Name' => '3 - Contributing',
+                    'Id' => 313510
+                ],
+                [
+                    'Name' => '4 - Sustaining',
+                    'Id' => 313511
+                ],
+                [
+                    'Name' => '5 - Life',
+                    'Id' => 313512
+                ],
+                [
+                    'Name' => '6 - Corporate',
+                    'Id' => 313513
+                ],
+            ];
+        }
+
+        $types = get_field('registration_types', $post->ID);
+        foreach($types as $index => $type){
+            //check if reg type ID already exists, if so we're updating
+            $wa_reg_type_id = $type['registration_type_id'];
+
+            $base_price = $type['base_price'];
+            $guest_pricing = $type['guest_pricing'];
+            $guest_price = $guest_pricing === 'basePrice' ? $base_price : $type['guest_price'];
+            $availability = $type['availability'];
+            if($availability === "MembersOnly"){
+                $membership_types = $type['membership_types'];
+                $membership_levels_formatted = [];
+                foreach($membership_levels as $membership_level){
+                    if(in_array($membership_level['Name'], $membership_types))
+                        $membership_levels_formatted[] = [
+                            'Id' => $membership_level['Id']
+                        ];
+                }
+            }
+            else $membership_levels_formatted = NULL;
+
+            $cancellation = $type['cancellation'];
+            $data = [
+                "EventId" => $wa_event_id,
+                "Name" => $type['name'],
+                "IsEnabled" => true,
+                "Description" => $type['description'],
+                "BasePrice" => $base_price,
+                "GuestPrice" => $guest_price,
+                "UseTaxScopeSettings" => false,
+                "Availability" => $type['availability'],
+                "RegistrationCode" => $type['registration_code'],
+                "AvailableForMembershipLevels" => $membership_levels_formatted,
+                "AvailableFrom" => $type['available_period']['from'] ? date('c', $type['available_period']['from']) : NULL,
+                "AvailableThrough" => $type['available_period']['to'] ? date('c', $type['available_period']['to']) : NULL,
+                "MaximumRegistrantsCount" => $type['registration_limit_for_type'],
+                "GuestRegistrationPolicy" => $type['allow_guest_registrations'] ? $type['information_to_collect'] : "Disabled",
+                "MaxGuestsCount" => $type['guest_limit'],
+                "UnavailabilityPolicy" => $type['if_unavailable'],
+                "CancellationBehaviour" => $cancellation,
+                "CancellationDaysBeforeEvent" => $cancellation === 'AllowUpToPeriodBeforeEvent' ? $type['cancellation_cutoff'] : 0,
+                "IsWaitlistEnabled" => $type['waitlist']
+            ];
+
+            try{
+                if($wa_reg_type_id)
+                    $this->waApiClient->makeRequest($this->account_url . '/EventRegistrationTypes/' . $wa_reg_type_id, 'PUT', $data);
+                else {
+                    $wa_reg_type_id = $this->waApiClient->makeRequest($this->account_url . '/EventRegistrationTypes', 'POST', $data);
+                    update_post_meta($post->ID, 'registration_types_' . $index . '_registration_type_id', $wa_reg_type_id);
+                }
+            }
+            catch(\Exception $e){
+                $this->send_error("Add/Update EventRegistrationTypes\n" . $e->getMessage(), $data, $post, $wa_event_id);
+            }
+        }
+    }
+
+    public function purgeRegTypes($wa_event, $wa_event_id, $post){
+        //get all event reg types from WA
+        $wa_reg_type_ids = $reg_type_ids = [];
+        foreach($wa_event['Details']['RegistrationTypes'] as $wa_reg_type){
+            $wa_reg_type_ids[] = $wa_reg_type['Id'];
+        }
+
+        //get all event reg types from WP
+        $reg_types = get_field('registration_types', $post->ID);
+        foreach($reg_types as $reg_type){
+            $reg_type_ids[] = $reg_type['registration_type_id'];
+        }
+
+        //if any exist in WA that don't have their ID associated with WP, delete them
+        $defunct_wa_reg_type_ids = array_diff($wa_reg_type_ids, $reg_type_ids);
+        foreach($defunct_wa_reg_type_ids as $id){
+            try{
+                $this->waApiClient->makeRequest($this->account_url . '/EventRegistrationTypes/' . $id, 'DELETE');
+            }
+            catch(\Exception $e){
+                $this->send_error("DELETE EventRegistrationType\n" . $e->getMessage(), ['typeId' => $id], $post, $wa_event_id);
             }
         }
     }
 
     /**
-     * @param array $response
+     * @param string $msg
+     * @param array $data
      * @param \WP_Post $post
      * @param int $wa_event_id
      */
-    public function send_error($response, $post, $wa_event_id = 0){
+    public function send_error($msg, $data = [], $post = null, $wa_event_id = 0){
         $to = get_option('admin_email', 'danbrellis@gmail.com');
         $message = "After saving an event in Wordpress, an error occurred while trying to " . ($wa_event_id ? "update" : "create") . " the event in WildApricot.\n";
         $message .= "Wordpress Post ID: <a href='".get_edit_post_link($post->ID)."'>" . $post->ID . "</a>\n";
         if($wa_event_id) $message .= "WildApricot Event ID: " . $wa_event_id . "\n";
-        $message .= "Error code: " . $response['code'] . "\n\n";
+        $message .= $msg;
         ob_start();
-        var_dump($response['data']);
-        $error = ob_get_clean();
-
-        $message .= "<pre>" . $error . "</pre>";
-
+        var_dump($data);
+        $data_string = ob_get_clean();
+        $message .= '<pre>' . $data_string . '</pre>';
         $headers = [
             "Content-Type: text/html; charset=ISO-8859-1"
         ];
@@ -372,15 +524,20 @@ class Events_Admin {
         $wa_event_id = get_post_meta($post->ID, '_wa_event_id', true);
         if(!$wa_event_id) return;
 
-        $response = $this->getEvent($wa_event_id);
-
-        //if no reg types, show a message
-        if($response['code'] === 200 && $post->post_status === 'publish' && empty($response['data']['Details']['RegistrationTypes'])): ?>
+        try{
+            $wa_event = $this->getEvent($wa_event_id, $post);
+            if(empty($wa_event['Details']['RegistrationTypes'])): ?>
+                <div class="notice notice-warning">
+                    <p><strong>This event has no registration types saved in WildApricot.</strong></p>
+                    <p>Registration is disabled until at least one registration type is created. Go to the <a href="https://marylandnature.wildapricot.org/admin/events/details/?DetailsDisplayMode=View&eventId='.$wa_event_id.'&selTab=3" target="_blank" title="Edit event in WildApricot.">WildApricot event dashboard</a> to create a registration type.</p>';
+                </div>
+            <?php endif;
+        }
+        catch (\Exception $e){ ?>
             <div class="notice notice-warning">
-                <p><strong>This event has no registration types saved in WildApricot.</strong></p>
-                <p>Registration is disabled until at least one registration type is created. Go to the <a href="https://marylandnature.wildapricot.org/admin/events/details/?DetailsDisplayMode=View&eventId=<?php echo $wa_event_id; ?>&selTab=3" target="_blank" title="Edit event in WildApricot.">WildApricot event dashboard</a> to create a registration type.</p>
+                <p>Error in pulling event details from WildApricot.</p>
             </div>
-        <?php endif;
+        <?php }
     }
 
 }
