@@ -378,17 +378,24 @@ class Events_Admin {
                 "IsWaitlistEnabled" => $type['waitlist']
             ];
 
-            try{
-                if($wa_reg_type_id)
+            if($wa_reg_type_id) {
+                $data['Id'] = $wa_reg_type_id;
+                try {
                     $this->waApiClient->makeRequest($this->account_url . '/EventRegistrationTypes/' . $wa_reg_type_id, 'PUT', $data);
-                else {
+                } catch (\Exception $e) {
+                    $this->send_error("PUT EventRegistrationTypes\n" . $e->getMessage(), $data, $post, $wa_event_id);
+                }
+            }
+            else {
+                try{
                     $wa_reg_type_id = $this->waApiClient->makeRequest($this->account_url . '/EventRegistrationTypes', 'POST', $data);
                     update_post_meta($post->ID, 'registration_types_' . $index . '_registration_type_id', $wa_reg_type_id);
                 }
+                catch(\Exception $e){
+                    $this->send_error("POST EventRegistrationTypes\n" . $e->getMessage(), $data, $post, $wa_event_id);
+                }
             }
-            catch(\Exception $e){
-                $this->send_error("Add/Update EventRegistrationTypes\n" . $e->getMessage(), $data, $post, $wa_event_id);
-            }
+
         }
     }
 
