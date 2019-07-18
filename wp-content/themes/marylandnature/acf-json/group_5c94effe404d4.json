@@ -45,6 +45,32 @@
             "layout": "row",
             "sub_fields": [
                 {
+                    "key": "field_5d2f75c7a4478",
+                    "label": "Waitlist",
+                    "name": "waitlist",
+                    "type": "true_false",
+                    "instructions": "Enable waitlist when limit is reached",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_5d1a472c871e0",
+                                "operator": "!=empty"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 0,
+                    "ui": 0,
+                    "ui_on_text": "",
+                    "ui_off_text": ""
+                },
+                {
                     "key": "field_5d1a472c871e0",
                     "label": "Registration Limit",
                     "name": "registration_limit",
@@ -306,6 +332,7 @@
                     },
                     "choices": {
                         "DoNotAllow": "Do not allow cancellation by registrants",
+                        "Allow": "Allow",
                         "AllowUpToPeriodBeforeEvent": "Allow cancellation before start of the event."
                     },
                     "allow_null": 0,
@@ -574,12 +601,12 @@
                     },
                     "allow_custom": 0,
                     "default_value": [
-                        "Individual",
-                        "Family",
-                        "Contributing",
-                        "Sustaining",
-                        "Life",
-                        "Corporate"
+                        "1 - Individual",
+                        "2- Family",
+                        "3 - Contributing",
+                        "4 - Sustaining",
+                        "5 - Life",
+                        "6 - Corporate"
                     ],
                     "layout": "vertical",
                     "toggle": 1,
@@ -727,5 +754,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1562781641
+    "modified": 1563481293
 }
