@@ -9,6 +9,7 @@
 namespace NHSM\Events\Admin;
 
 use WildApricot\WaApiClient;
+use WP_Query;
 
 class Events_Admin {
 
@@ -20,11 +21,11 @@ class Events_Admin {
     public function __construct() {
         $this->waApiClient = WaApiClient::getInstance();
         $this->waApiClient->initTokenByApiKey('sfnzve8mhib8lig1euufu51enp1nyz '); //@todo make dynamic
-
+        //@todo store token in db so we don't need a curl request on every page load
         $this->setAccountUrl($this->waApiClient);
 
-        //$r = $this->waApiClient->makeRequest($this->account_url . '/events/3470106', 'GET');
-        //echo '<pre>'; var_dump($rt); echo '</pre>'; exit();
+        //$r = $this->waApiClient->makeRequest($this->account_url . '/events/3416587', 'GET');
+        //echo '<pre>'; var_dump($r); echo '</pre>'; exit();
 
         //hook into events save action
         add_action('wp_insert_post', array($this, 'event_saved'), 100, 3); //@todo pull post_type from settings
@@ -32,6 +33,204 @@ class Events_Admin {
         add_filter( 'removable_query_args', array($this, 'add_removable_arg') );
 
         add_action( 'admin_head', array($this, 'admin_head') );
+
+        add_action( 'in_admin_header', array($this, 'import_events') );
+    }
+
+    public function import_events(){
+        if(isset($_GET['import_wa_events']) && $_GET['import_wa_events'] = "now"){
+            $skip = isset($_GET['skip']) ? $_GET['skip'] : 0;
+            $top = isset($_GET['top']) ? $_GET['top'] : 20;
+
+            $url = $this->account_url . '/events';
+            $query = [
+                '$skip' => $skip,
+                '$top' => $top,
+                '$sort' => "ByStartDate%20asc"
+            ];
+            $url = add_query_arg($query, $url);
+
+            $events = $this->waApiClient->makeRequest($url);
+            //echo '<pre>'; var_dump($events); echo '</pre>';
+            echo "Starting Event Import: " . count($events['Events']) . " Events, " . $skip . " from start.<br>";
+
+            remove_action('wp_insert_post', array($this, 'event_saved'), 100);
+
+            foreach($events['Events'] as $event){
+                //check if a post event already has the WA ID associated with it
+                $wa_event_id = $event['Id'];
+                echo "Starting WA Event " . $wa_event_id . "<br>";
+                $args = [
+                    'post_type' => 'event',
+                    'post_status' => 'any',
+                    'meta_query' => [
+                        [
+                            'key' => '_wa_event_id',
+                            'value' => $wa_event_id,
+                            'compare' => '='
+                        ]
+                    ]
+                ];
+                $query = new WP_Query($args);
+                if($query->found_posts){
+                    echo "-- Skipping WA Event (ID: " . $wa_event_id . "), already exists as POST ID: " . $query->queried_object_id . "<br>";
+                    continue;
+                }
+
+                //get all event details from WA
+                try {
+                    $event = $this->waApiClient->makeRequest($this->account_url . '/events/' . $wa_event_id);
+                }
+                catch(\Exception $e){
+                    printf("-- <strong>ERROR</strong>: Skipping WA Event (ID: %d). Couldn't get details from WA. %s<br>", $wa_event_id, $e->getMessage());
+                    continue;
+                }
+
+               //echo '<pre>'; var_dump($event); echo '</pre>'; exit();
+
+                //start compiling variables to add to WP
+                $args = array(
+                    'post_content'          => $event['Details']['DescriptionHtml'],
+                    'post_content_filtered' => '',
+                    'post_title'            => $event['Name'],
+                    'post_excerpt'          => wp_trim_words($event['Details']['DescriptionHtml'], 55),
+                    'post_status'           => 'publish',
+                    'post_type'             => 'event',
+                    'comment_status'        => 'closed',
+                    'ping_status'           => 'closed'
+                );
+                $result = wp_insert_post($args, true);
+                if(is_wp_error($result)){
+                    printf("-- <strong>ERROR</strong>: Skipping WA Event (ID: %d). Error inserting WP Post. %s<br>", $wa_event_id);
+                    var_dump($result);
+                    continue;
+                }
+                $post_id = $result;
+
+                //add the meta
+                add_post_meta($post_id, '_wa_event_id', $wa_event_id);
+
+                //location
+                $location_term_id = 0;
+                if(strpos($event['Location'], 'Natural History Society of Maryland') !== false ||
+                    strpos($event['Location'], 'Natural History Society of MD') !== false)
+                    $event['Location'] = "Natural History Society of MD";
+                $location = get_term_by('name', $event['Location'], 'event-location');
+                if(!$location){
+                    //add new term
+                    $loc_term = wp_insert_term($event['Location'], 'event-location');
+                    if(is_wp_error($loc_term)){
+                        echo "-- <strong>ERROR</strong>: Unable to add new location term<br>";
+                        var_dump($loc_term);
+                    }
+                    else $location_term_id = $loc_term['term_id'];
+                }
+                else $location_term_id = $location->term_id;
+
+                //add location to post
+                if($location_term_id) wp_set_post_terms( $post_id, $location_term_id, 'event-location', false );
+
+                //tags
+                wp_set_post_tags( $post_id, $event['Tags'] );
+
+                //start/end dates
+                add_post_meta($post_id, '_event_all_day', intval(!$event['StartTimeSpecified']));
+                $start = get_date_for_wp($event['StartDate']);
+                $end = get_date_for_wp($event['EndDate']);
+
+                if(isset($event['Sessions']) && count($event['Sessions'])){
+                    $separate_end_date = [];
+                    foreach($event['Sessions'] as $session){
+                        $start = get_date_for_wp($session['StartDate']);
+                        $end = get_date_for_wp($session['EndDate']);
+                        $separate_end_date[] = intval($end !== $start);
+                        add_post_meta($post_id, '_event_occurrence_date', $start . '|' . $end);
+                    }
+                    add_post_meta($post_id, '_event_occurrence_last_date', $start . '|' . $end);
+
+                    $last_session = end($event['Sessions']);
+                    $recurrence = [
+                        "type" => 'custom',
+                        "repeat" => 1,
+                        "until" => get_date_for_wp($last_session['StartDate'], "Y-m-d"),
+                        "separate_end_date" => $separate_end_date
+                    ];
+                    add_post_meta($post_id, '_event_recurrence', $recurrence);
+
+                    $start = get_date_for_wp($event['Sessions'][0]['StartDate']);
+                    $end = get_date_for_wp($event['Sessions'][0]['EndDate']);
+                }
+                add_post_meta($post_id, '_event_start_date', $start);
+                add_post_meta($post_id, '_event_end_date', $end);
+
+                add_post_meta($post_id, '_event_tickets_url', 'https://marylandnature.wildapricot.org/event-' . $wa_event_id);
+                $display_options = [
+                    "google_map" => true,
+                    "display_gallery" => true,
+                    "display_location_details" => true,
+                    "price_tickets_info" => false
+                ];
+                add_post_meta($post_id, '_event_display_options', $display_options);
+
+                //registration
+                $enable_registration = 0;
+                $reg_types = $event['Details']['RegistrationTypes'];
+                foreach($reg_types as $reg_type){
+                    if($reg_type['IsEnabled']) {
+                        $enable_registration = 1;
+                        $membership_types = [];
+                        $levels = [
+                            313349 => "1 - Individual",
+                            313508 => "2- Family",
+                            313510 => "3 - Contributing",
+                            313511 => "4 - Sustaining",
+                            313512 => "5 - Life",
+                            313513 => "6 - Corporate"
+                        ];
+                        if($reg_type['Availability'] === 'MembersOnly' && isset($reg_type['AvailableForMembershipLevels']) && is_array($reg_type['AvailableForMembershipLevels'])){
+                            foreach($reg_type['AvailableForMembershipLevels'] as $level) $membership_types[] = $levels[$level['Id']];
+                        }
+
+                        $registration_types = [
+                            'registration_type_id' => $reg_type['Id'],
+                            'name' => $reg_type['Name'],
+                            'description' => $reg_type['Description'],
+                            'base_price' => $reg_type['BasePrice'],
+                            'registration_limit_for_type' => isset($reg_type['MaximumRegistrantsCount']) ? $reg_type['MaximumRegistrantsCount'] : '',
+                            'waitlist' => intval($reg_type['IsWaitlistEnabled']),
+                            'cancellation' => $reg_type['CancellationBehaviour'],
+                            'cancellation_cutoff' => $reg_type['CancellationDaysBeforeEvent'],
+                            'allow_guest_registrations' => $reg_type['GuestRegistrationPolicy'] === 'Disabled' ? false : true,
+                            'information_to_collect' => $reg_type['GuestRegistrationPolicy'] === 'Disabled' ? '' : $reg_type['GuestRegistrationPolicy'],
+                            'guest_pricing' => $reg_type['GuestPrice'] === $reg_type['BasePrice'] ? 'basePrice' : 'specialPrice',
+                            'guest_price' => $reg_type['GuestPrice'],
+                            'guest_limit' => isset($reg_type['MaxGuestsCount']) ? $reg_type['MaxGuestsCount'] : '',
+                            'availability' => $reg_type['Availability'],
+                            'membership_types' => $membership_types,
+                            'registration_code' => isset($reg_type['RegistrationCode']) ? $reg_type['RegistrationCode'] : '',
+                            'available_period' => [
+                                'from' => isset($reg_type['AvailableFrom']) ? get_date_for_wp($reg_type['AvailableFrom'], 'U') : '',
+                                'to' => isset($reg_type['AvailableThrough']) ? get_date_for_wp($reg_type['AvailableThrough'], 'U') : ''
+                            ],
+                            'if_unavailable' => $reg_type['UnavailabilityPolicy']
+                        ];
+                        add_row("registration_types", $registration_types, $post_id);
+                    }
+                }
+
+                $registration_details = [
+                    'registration_limit' => $event['RegistrationsLimit'],
+                    'waitlist' => $event['Details']['IsWaitlistEnabled'],
+                    'registration_extra_information' => $event['Details']['RegistrationConfirmationExtraInfo'],
+                    'registration_message' => $event['Details']['RegistrationMessage']
+                ];
+                update_field("registration_details", $registration_details, $post_id );
+                update_field('enable_registration', $enable_registration, $post_id);
+                update_field('payment_instructions', $event['Details']['PaymentInstructions'], $post_id);
+
+                printf("-- Successfully add to WP with meta. Post ID: %d<br>", $post_id);
+            }
+        }
     }
 
     function admin_head(){
@@ -234,10 +433,12 @@ class Events_Admin {
             //Tags
             $post_tags = get_the_tags();
             $tags = [];
-            foreach($post_tags as $tag) {
-                $tags[] = $tag->name;
+            if($post_tags) {
+                foreach ($post_tags as $tag) {
+                    $tags[] = $tag->name;
+                }
             }
-            if(!empty($tags)) $data['Tags'] = $tags;
+            if (!empty($tags)) $data['Tags'] = $tags;
 
             //Occurrences
             $occurrences = get_post_meta($post_id, '_event_occurrence_date', false);
@@ -536,8 +737,11 @@ class Events_Admin {
             $wa_event = $this->getEvent($wa_event_id, $post);
             if(empty($wa_event['Details']['RegistrationTypes'])): ?>
                 <div class="notice notice-warning">
-                    <p><strong>This event has no registration types saved in WildApricot.</strong></p>
-                    <p>Registration is disabled until at least one registration type is created. Go to the <a href="https://marylandnature.wildapricot.org/admin/events/details/?DetailsDisplayMode=View&eventId='.$wa_event_id.'&selTab=3" target="_blank" title="Edit event in WildApricot.">WildApricot event dashboard</a> to create a registration type.</p>';
+                    <p><strong>This event has no registration types. Registration will not be active until a registration type is added.</strong></p>
+                </div>
+            <?php else: ?>
+                <div class="notice notice-info">
+                    <p>This event has a corresponding entry in <a href="https://marylandnature.wildapricot.org/admin/events/details/?DetailsDisplayMode=View&eventId='.$wa_event_id.'&selTab=3" target="_blank" title="Edit event in WildApricot.">WildApricot</a> with ID: <?php echo $wa_event_id; ?>.</strong></p>
                 </div>
             <?php endif;
         }
@@ -548,4 +752,11 @@ class Events_Admin {
         <?php }
     }
 
+}
+
+function get_date_for_wp($wa_date, $format = "Y-m-d H:i:s"){
+    $ts = strtotime($wa_date);
+    $offset = substr($wa_date, -6, 3);
+    $fixed = strtotime($offset . " hours", $ts);
+    return date($format, $fixed);
 }
