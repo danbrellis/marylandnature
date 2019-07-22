@@ -164,15 +164,34 @@ function nhsm_get_date_range($e){
 	if(!$event) return false;
 	
 	$retval = '';
+
+    $raw_start = strtotime(get_post_meta($event->ID, '_event_start_date', true));
+    $start = date('Y', $raw_start) == date('Y') ? date('D, j F', $raw_start) : date('D, j F Y', $raw_start);
+
+    $raw_end = strtotime(get_post_meta($event->ID, '_event_end_date', true));
+    $end = date('Y', $raw_end) == date('Y') ? date('D, j F', $raw_end) : date('D, j F Y', $raw_end);
+
+	//get all recurrences, and use the most upcoming one
+    $recurrences = get_post_meta($event->ID, '_event_occurrence_date');
+
+    $now = date("U");
+    $timefromnow = false;
+    foreach($recurrences as $occurrence){
+        $range = explode('|', $occurrence);
+        $diff = strtotime($range[0]) - $now;
+
+        //set most upcoming occurrence
+        if((!$timefromnow || $diff < $timefromnow) && $diff > 0){
+            $timefromnow = $diff;
+            $raw_start = strtotime($range[0]);
+            $raw_end = strtotime($range[1]);
+            $start = date('Y', $raw_start) == date('Y') ? date('D, j F', $raw_start) : date('D, j F Y', $raw_start);
+            $end = date('Y', $raw_end) == date('Y') ? date('D, j F', $raw_end) : date('D, j F Y', $raw_end);
+        }
+    }
 	
 	$allday = get_post_meta($event->ID, '_event_all_day', true);
-	
-	$raw_start = strtotime(get_post_meta($event->ID, '_event_start_date', true));
-	$start = date('Y', $raw_start) == date('Y') ? date('D, j F', $raw_start) : date('D, j F Y', $raw_start);
-	
-	$raw_end = strtotime(get_post_meta($event->ID, '_event_end_date', true));
-	$end = date('Y', $raw_end) == date('Y') ? date('D, j F', $raw_end) : date('D, j F Y', $raw_end);
-	
+
 	if($allday !== 1){
 		$start_time = date('i', $raw_start) == '00' ? date('ga', $raw_start) : date('g:ia', $raw_start);
 		$end_time = date('i', $raw_end) == '00' ? date('ga', $raw_end) : date('g:ia', $raw_end);
@@ -222,10 +241,12 @@ function nhsm_is_event_over($post_id = false){
 	if ( empty( $post_id ) )
 		return false;
 
-	$date = get_post_meta( (int) $post_id, '_event_end_date', true );
+	$date = get_post_meta( (int) $post_id, '_event_occurrence_last_date', true );
 	if($date === false) return false;
+
+	$dates = explode('|', $date);
 	
-	$ts = strtotime($date);
+	$ts = strtotime($dates[0]);
 	return $ts < time();
 }
 
