@@ -436,7 +436,7 @@ function nhsm_em_after_metabox_event_datetime(){
     }
     ksort($os);
     $sessions = '<h3>Occurrences</h3>';
-    $df = 'D, j M Y g:ia';
+    $df = 'D, d M Y g:ia';
     foreach($os as $start => $o) {
         $dates = explode('|', $o);
         $end = strtotime($dates[1]);
