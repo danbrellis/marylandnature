@@ -26,6 +26,9 @@ class WaApiClient
     }
     public function initTokenByApiKey($apiKey, $scope = null)
     {
+        if(!$apiKey){
+            return;
+        }
         if ($scope) {
             $this->tokenScope = $scope;
         }

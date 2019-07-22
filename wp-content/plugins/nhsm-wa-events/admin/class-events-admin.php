@@ -27,7 +27,7 @@ class Events_Admin {
         //echo '<pre>'; var_dump($r); echo '</pre>'; exit();
 
         //hook into events save action
-        add_action('wp_insert_post', array($this, 'event_saved'), 100, 3); //@todo pull post_type from settings
+        add_action( 'wp_insert_post', array($this, 'event_saved'), 100, 3); //@todo pull post_type from settings
 
         add_filter( 'removable_query_args', array($this, 'add_removable_arg') );
 
@@ -38,15 +38,24 @@ class Events_Admin {
 
     /**
      * @param WaApiClient $waApiClient
+     * @return boolean
      */
     public function setWaAuth($waApiClient){
-        $waApiClient->initTokenByApiKey(get_field('wildapricot_api', 'option'));
+        $api_key = get_field('wildapricot_api', 'option');
+        if(!$api_key): ?>
+            <div class="notice notice-warning is-dismissible">
+                <p>No API key for WildApricot exists in <a href="<?php echo add_query_arg('page', 'acf-options', get_admin_url()); ?>">Settings</a>. Without one, events will not sync on save.</p>
+            </div>
+        <?php return false;
+        endif;
+        $waApiClient->initTokenByApiKey($api_key);
         $this->setAccountUrl($waApiClient);
+        return true;
     }
 
     public function import_events(){
-        $this->setWaAuth($this->waApiClient);
         if(isset($_GET['import_wa_events']) && $_GET['import_wa_events'] = "now"){
+            if(!$this->setWaAuth($this->waApiClient)) return false;
             $skip = isset($_GET['skip']) ? $_GET['skip'] : 0;
             $top = isset($_GET['top']) ? $_GET['top'] : 20;
 
@@ -357,8 +366,7 @@ class Events_Admin {
     public function event_saved($post_id, $post, $update) {
         if(!in_array(get_post_type($post), apply_filters( 'em_event_post_type', array( 'event' ) ) ) ) return $post_id;
 
-        if($post->post_status === 'publish' && $update){
-            $this->setWaAuth($this->waApiClient);
+        if($post->post_status === 'publish' && $update && $this->setWaAuth($this->waApiClient)){
 
             //check if WA event id exists in the meta
             $wa_event_id = get_post_meta($post_id, '_wa_event_id', true);
@@ -741,9 +749,7 @@ class Events_Admin {
         global $post;
         //get event
         $wa_event_id = get_post_meta($post->ID, '_wa_event_id', true);
-        if(!$wa_event_id) return;
-
-        $this->setWaAuth($this->waApiClient);
+        if(!$wa_event_id || !$this->setWaAuth($this->waApiClient)) return;
 
         try{
             $wa_event = $this->getEvent($wa_event_id, $post);
