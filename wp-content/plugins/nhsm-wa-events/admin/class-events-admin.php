@@ -20,10 +20,9 @@ class Events_Admin {
 
     public function __construct() {
         $this->waApiClient = WaApiClient::getInstance();
-        $this->waApiClient->initTokenByApiKey('sfnzve8mhib8lig1euufu51enp1nyz '); //@todo make dynamic
-        //@todo store token in db so we don't need a curl request on every page load
-        $this->setAccountUrl($this->waApiClient);
 
+        //uncomment below for general debugging
+        //$this->setWaAuth($this->waApiClient);
         //$r = $this->waApiClient->makeRequest($this->account_url . '/events/3416587', 'GET');
         //echo '<pre>'; var_dump($r); echo '</pre>'; exit();
 
@@ -37,7 +36,16 @@ class Events_Admin {
         add_action( 'in_admin_header', array($this, 'import_events') );
     }
 
+    /**
+     * @param WaApiClient $waApiClient
+     */
+    public function setWaAuth($waApiClient){
+        $waApiClient->initTokenByApiKey(get_field('wildapricot_api', 'option'));
+        $this->setAccountUrl($waApiClient);
+    }
+
     public function import_events(){
+        $this->setWaAuth($this->waApiClient);
         if(isset($_GET['import_wa_events']) && $_GET['import_wa_events'] = "now"){
             $skip = isset($_GET['skip']) ? $_GET['skip'] : 0;
             $top = isset($_GET['top']) ? $_GET['top'] : 20;
@@ -350,6 +358,8 @@ class Events_Admin {
         if(!in_array(get_post_type($post), apply_filters( 'em_event_post_type', array( 'event' ) ) ) ) return $post_id;
 
         if($post->post_status === 'publish' && $update){
+            $this->setWaAuth($this->waApiClient);
+
             //check if WA event id exists in the meta
             $wa_event_id = get_post_meta($post_id, '_wa_event_id', true);
 
@@ -732,6 +742,8 @@ class Events_Admin {
         //get event
         $wa_event_id = get_post_meta($post->ID, '_wa_event_id', true);
         if(!$wa_event_id) return;
+
+        $this->setWaAuth($this->waApiClient);
 
         try{
             $wa_event = $this->getEvent($wa_event_id, $post);

@@ -98,6 +98,9 @@ class WaApiClient
     }
     private function getAuthToken($data, $authorizationHeader)
     {
+        $cached_token = get_transient('_wa_auth_token');
+        if($cached_token) return $cached_token;
+
         $ch = curl_init();
         $headers = array(
             $authorizationHeader,
@@ -116,6 +119,9 @@ class WaApiClient
 
         $result = json_decode($response , true);
         curl_close($ch);
+
+        //save auth token and expire time
+        set_transient( '_wa_auth_token', $result['access_token'], $result['expires_in']);
         return $result['access_token'];
     }
     public static function getInstance()
