@@ -4,8 +4,8 @@ return array(
 	'herolight' => array(
 		'background_color' => 'none',
 		'texture' => '0',
-		'title_text_color' => '#FEFEFE',
-		'subtitle_text_color' => '#FEFEFE',
+		'title_text_color' => '#121A18',
+		'subtitle_text_color' => '#121A18',
 		'rounding' => '0',
 		'borders' => '0px',
 		'shadow' => '0',

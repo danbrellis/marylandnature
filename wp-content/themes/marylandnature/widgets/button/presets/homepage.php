@@ -6,7 +6,7 @@ return array(
 		'rounded' => '0',
 		'font_size' => '112%',
 		'font_weight' => '700',
-		'text_color' => '#abd037',
+		'text_color' => 'q',
 		'drop_shadow' => '.25'
 	),
 );

@@ -50,8 +50,8 @@ $global-font-size: 100%;
 $global-width: rem-calc(1200);
 $global-lineheight: 1.5;
 $foundation-palette: (
-  primary: #abd037,
-  secondary: #767676,
+  primary: #367202,
+  secondary: #5C6548,
   success: #3adb76,
   warning: #d04937,
   alert: #83291C,
@@ -61,7 +61,7 @@ $light-gray: #e6e6e6;
 $medium-gray: #cacaca;
 $dark-gray: #8a8a8a;
 $reading: #666666;
-$black: #231f20;
+$black: #121A18;
 $white: #fefefe;
 $primary: map-get($foundation-palette, primary);
 $complementary: #4F85D8;

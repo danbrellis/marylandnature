@@ -162,7 +162,7 @@ HEADER STYLES
 	.site-tagline {
 		font-style: italic;
 		font-size: 71%;
-		color: #367202;
+		color: map-get($foundation-palette, primary);
 	}
 }
     
@@ -373,7 +373,7 @@ NAVIGATION STYLES
 						border-bottom: none;
 						transition: all .1s ease-in-out;
 						text-decoration: none;
-						background: scale-color($primary, $lightness: 75%);
+						background: scale-color($primary, $alpha: -75%);
 					}
 				}
 
@@ -1662,7 +1662,7 @@ FOUNDATION STYLES
 	text-align: center;	
 	display: inline-block;
 	padding: 0px rem-calc(10);
-  border: rem-calc(3) solid $white;
+	border: rem-calc(3) solid $black;
 	margin-left: rem-calc(4);
 }
 
