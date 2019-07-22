@@ -1,0 +1,758 @@
+{
+    "key": "group_5c94effe404d4",
+    "title": "Event Registration",
+    "fields": [
+        {
+            "key": "field_5d1a4712871df",
+            "label": "Enable Registration?",
+            "name": "enable_registration",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_5d1a6295df060",
+            "label": "Registration Details",
+            "name": "registration_details",
+            "type": "group",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5d1a4712871df",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "row",
+            "sub_fields": [
+                {
+                    "key": "field_5d2f75c7a4478",
+                    "label": "Waitlist",
+                    "name": "waitlist",
+                    "type": "true_false",
+                    "instructions": "Enable waitlist when limit is reached",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_5d1a472c871e0",
+                                "operator": "!=empty"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 0,
+                    "ui": 0,
+                    "ui_on_text": "",
+                    "ui_off_text": ""
+                },
+                {
+                    "key": "field_5d1a472c871e0",
+                    "label": "Registration Limit",
+                    "name": "registration_limit",
+                    "type": "number",
+                    "instructions": "Leave blank for unlimited",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "min": "",
+                    "max": "",
+                    "step": ""
+                },
+                {
+                    "key": "field_5d1a4745871e1",
+                    "label": "Registration Extra Information",
+                    "name": "registration_extra_information",
+                    "type": "textarea",
+                    "instructions": "Additional event information to be inserted in registration confirmation email (max length 2000 characters)",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "maxlength": 2000,
+                    "rows": 3,
+                    "new_lines": ""
+                },
+                {
+                    "key": "field_5d1a4772871e2",
+                    "label": "Registration Message",
+                    "name": "registration_message",
+                    "type": "textarea",
+                    "instructions": "Shown above Register button on Event details (max length 500 characters)",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "maxlength": 500,
+                    "rows": 2,
+                    "new_lines": ""
+                }
+            ]
+        },
+        {
+            "key": "field_5d1a46aa871de",
+            "label": "Registration Types",
+            "name": "registration_types",
+            "type": "repeater",
+            "instructions": "At least 1 registration type is required for registration to be open.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5d1a4712871df",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "field_5d1a47f8871e5",
+            "min": 0,
+            "max": 0,
+            "layout": "block",
+            "button_label": "",
+            "sub_fields": [
+                {
+                    "key": "field_5d26151b33379",
+                    "label": "Registration Type ID",
+                    "name": "registration_type_id",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "hidden",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "min": "",
+                    "max": "",
+                    "step": ""
+                },
+                {
+                    "key": "field_5d1a5e9405d75",
+                    "label": "Registration type details",
+                    "name": "",
+                    "type": "tab",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "placement": "top",
+                    "endpoint": 0
+                },
+                {
+                    "key": "field_5d1a47f8871e5",
+                    "label": "Name",
+                    "name": "name",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
+                    "key": "field_5d1a4806871e6",
+                    "label": "Description",
+                    "name": "description",
+                    "type": "textarea",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "maxlength": "",
+                    "rows": 2,
+                    "new_lines": ""
+                },
+                {
+                    "key": "field_5d1a482a871e7",
+                    "label": "Base price",
+                    "name": "base_price",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "$",
+                    "append": ".00",
+                    "min": 0,
+                    "max": "",
+                    "step": ""
+                },
+                {
+                    "key": "field_5d1a5eaa05d76",
+                    "label": "Registration type settings",
+                    "name": "",
+                    "type": "tab",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "placement": "top",
+                    "endpoint": 0
+                },
+                {
+                    "key": "field_5d1a55fe9d380",
+                    "label": "Registration Limit for this Type",
+                    "name": "registration_limit_for_type",
+                    "type": "number",
+                    "instructions": "Leave blank for unlimited",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "min": 0,
+                    "max": "",
+                    "step": ""
+                },
+                {
+                    "key": "field_5d1a56399d381",
+                    "label": "Waitlist",
+                    "name": "waitlist",
+                    "type": "true_false",
+                    "instructions": "Enable waitlist when limit is reached",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_5d1a55fe9d380",
+                                "operator": "!=empty"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 1,
+                    "ui": 0,
+                    "ui_on_text": "",
+                    "ui_off_text": ""
+                },
+                {
+                    "key": "field_5d1a56789d382",
+                    "label": "Cancellation",
+                    "name": "cancellation",
+                    "type": "radio",
+                    "instructions": "Allows registrants to cancel registrations directly from their profiles. Cancelling a paid registration will generate a credit. Refunds, if applicable, are managed by website administrators.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "DoNotAllow": "Do not allow cancellation by registrants",
+                        "Allow": "Allow",
+                        "AllowUpToPeriodBeforeEvent": "Allow cancellation before start of the event."
+                    },
+                    "allow_null": 0,
+                    "other_choice": 0,
+                    "default_value": "",
+                    "layout": "vertical",
+                    "return_format": "value",
+                    "save_other_choice": 0
+                },
+                {
+                    "key": "field_5d1a572f9d383",
+                    "label": "Cancellation Cutoff",
+                    "name": "cancellation_cutoff",
+                    "type": "number",
+                    "instructions": "Enter the number of days before the start of the event a registrant can cancel",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_5d1a56789d382",
+                                "operator": "==",
+                                "value": "AllowUpToPeriodBeforeEvent"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "days",
+                    "min": 0,
+                    "max": "",
+                    "step": ""
+                },
+                {
+                    "key": "field_5d1a5eb805d77",
+                    "label": "Guest Registration",
+                    "name": "",
+                    "type": "tab",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "placement": "top",
+                    "endpoint": 0
+                },
+                {
+                    "key": "field_5d1a57c09d385",
+                    "label": "Allow guest registrations",
+                    "name": "allow_guest_registrations",
+                    "type": "true_false",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 0,
+                    "ui": 0,
+                    "ui_on_text": "",
+                    "ui_off_text": ""
+                },
+                {
+                    "key": "field_5d1a57e39d386",
+                    "label": "Information to collect",
+                    "name": "information_to_collect",
+                    "type": "radio",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_5d1a57c09d385",
+                                "operator": "==",
+                                "value": "1"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "NumberOfGuests": "Only total number of guests",
+                        "CollectContactDetails": "Contact information for each guest",
+                        "CollectFullInfo": "Full registration information for each guest"
+                    },
+                    "allow_null": 0,
+                    "other_choice": 0,
+                    "default_value": "",
+                    "layout": "vertical",
+                    "return_format": "value",
+                    "save_other_choice": 0
+                },
+                {
+                    "key": "field_5d1a584a9d387",
+                    "label": "Guest pricing",
+                    "name": "guest_pricing",
+                    "type": "radio",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_5d1a57c09d385",
+                                "operator": "==",
+                                "value": "1"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "basePrice": "Base price",
+                        "specialPrice": "Special guest price"
+                    },
+                    "allow_null": 0,
+                    "other_choice": 0,
+                    "default_value": "",
+                    "layout": "vertical",
+                    "return_format": "value",
+                    "save_other_choice": 0
+                },
+                {
+                    "key": "field_5d1a58799d388",
+                    "label": "Guest price",
+                    "name": "guest_price",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_5d1a584a9d387",
+                                "operator": "==",
+                                "value": "specialPrice"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "$",
+                    "append": ".00",
+                    "min": 0,
+                    "max": "",
+                    "step": ""
+                },
+                {
+                    "key": "field_5d1a58a89d389",
+                    "label": "Guest limit",
+                    "name": "guest_limit",
+                    "type": "number",
+                    "instructions": "Number of guests each registrant can bring.",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_5d1a57c09d385",
+                                "operator": "==",
+                                "value": "1"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "per registrant",
+                    "min": "",
+                    "max": "",
+                    "step": ""
+                },
+                {
+                    "key": "field_5d1a5ecc05d78",
+                    "label": "Registration type availability",
+                    "name": "",
+                    "type": "tab",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "placement": "top",
+                    "endpoint": 0
+                },
+                {
+                    "key": "field_5d1a598228d4b",
+                    "label": "Availability",
+                    "name": "availability",
+                    "type": "radio",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "Everyone": "Everyone",
+                        "MembersOnly": "Members Only",
+                        "CodeRequired": "Registration code required"
+                    },
+                    "allow_null": 0,
+                    "other_choice": 0,
+                    "default_value": "",
+                    "layout": "vertical",
+                    "return_format": "value",
+                    "save_other_choice": 0
+                },
+                {
+                    "key": "field_5d1a5af128d4c",
+                    "label": "Membership Types",
+                    "name": "membership_types",
+                    "type": "checkbox",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_5d1a598228d4b",
+                                "operator": "==",
+                                "value": "MembersOnly"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "1 - Individual": "1 - Individual",
+                        "2- Family": "2- Family",
+                        "3 - Contributing": "3 - Contributing",
+                        "4 - Sustaining": "4 - Sustaining",
+                        "5 - Life": "5 - Life",
+                        "6 - Corporate": "6 - Corporate"
+                    },
+                    "allow_custom": 0,
+                    "default_value": [
+                        "1 - Individual",
+                        "2- Family",
+                        "3 - Contributing",
+                        "4 - Sustaining",
+                        "5 - Life",
+                        "6 - Corporate"
+                    ],
+                    "layout": "vertical",
+                    "toggle": 1,
+                    "return_format": "value",
+                    "save_custom": 0
+                },
+                {
+                    "key": "field_5d1a5b8728d4d",
+                    "label": "Registration Code",
+                    "name": "registration_code",
+                    "type": "text",
+                    "instructions": "Enter the code that registrants should enter at registration.",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_5d1a598228d4b",
+                                "operator": "==",
+                                "value": "CodeRequired"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": 10
+                },
+                {
+                    "key": "field_5d1a5d1d05fe2",
+                    "label": "Available period",
+                    "name": "available_period",
+                    "type": "group",
+                    "instructions": "Leave dates blank for no date limits",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "layout": "row",
+                    "sub_fields": [
+                        {
+                            "key": "field_5d1a5d4305fe3",
+                            "label": "From",
+                            "name": "from",
+                            "type": "date_picker",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "display_format": "j F Y",
+                            "return_format": "U",
+                            "first_day": 0
+                        },
+                        {
+                            "key": "field_5d1a5d6705fe5",
+                            "label": "To",
+                            "name": "to",
+                            "type": "date_picker",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "display_format": "j F Y",
+                            "return_format": "U",
+                            "first_day": 0
+                        }
+                    ]
+                },
+                {
+                    "key": "field_5d1a5d7820cf0",
+                    "label": "If unavailable",
+                    "name": "if_unavailable",
+                    "type": "radio",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "ShowDisabled": "Show with special formatting indicating unavailable",
+                        "Hide": "Hide"
+                    },
+                    "allow_null": 0,
+                    "other_choice": 0,
+                    "default_value": "",
+                    "layout": "vertical",
+                    "return_format": "value",
+                    "save_other_choice": 0
+                }
+            ]
+        },
+        {
+            "key": "field_5d1a4792871e3",
+            "label": "Payment Instructions",
+            "name": "payment_instructions",
+            "type": "textarea",
+            "instructions": "Payment instructions for this event only (for invoice) (max length 2000 characters)",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "maxlength": 2000,
+            "rows": 3,
+            "new_lines": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "event"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": 1,
+    "description": "",
+    "modified": 1563481293
+}

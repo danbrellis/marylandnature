@@ -595,13 +595,6 @@ function nhsm_get_the_dlm_filetype($ext){
 		echo nhsm_get_the_dlm_filetype($ext);
 	}
 
-/* Advanced Custom Fields */
-function nhsm_acf_google_map_api( $api ){
-	$api['key'] = 'AIzaSyBdH2igri37sNjB5AR6sqOmJn5bHflzdYw';
-	return $api;
-}
-add_filter('acf/fields/google_map/api', 'nhsm_acf_google_map_api');
-
 /** Helpers **/
 
 /**
