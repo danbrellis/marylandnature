@@ -378,10 +378,13 @@ function nhsm_em_the_date_reg_box($event = 0){
 			<?php if(nhsm_is_event_over()): ?>
 				<li class="post-meta-notice"><i class="fi-alert"></i>&nbsp;This event has passed.</li>
 			<?php else:
-				$tickets_url = apply_filters( 'em_single_event_tickets_url', get_post_meta( $e->ID, '_event_tickets_url', true ) );
-				if ( $tickets_url ) : ?>
-				<li class="post-meta-action"><i class="fi-checkbox"></i>&nbsp;<a href="<?php echo esc_url($tickets_url); ?>" title="Visit event registration url" target="_blank">Register Now!</a></li>
-				<?php endif;
+				$tickets_url = get_post_meta( $e->ID, '_event_tickets_url', true );
+                $reg_enabled = get_field('enable_registration', $e->ID);
+				if ( $tickets_url && $reg_enabled ) : ?>
+                    <li class="post-meta-action"><i class="fi-checkbox"></i>&nbsp;<a href="<?php echo esc_url($tickets_url); ?>" title="Visit event registration url" target="_blank">Register Now!</a></li>
+				<?php else: ?>
+                    <li class="post-meta-notice"><i class="fi-alert"></i>&nbsp;Registration disabled.</li>
+                <?php endif;
 			endif; ?>
 
 		</ul>
