@@ -30,6 +30,7 @@ if ( ! post_password_required() && metadata_exists( 'post', $post->ID, '_event_g
 	$event_gallery = get_post_meta( $post->ID, '_event_gallery', true );
 
 	if ( ! empty( $event_gallery ) ): ?>
+        <h2>Photographs</h2>
 		<div class="orbit" role="region" aria-label="Photo gallery for <?php the_title(); ?>" data-orbit>
 			<div class="orbit-wrapper">
 				<div class="orbit-controls">
