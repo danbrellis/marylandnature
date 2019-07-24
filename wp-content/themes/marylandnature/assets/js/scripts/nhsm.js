@@ -157,14 +157,16 @@ jQuery( document ).ready( function( $ ) {
 			if(event.appendToTitle !== false){
 				element.find('.fc-content').after(event.appendToTitle);
 			}
+			element.attr('title', event.title);
 		});
 		cal.on('eventAfterRender', function(event, element, view) {
 			//$(document).foundation();
+			const ider = 'dropdown' + event.id + '_' + event.start.format('X');
 
 			//add dropdown pane
-			var dropdownPane = '<div class="dropdown-pane top large event-tooltip" id="dropdown'+event.id+'" data-dropdown data-auto-focus="true"><button class="close-button" aria-label="Close event details" type="button"><span aria-hidden="true">&times;</span></button>'+event.tooltip+'</div>';
+			var dropdownPane = '<div class="dropdown-pane top large event-tooltip" id="'+ider+'" data-dropdown data-auto-focus="true"><button class="close-button" aria-label="Close event details" type="button"><span aria-hidden="true">&times;</span></button>'+event.tooltip+'</div>';
 			$("#events-full-calendar").after( $(dropdownPane) );
-			element.attr('data-toggle', 'dropdown'+event.id);
+			element.attr('data-toggle', ider); //@todo use event_id + occurance
 		});
 		cal.on('eventAfterAllRender', function(view){
 			$(document).foundation();
