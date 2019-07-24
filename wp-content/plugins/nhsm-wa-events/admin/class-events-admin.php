@@ -513,7 +513,7 @@ class Events_Admin {
             }
 
             if($reg_enabled && $wa_event_id){
-                update_post_meta($post_id, '_event_tickets_url', 'https://marylandnature.wildapricot.org/event-' . $event_id);
+                update_post_meta($post_id, '_event_tickets_url', 'https://marylandnature.wildapricot.org/event-' . $wa_event_id);
             }
             else {
                 delete_post_meta($post_id, '_event_tickets_url');
