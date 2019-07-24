@@ -177,6 +177,9 @@ class Events_Admin {
                     $start = get_date_for_wp($event['Sessions'][0]['StartDate']);
                     $end = get_date_for_wp($event['Sessions'][0]['EndDate']);
                 }
+                else {
+                    add_post_meta($post_id, '_event_occurrence_date', $start . '|' . $end);
+                }
                 add_post_meta($post_id, '_event_start_date', $start);
                 add_post_meta($post_id, '_event_end_date', $end);
 
