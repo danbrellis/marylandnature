@@ -499,14 +499,21 @@ class Events_Admin {
             }
             else { //add new
                 try{
-                    $event_id = $this->createEvent($data, $post);
-                    update_post_meta($post_id, '_wa_event_id', $event_id);
+                    $wa_event_id = $this->createEvent($data, $post);
+                    update_post_meta($post_id, '_wa_event_id', $wa_event_id);
                     add_filter( 'redirect_post_location', array( $this, 'add_create_success_query_var' ), 99 );
-                    if($reg_enabled) $this->addEventRegistrationTypes($event_id, $post);
+                    if($reg_enabled) $this->addEventRegistrationTypes($wa_event_id, $post);
                 }
                 catch(\Exception $e){
                     add_filter( 'redirect_post_location', array( $this, 'add_create_error_query_var' ), 99 );
                 }
+            }
+
+            if($reg_enabled && $wa_event_id){
+                update_post_meta($post_id, '_event_tickets_url', 'https://marylandnature.wildapricot.org/event-' . $event_id);
+            }
+            else {
+                delete_post_meta($post_id, '_event_tickets_url');
             }
         }
 
@@ -759,7 +766,7 @@ class Events_Admin {
                 </div>
             <?php else: ?>
                 <div class="notice notice-info">
-                    <p>This event has a corresponding entry in <a href="https://marylandnature.wildapricot.org/admin/events/details/?DetailsDisplayMode=View&eventId='.$wa_event_id.'&selTab=3" target="_blank" title="Edit event in WildApricot.">WildApricot</a> with ID: <?php echo $wa_event_id; ?>.</strong></p>
+                    <p>This event has a corresponding entry in <a href="https://marylandnature.wildapricot.org/admin/events/details/?DetailsDisplayMode=View&eventId=<?php echo $wa_event_id; ?>&selTab=3" target="_blank" title="Edit event in WildApricot.">WildApricot</a> with ID: <?php echo $wa_event_id; ?>.</strong></p>
                 </div>
             <?php endif;
         }
