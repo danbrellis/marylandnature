@@ -46,13 +46,15 @@ function caption_shortcode_with_credits($empty, $attr, $content) {
 
 	// Extract attachment $post->ID
 	preg_match('/\d+/', $id, $att_id);
-	if (is_numeric($att_id[0])) {
-		$parts = parse_url($source_url);
-		$caption .= ' (' . nhsm_format_image_credit_line(false, $att_id[0]) . ')';
-	}
+	if (!is_numeric($att_id[0])) {
+        return '';
+    }
+
+    $credit = nhsm_format_image_credit_line(false, $att_id[0]);
+	if($credit) $caption .= ' (' . $credit . ')';
 
 	if (1 > (int) $width || empty($caption))
-		return $content;
+		return '';
 
 	if ($id)
 		$id = 'id="' . esc_attr($id) . '" ';
