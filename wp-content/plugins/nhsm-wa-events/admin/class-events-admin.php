@@ -183,7 +183,7 @@ class Events_Admin {
                 add_post_meta($post_id, '_event_start_date', $start);
                 add_post_meta($post_id, '_event_end_date', $end);
 
-                add_post_meta($post_id, '_event_tickets_url', 'https://marylandnature.wildapricot.org/event-' . $wa_event_id);
+                add_post_meta($post_id, '_event_tickets_url', 'https://marylandnature.wildapricot.org/event-' . $wa_event_id. '/Registration');
                 $display_options = [
                     "google_map" => true,
                     "display_gallery" => true,
@@ -513,7 +513,7 @@ class Events_Admin {
             }
 
             if($reg_enabled && $wa_event_id){
-                update_post_meta($post_id, '_event_tickets_url', 'https://marylandnature.wildapricot.org/event-' . $wa_event_id);
+                update_post_meta($post_id, '_event_tickets_url', 'https://marylandnature.wildapricot.org/event-' . $wa_event_id . '/Registration');
             }
             else {
                 delete_post_meta($post_id, '_event_tickets_url');
