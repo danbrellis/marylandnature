@@ -1577,7 +1577,7 @@ HOMEPAGE STYLES
 			}
 			
 			a {
-				font-weight: 700;
+				font-weight: 500;
 				font-size: rem-calc(24);
 				&.button {
 					@include breakpoint(small only) {
