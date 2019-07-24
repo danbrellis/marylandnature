@@ -268,6 +268,13 @@ function nhsm_addthis($loop_check = false){
 /** PLUGINS **/
 
 /* Events Maker */
+//removes event ticket/cost meta box
+add_filter( 'em_event_metaboxes', 'nhsm_em_event_metaboxes', 10, 1);
+function nhsm_em_event_metaboxes($metaboxes){
+    unset($metaboxes['event-cost-tickets-box']);
+    return $metaboxes;
+}
+
 add_filter('em_calendar_event_data', 'nhsm_em_calendar_event_data', 10, 2);
 function nhsm_em_calendar_event_data($event_data, $event){
 	global $post;
