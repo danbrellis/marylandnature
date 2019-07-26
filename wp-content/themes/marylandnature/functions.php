@@ -275,6 +275,13 @@ function nhsm_em_event_metaboxes($metaboxes){
     return $metaboxes;
 }
 
+//remove event tickets column
+add_filter('manage_event_posts_columns', 'nhsm_manage_event_post_columns', 11, 1);
+function nhsm_manage_event_post_columns($columns){
+    unset($columns['tickets']);
+    return $columns;
+}
+
 add_filter('em_calendar_event_data', 'nhsm_em_calendar_event_data', 10, 2);
 function nhsm_em_calendar_event_data($event_data, $event){
 	global $post;
