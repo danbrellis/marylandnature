@@ -10,11 +10,14 @@ namespace NHSM\Events\Admin;
 
 use WildApricot\WaApiClient;
 use WP_Query;
+use DateTime;
+use DateTimeZone;
 
 class Events_Admin {
 
     private $account_url = null;
     private $waApiClient;
+    public $timezone;
 
     //https://app.swaggerhub.com/apis-docs/WildApricot/wild-apricot_public_api/2.1.0#/Events
 
@@ -25,6 +28,8 @@ class Events_Admin {
         //$this->setWaAuth($this->waApiClient);
         //$r = $this->waApiClient->makeRequest($this->account_url . '/events/3416587', 'GET');
         //echo '<pre>'; var_dump($r); echo '</pre>'; exit();
+
+        $this->timezone = new DateTimezone('America/New_York');
 
         //hook into events save action
         add_action( 'wp_insert_post', array($this, 'event_saved'), 100, 3); //@todo pull post_type from settings
@@ -435,12 +440,12 @@ class Events_Admin {
             $allday = get_post_meta($post_id, '_event_all_day', true);
             $start = get_post_meta($post_id, '_event_start_date', true);
             if($start){
-                $data['StartDate'] = date('c', strtotime($start));
+                $data['StartDate'] = set_date_for_wa($start, $this->timezone);
                 $data['StartTimeSpecified'] = !boolval($allday);
             }
             $end = get_post_meta($post_id, '_event_end_date', true);
             if($end){
-                $data['EndDate'] = date('c', strtotime($end));
+                $data['EndDate'] = set_date_for_wa($end, $this->timezone);
                 $data['EndTimeSpecified'] = !boolval($allday);
             }
 
@@ -477,9 +482,9 @@ class Events_Admin {
                 $end_time = substr($dates[1], -8); //ie 00:00:00
                 $sessions[] = [
                     "Title" => sprintf("%s (%d of %d)", get_the_title($post), $i, count($os)),
-                    "StartDate" => date('c', $start),
+                    "StartDate" => set_date_for_wa($dates[0], $this->timezone),
                     "StartTimeSpecified" => $start_time !== '00:00:00',
-                    "EndDate" => date('c', strtotime($dates[1])),
+                    "EndDate" => set_date_for_wa($dates[1], $this->timezone),
                     "EndTimeSpecified" => $end_time !== '00:00:00'
                 ];
                 $i++;
@@ -785,9 +790,21 @@ class Events_Admin {
 
 }
 
+/* Helpers */
 function get_date_for_wp($wa_date, $format = "Y-m-d H:i:s"){
     $ts = strtotime($wa_date);
     $offset = substr($wa_date, -6, 3);
     $fixed = strtotime($offset . " hours", $ts);
     return date($format, $fixed);
+}
+
+/**
+ * @param string $wp_date
+ * @param DateTimezone $tz
+ * @return string
+ */
+function set_date_for_wa($wp_date, $tz){
+    if(!$tz) $tz = new DateTimezone('America/New_York');
+    $dt = new DateTime($wp_date, $tz);
+    return $dt->format('c');
 }
