@@ -29,6 +29,8 @@ class Events_Admin {
         //hook into events save action
         add_action( 'wp_insert_post', array($this, 'event_saved'), 100, 3); //@todo pull post_type from settings
 
+        //@todo add way to delete events in WA
+
         add_filter( 'removable_query_args', array($this, 'add_removable_arg') );
 
         add_action( 'admin_head', array($this, 'admin_head') );
@@ -564,67 +566,66 @@ class Events_Admin {
         }
 
         $types = get_field('registration_types', $post->ID);
-        foreach($types as $index => $type){
-            //check if reg type ID already exists, if so we're updating
-            $wa_reg_type_id = $type['registration_type_id'];
+        if($types && is_array($types)) {
+            foreach ($types as $index => $type) {
+                //check if reg type ID already exists, if so we're updating
+                $wa_reg_type_id = $type['registration_type_id'];
 
-            $base_price = $type['base_price'];
-            $guest_pricing = $type['guest_pricing'];
-            $guest_price = $guest_pricing === 'basePrice' ? $base_price : $type['guest_price'];
-            $availability = $type['availability'];
-            if($availability === "MembersOnly"){
-                $membership_types = $type['membership_types'];
-                $membership_levels_formatted = [];
-                foreach($membership_levels as $membership_level){
-                    if(in_array($membership_level['Name'], $membership_types))
-                        $membership_levels_formatted[] = [
-                            'Id' => $membership_level['Id']
-                        ];
+                $base_price = $type['base_price'];
+                $guest_pricing = $type['guest_pricing'];
+                $guest_price = $guest_pricing === 'basePrice' ? $base_price : $type['guest_price'];
+                $availability = $type['availability'];
+                if ($availability === "MembersOnly") {
+                    $membership_types = $type['membership_types'];
+                    $membership_levels_formatted = [];
+                    foreach ($membership_levels as $membership_level) {
+                        if (in_array($membership_level['Name'], $membership_types))
+                            $membership_levels_formatted[] = [
+                                'Id' => $membership_level['Id']
+                            ];
+                    }
+                } else $membership_levels_formatted = NULL;
+
+                $cancellation = $type['cancellation'];
+                $data = [
+                    "EventId" => $wa_event_id,
+                    "Name" => $type['name'],
+                    "IsEnabled" => true,
+                    "Description" => $type['description'],
+                    "BasePrice" => $base_price,
+                    "GuestPrice" => $guest_price,
+                    "UseTaxScopeSettings" => false,
+                    "Availability" => $type['availability'],
+                    "RegistrationCode" => $type['registration_code'],
+                    "AvailableForMembershipLevels" => $membership_levels_formatted,
+                    "AvailableFrom" => $type['available_period']['from'] ? date('c', $type['available_period']['from']) : NULL,
+                    "AvailableThrough" => $type['available_period']['to'] ? date('c', $type['available_period']['to']) : NULL,
+                    "MaximumRegistrantsCount" => $type['registration_limit_for_type'],
+                    "GuestRegistrationPolicy" => $type['allow_guest_registrations'] ? $type['information_to_collect'] : "Disabled",
+                    "MaxGuestsCount" => $type['guest_limit'],
+                    "UnavailabilityPolicy" => $type['if_unavailable'],
+                    "CancellationBehaviour" => $cancellation,
+                    "CancellationDaysBeforeEvent" => $cancellation === 'AllowUpToPeriodBeforeEvent' ? $type['cancellation_cutoff'] : 0,
+                    "IsWaitlistEnabled" => $type['waitlist']
+                ];
+
+                if ($wa_reg_type_id) {
+                    $data['Id'] = $wa_reg_type_id;
+                    try {
+                        $this->waApiClient->makeRequest($this->account_url . '/EventRegistrationTypes/' . $wa_reg_type_id, 'PUT', $data);
+                    } catch (\Exception $e) {
+                        $this->send_error("PUT EventRegistrationTypes\n" . $e->getMessage(), $data, $post, $wa_event_id);
+                    }
+                } else {
+                    try {
+                        $wa_reg_type_id = $this->waApiClient->makeRequest($this->account_url . '/EventRegistrationTypes', 'POST', $data);
+                        update_post_meta($post->ID, 'registration_types_' . $index . '_registration_type_id', $wa_reg_type_id);
+                    } catch (\Exception $e) {
+                        $this->send_error("POST EventRegistrationTypes\n" . $e->getMessage(), $data, $post, $wa_event_id);
+                    }
                 }
+
             }
-            else $membership_levels_formatted = NULL;
-
-            $cancellation = $type['cancellation'];
-            $data = [
-                "EventId" => $wa_event_id,
-                "Name" => $type['name'],
-                "IsEnabled" => true,
-                "Description" => $type['description'],
-                "BasePrice" => $base_price,
-                "GuestPrice" => $guest_price,
-                "UseTaxScopeSettings" => false,
-                "Availability" => $type['availability'],
-                "RegistrationCode" => $type['registration_code'],
-                "AvailableForMembershipLevels" => $membership_levels_formatted,
-                "AvailableFrom" => $type['available_period']['from'] ? date('c', $type['available_period']['from']) : NULL,
-                "AvailableThrough" => $type['available_period']['to'] ? date('c', $type['available_period']['to']) : NULL,
-                "MaximumRegistrantsCount" => $type['registration_limit_for_type'],
-                "GuestRegistrationPolicy" => $type['allow_guest_registrations'] ? $type['information_to_collect'] : "Disabled",
-                "MaxGuestsCount" => $type['guest_limit'],
-                "UnavailabilityPolicy" => $type['if_unavailable'],
-                "CancellationBehaviour" => $cancellation,
-                "CancellationDaysBeforeEvent" => $cancellation === 'AllowUpToPeriodBeforeEvent' ? $type['cancellation_cutoff'] : 0,
-                "IsWaitlistEnabled" => $type['waitlist']
-            ];
-
-            if($wa_reg_type_id) {
-                $data['Id'] = $wa_reg_type_id;
-                try {
-                    $this->waApiClient->makeRequest($this->account_url . '/EventRegistrationTypes/' . $wa_reg_type_id, 'PUT', $data);
-                } catch (\Exception $e) {
-                    $this->send_error("PUT EventRegistrationTypes\n" . $e->getMessage(), $data, $post, $wa_event_id);
-                }
-            }
-            else {
-                try{
-                    $wa_reg_type_id = $this->waApiClient->makeRequest($this->account_url . '/EventRegistrationTypes', 'POST', $data);
-                    update_post_meta($post->ID, 'registration_types_' . $index . '_registration_type_id', $wa_reg_type_id);
-                }
-                catch(\Exception $e){
-                    $this->send_error("POST EventRegistrationTypes\n" . $e->getMessage(), $data, $post, $wa_event_id);
-                }
-            }
-
         }
     }
 
@@ -637,8 +638,10 @@ class Events_Admin {
 
         //get all event reg types from WP
         $reg_types = get_field('registration_types', $post->ID);
-        foreach($reg_types as $reg_type){
-            $reg_type_ids[] = $reg_type['registration_type_id'];
+        if($reg_types && is_array($reg_types)) {
+            foreach ($reg_types as $reg_type) {
+                $reg_type_ids[] = $reg_type['registration_type_id'];
+            }
         }
 
         //if any exist in WA that don't have their ID associated with WP, delete them
