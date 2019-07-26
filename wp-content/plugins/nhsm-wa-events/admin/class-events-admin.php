@@ -775,11 +775,11 @@ class Events_Admin {
                 <div class="notice notice-warning">
                     <p><strong>This event has no registration types. Registration will not be active until a registration type is added.</strong></p>
                 </div>
-            <?php else: ?>
+            <?php endif; ?>
                 <div class="notice notice-info">
-                    <p>This event has a corresponding entry in <a href="https://marylandnature.wildapricot.org/admin/events/details/?DetailsDisplayMode=View&eventId=<?php echo $wa_event_id; ?>&selTab=3" target="_blank" title="Edit event in WildApricot.">WildApricot</a> with ID: <?php echo $wa_event_id; ?>.</strong></p>
+                    <p>This event has a corresponding entry in <a href="https://marylandnature.wildapricot.org/admin/events/details/?DetailsDisplayMode=View&eventId=<?php echo $wa_event_id; ?>" target="_blank" title="Edit event in WildApricot.">WildApricot</a> with ID: <?php echo $wa_event_id; ?>.</strong></p>
                 </div>
-            <?php endif;
+            <?php
         }
         catch (\Exception $e){ ?>
             <div class="notice notice-warning">
