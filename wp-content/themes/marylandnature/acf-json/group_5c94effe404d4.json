@@ -593,7 +593,7 @@
                     },
                     "choices": {
                         "1 - Individual": "1 - Individual",
-                        "2- Family": "2- Family",
+                        "2 - Family": "2 - Family",
                         "3 - Contributing": "3 - Contributing",
                         "4 - Sustaining": "4 - Sustaining",
                         "5 - Life": "5 - Life",
@@ -602,7 +602,7 @@
                     "allow_custom": 0,
                     "default_value": [
                         "1 - Individual",
-                        "2- Family",
+                        "2 - Family",
                         "3 - Contributing",
                         "4 - Sustaining",
                         "5 - Life",
