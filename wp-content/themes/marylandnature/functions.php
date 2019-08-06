@@ -159,40 +159,28 @@ function nhsm_post_type_link($permalink, $post, $leavename) {
 add_filter( 'post_type_link', 'nhsm_post_type_link', 10, 4 );
 
 /** Events **/
-function nhsm_get_date_range($e){
-	$event = get_post($e);
-	if(!$event) return false;
-	
-	$retval = '';
+function nhsm_get_date_range_by_id($e){
+    $event = get_post($e);
+    if(!$event) return false;
+    $start = strtotime(get_post_meta($event->ID, '_event_start_date', true));
+    $end = strtotime(get_post_meta($event->ID, '_event_end_date', true));
+    $allday = get_post_meta($event->ID, '_event_all_day', true);
+    return nhsm_format_date_range($start, $end, boolval($allday));
+}
 
-    $raw_start = strtotime(get_post_meta($event->ID, '_event_start_date', true));
+/**
+ * @param int $raw_start
+ * @param int $raw_end
+ * @param bool $allday
+ * @return string
+ */
+function nhsm_format_date_range($raw_start, $raw_end, $allday = false){
+    $retval = '';
+
     $start = date('Y', $raw_start) == date('Y') ? date('D, j F', $raw_start) : date('D, j F Y', $raw_start);
-
-    $raw_end = strtotime(get_post_meta($event->ID, '_event_end_date', true));
     $end = date('Y', $raw_end) == date('Y') ? date('D, j F', $raw_end) : date('D, j F Y', $raw_end);
 
-	//get all recurrences, and use the most upcoming one
-    $recurrences = get_post_meta($event->ID, '_event_occurrence_date');
-
-    $now = date("U");
-    $timefromnow = false;
-    foreach($recurrences as $occurrence){
-        $range = explode('|', $occurrence);
-        $diff = strtotime($range[0]) - $now;
-
-        //set most upcoming occurrence
-        if((!$timefromnow || $diff < $timefromnow) && $diff > 0){
-            $timefromnow = $diff;
-            $raw_start = strtotime($range[0]);
-            $raw_end = strtotime($range[1]);
-            $start = date('Y', $raw_start) == date('Y') ? date('D, j F', $raw_start) : date('D, j F Y', $raw_start);
-            $end = date('Y', $raw_end) == date('Y') ? date('D, j F', $raw_end) : date('D, j F Y', $raw_end);
-        }
-    }
-	
-	$allday = get_post_meta($event->ID, '_event_all_day', true);
-
-	if($allday !== 1){
+	if(!$allday){
 		$start_time = date('i', $raw_start) == '00' ? date('ga', $raw_start) : date('g:ia', $raw_start);
 		$end_time = date('i', $raw_end) == '00' ? date('ga', $raw_end) : date('g:ia', $raw_end);
 	}
@@ -224,6 +212,35 @@ function nhsm_get_date_range($e){
 	
 	return $retval;
 	
+}
+function nhsm_get_upcoming_event_date_range($e){
+    $event = get_post($e);
+    if(!$event) return false;
+
+    //set some defaults
+    $start = strtotime(get_post_meta($event->ID, '_event_start_date', true));
+    $end = strtotime(get_post_meta($event->ID, '_event_end_date', true));
+
+    //get all recurrences, and use the most upcoming one
+    $recurrences = get_post_meta($event->ID, '_event_occurrence_date');
+
+    $now = date("U");
+    $timefromnow = false;
+    foreach($recurrences as $occurrence){
+        $range = explode('|', $occurrence);
+        $diff = strtotime($range[0]) - $now;
+
+        //set most upcoming occurrence
+        if((!$timefromnow || $diff < $timefromnow) && $diff > 0){
+            $timefromnow = $diff;
+            $start = strtotime($range[0]);
+            $end = strtotime($range[1]);
+        }
+    }
+
+    $allday = get_post_meta($event->ID, '_event_all_day', true);
+
+    return nhsm_format_date_range($start, $end, boolval($allday));
 }
 
 function nhsm_event_scope_prefix($after){
@@ -381,7 +398,7 @@ function nhsm_em_the_date_reg_box($event = 0){
 	ob_start(); ?>
 	<div class="callout event-important-info">
 		<ul class="post-meta clearfix no-bullet">
-			<li class="post-meta-date"><i class="fi-clock"></i>&nbsp;<?php echo nhsm_get_date_range($e); ?></li>
+			<li class="post-meta-date"><i class="fi-clock"></i>&nbsp;<?php echo nhsm_get_upcoming_event_date_range($e); ?></li>
 			<?php if(nhsm_is_event_over()): ?>
 				<li class="post-meta-notice"><i class="fi-alert"></i>&nbsp;This event has passed.</li>
 			<?php else:
@@ -571,8 +588,8 @@ function nhsm_homepage_collections_query($q){
 add_filter('siteorigin_panels_postloop_query_args', 'nhsm_what_we_do_upcoming_events');
 function nhsm_what_we_do_upcoming_events($query_args){
   if(isset($query_args['meta_query']) && isset($query_args['meta_query'][0]) && isset($query_args['meta_query'][0]['value'])){
-    if(strtolower($query_args['meta_query'][0]['value']) == 'now()'){
-      $query_args['meta_query'][0]['value'] = date('Y-m-d');
+    if(strtolower($query_args['meta_query'][0]['value']) === 'now()'){
+      $query_args['meta_query'][0]['value'] = date('Y-m-d H:i:s');
     }
   }
   return $query_args;

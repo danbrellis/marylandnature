@@ -28,7 +28,7 @@ if($cats && is_array($cats)){
 <table class="unstriped event-tooltip-data">
 	<tr>
 		<th>When</th>
-		<td><?php echo nhsm_get_date_range($id); ?></td>
+		<td><?php echo nhsm_format_date_range(strtotime($post->event_occurrence_start_date), strtotime($post->event_occurrence_end_date), em_is_all_day($post->ID)); ?></td>
 	</tr>
 	<?php if($locs && is_array($locs) && !empty($locs[0])): ?>
 	<tr>
