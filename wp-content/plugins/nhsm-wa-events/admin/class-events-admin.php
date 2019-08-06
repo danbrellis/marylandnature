@@ -32,9 +32,11 @@ class Events_Admin {
         $this->timezone = new DateTimezone('America/New_York');
 
         //hook into events save action
-        add_action( 'wp_insert_post', array($this, 'event_saved'), 100, 3); //@todo pull post_type from settings
-
-        //@todo add way to delete events in WA
+        if(ENV !== 'dev'){
+            add_action( 'wp_insert_post', array($this, 'event_saved'), 100, 3 ); //@todo pull post_type from settings
+            add_action( 'trash_to_publish', array($this, 'trash_to_publish'), 10, 1 );
+            add_action( 'trashed_post', array($this, 'trashed_post'), 10, 1 );
+        }
 
         add_filter( 'removable_query_args', array($this, 'add_removable_arg') );
 
