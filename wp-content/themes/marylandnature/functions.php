@@ -307,21 +307,25 @@ function nhsm_em_calendar_event_data($event_data, $event){
 	
 	$append_to_title = false;
 	$cat_icons = '';
+
+	//default
+    $event_data['backgroundColor'] = '#666666';
+    $event_data['textColor'] = '#ffffff';
 	
 	$event_categories = wp_get_post_terms( $event->ID, 'event-category' );
-	if( 
-		(!empty( $event_categories ) && !is_wp_error( $event_categories ) && count($event_categories) > 1 )
-		|| ($event_data['backgroundColor'] == '')
-	){
-			$event_data['backgroundColor'] = '#666666';
-	}
-	if(!empty( $event_categories ) && !is_wp_error( $event_categories ) && count($event_categories) > 1){
-		foreach($event_categories as $cat){
-			$bg_color = get_term_meta( $cat->term_id, '_label_bg_color', true );
-			$cat_icons .= sprintf('<span style="background:#%1$s" title="%2$s"><span class="show-for-sr">%2$s</span></span>', $bg_color, $cat->name);
-		}
-		$append_to_title = sprintf('<span class="fc-cats">%s</span>', $cat_icons);
-	}
+	if(!empty( $event_categories ) && !is_wp_error( $event_categories )){
+	    if(count($event_categories) > 1){
+            foreach($event_categories as $cat){
+                $bg_color = get_term_meta( $cat->term_id, '_label_bg_color', true );
+                $cat_icons .= sprintf('<span style="background:#%1$s" title="%2$s"><span class="show-for-sr">%2$s</span></span>', $bg_color, $cat->name);
+            }
+            $append_to_title = sprintf('<span class="fc-cats">%s</span>', $cat_icons);
+        }
+        else {
+            $event_data['backgroundColor'] = '#' . get_term_meta( $event_categories[0]->term_id, '_label_bg_color', true );
+            $event_data['textColor'] = '#' . get_term_meta( $event_categories[0]->term_id, '_label_txt_color', true );
+        }
+    }
 
 	ob_start();
 	get_template_part( 'parts/event', 'tooltip' );
