@@ -374,6 +374,18 @@ class Events_Admin {
         return $response;
     }
 
+    public function deleteEvent($post, $event_id){
+        $event_url = $this->getEventUrl($event_id);
+        $response = false;
+        try{
+            $response = $this->waApiClient->makeRequest($event_url, 'DELETE');
+        }
+        catch(\Exception $e){
+            $this->send_error("deleteEvent\n" . $e->getMessage(), [], $post, $event_id);
+        }
+        return $response;
+    }
+
     /**
      * @param int $event_id
      * @param \WP_Post $post
@@ -558,6 +570,16 @@ class Events_Admin {
     }
 
     /**
+     * @param \WP_Post $post
+     * @throws \Exception
+     * @return \WP_Post
+     */
+    public function trash_to_publish($post){
+        $this->event_saved($post->ID, $post, true);
+        return $post;
+    }
+
+    /**
      * @param int $wa_event_id
      * @param \WP_Post $post
      * @throws \Exception
@@ -686,6 +708,23 @@ class Events_Admin {
                 $this->send_error("DELETE EventRegistrationType\n" . $e->getMessage(), ['typeId' => $id], $post, $wa_event_id);
             }
         }
+    }
+
+    public function trashed_post($post_id){
+        $wa_event_id = get_post_meta($post_id, '_wa_event_id', true);
+        if($wa_event_id){
+            $this->setWaAuth($this->waApiClient);
+            $post = get_post($post_id);
+
+            try{
+                $this->deleteEvent($post, $wa_event_id);
+            }
+            catch(\Exception $e){
+                $this->send_error("DELETE Event\n" . $e->getMessage(), [], $post, $wa_event_id);
+            }
+        }
+
+        return $post_id;
     }
 
     /**
