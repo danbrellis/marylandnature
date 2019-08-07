@@ -63,7 +63,32 @@ class Events_Admin {
     }
 
     public function import_events(){
-        if(isset($_GET['import_wa_events']) && $_GET['import_wa_events'] = "now"){
+        if(isset($_GET['fix_membership_type']) && $_GET['fix_membership_type'] === 'now'){
+            global $wpdb;
+            $posts = $wpdb->get_results("
+                SELECT * FROM `wp_postmeta`
+                WHERE `meta_value` = 'a:6:{i:0;s:14:\"1 - Individual\";i:1;s:10:\"2 - Family\";i:2;s:16:\"3 - Contributing\";i:3;s:14:\"4 - Sustaining\";i:4;s:8:\"5 - Life\";i:5;s:13:\"6 - Corporate\";}'
+                AND `meta_key` LIKE '%membership_types%'
+                ORDER BY `post_id` LIMIT 0, 1000
+                ");
+            $membership_types = [
+                "1 - Individual",
+                "2 - Family",
+                "3 - Contributing",
+                "4 - Sustaining",
+                "5 - Life",
+                "6 - Corporate"
+            ];
+            if($posts && is_array($posts)){
+                foreach($posts as $post){
+                    update_post_meta($post->post_id, $post->meta_key, $membership_types);
+                    $this->event_saved($post->post_id, get_post($post->post_id), true);
+                }
+            }
+
+        }
+
+        if(isset($_GET['import_wa_events']) && $_GET['import_wa_events'] === "now"){
             if(!$this->setWaAuth($this->waApiClient)) return false;
             $skip = isset($_GET['skip']) ? $_GET['skip'] : 0;
             $top = isset($_GET['top']) ? $_GET['top'] : 20;
