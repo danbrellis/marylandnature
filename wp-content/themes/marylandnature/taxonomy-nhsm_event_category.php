@@ -19,7 +19,7 @@
 			
 					<div class="row" data-equalizer="brellis" data-equalize-on="medium">
 						<main id="main" class="medium-9 medium-push-3 columns" role="main" data-equalizer-watch="brellis">
-							<?php get_template_part( 'parts/loop', 'event-archive' ); ?>
+							<?php get_template_part( 'parts/loop', 'archive-event' ); ?>
 						</main> <!-- end #main -->
 
 						<?php get_sidebar(); ?>

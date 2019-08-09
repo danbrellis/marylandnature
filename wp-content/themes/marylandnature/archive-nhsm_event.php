@@ -11,7 +11,7 @@
 								<?php nhsm_addthis(); ?>
 								<h1 class="page-title"><?php echo nhsm_event_scope_prefix(' '); post_type_archive_title(); ?></h1>
 							</header>
-							<?php get_template_part( 'parts/loop', 'event-archive' ); ?>	
+							<?php get_template_part( 'parts/loop', 'archive-event' ); ?>
 						</main> <!-- end #main -->
 
 						<?php get_sidebar(); ?>

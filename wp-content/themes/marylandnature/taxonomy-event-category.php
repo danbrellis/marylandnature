@@ -16,7 +16,7 @@
 								nhsm_the_category_banner_image(); ?>
 
 							</header> <!-- end article header -->
-							<?php get_template_part( 'parts/looper', 'event-archive' ); ?>
+							<?php get_template_part( 'parts/looper', 'archive-event' ); ?>
 						</main> <!-- end #main -->
 
 						<?php get_sidebar(); ?>

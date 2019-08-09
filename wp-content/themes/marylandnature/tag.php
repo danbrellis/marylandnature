@@ -16,7 +16,7 @@
 							$tabs = array(
 								'events' => array(
 									'label' => 'Events',
-									'template' => 'parts/loop-event-archive',
+									'template' => 'parts/loop-archive-event',
 									'args' => array('post_type' => 'event', 'tag_id' => $tag->term_id)
 								),
 								'collections' => array(
