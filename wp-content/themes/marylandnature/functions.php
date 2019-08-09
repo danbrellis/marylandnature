@@ -76,8 +76,12 @@ require_once(get_template_directory().'/assets/functions/custom-post-type.php');
 **********************/
 
 /** Queries **/
+/**
+ * @param WP_Query $query
+ * @return WP_Query $query
+ */
 function nhsm_pre_get_posts( $query ) {
-	if($query->is_main_query() && !is_admin()){
+	if($query->is_main_query() && !is_admin() || false){
 		if ( is_post_type_archive('event') || is_tax('event-category') ) {
 			$query->set( 'orderby', 'meta_value' );
 			$query->set( 'meta_type', 'DATETIME' );
@@ -110,15 +114,18 @@ function nhsm_pre_get_posts( $query ) {
 				$query->set( 'meta_query', $meta_query );
 				$query->set( 'order', 'ASC' );
 			}
-
-			return $query;
 		}
 	}
-	
-	//Exclude homepage from search
+
 	if( $query->is_main_query() && is_search() && !is_admin()){
-		$query->set('post__not_in', array(get_option('page_on_front')));
+        //Exclude homepage from search
+        $query->set('post__not_in', array(get_option('page_on_front')));
+
+		//set search to only posts and pages (handle other post types in search template)
+        $query->set('post_type', ['post', 'page']);
 	}
+
+	return $query;
 }
 add_action('pre_get_posts', 'nhsm_pre_get_posts');
 
