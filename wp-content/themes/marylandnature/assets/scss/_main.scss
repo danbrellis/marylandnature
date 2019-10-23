@@ -447,39 +447,33 @@ POSTS & CONTENT STYLES
 #content {
 	padding-top: 2rem;
 	//background-color: #f4f4f4;
-	
+
 	#inner-content {
 		.hbanner {
 			background: $primary;
-			
+
 			margin-bottom: 2rem;
 			background-position: 50% 50%;
 			background-size: cover;
-			
-			
-			
 		}
-		
-		header {
+	}
+}
 
-			.post_tags {
-				display: inline-block;
-				margin-bottom: 2rem;
-				color: #A1A293;
-				float: none;
-				clear: none;
-				font-size: 18px;
-				line-height: 18px;
+.article-header {
+	.post_tags {
+		display: inline-block;
+		margin-bottom: 2rem;
+		color: #A1A293;
+		float: none;
+		clear: none;
+		font-size: 18px;
+		line-height: 18px;
 
-				i {
-					color: map-get($foundation-palette, warning);
-					padding: 0 0.4em 0 0;
-					font-size: 160%;
-				}
-			}
-
+		i {
+			color: map-get($foundation-palette, warning);
+			padding: 0 0.4em 0 0;
+			font-size: 160%;
 		}
-
 	}
 }
 
