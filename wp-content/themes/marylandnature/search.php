@@ -9,9 +9,6 @@ $post_types = [
     'nhsm_collections' => [
         "label" => "Collections"
     ],
-    'dlm_downloads' => [
-        "label" => "Downloads"
-    ],
     'nhsm_team' => [
         "label" => "People"
     ]
