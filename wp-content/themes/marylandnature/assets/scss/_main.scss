@@ -1849,8 +1849,24 @@ PLUGIN STYLES
 }
 
 /* Team */
+.team-cards-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-column-gap: map-get($grid-column-gutter, 'small');
+
+	@include breakpoint(medium) {
+		grid-column-gap: map-get($grid-column-gutter, 'medium');
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+}
 .team-card {
-	
+	display: flex;
+	flex-direction: column;
+
+	& > :last-child{
+		flex-grow: 1;
+	}
+
 	.team-biophotocont {
 		position: relative;
 	}
