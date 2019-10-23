@@ -594,6 +594,32 @@ function nhsm_homepage_collections_query($q){
 	}
 }
 
+function nhsm_get_formatted_collector($collection){
+    $collectors = [];
+
+    if( have_rows('nhsm_active_curators', $collection->ID) ):
+        while ( have_rows('nhsm_active_curators') ) : the_row();
+            $c = trim(get_sub_field('nhsm_curator'));
+            if($c) $collectors[] = $c;
+        endwhile;
+    endif;
+
+    switch (count($collectors)) {
+        case 0:
+            $collector = '';
+            break;
+        case 1:
+            $collector = $collectors[0];
+            break;
+        case 2:
+            $collector = $collectors[0] . " & " . $collectors[1];
+            break;
+        default:
+            $collector = substr(implode(', ', $collectors), 0, -3);
+    }
+    return $collector;
+}
+
 add_filter('siteorigin_panels_postloop_query_args', 'nhsm_what_we_do_upcoming_events');
 function nhsm_what_we_do_upcoming_events($query_args){
   if(isset($query_args['meta_query']) && isset($query_args['meta_query'][0]) && isset($query_args['meta_query'][0]['value'])){

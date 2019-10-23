@@ -2,13 +2,13 @@
 					
   <header class="article-header">
 		<?php nhsm_addthis(); ?>
-		<h1 class="entry-title single-title" itemprop="headline"><?php the_title(); ?></h1>
+        <h3 class="entry-title single-title" itemprop="headline"><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
 		<p class="collection-meta">
-			<span class="collector">Collected by <strong><?php echo get_post_meta(get_the_ID(), 'nhsm_collection_owner', true); ?></strong></span>
-			&nbsp;<span class="middot">&middot;</span>&nbsp;
+			<span class="collector">Collected by <strong><?php echo nhsm_get_formatted_collector($post); ?></strong></span>
+			<?php /* &nbsp;<span class="middot">&middot;</span>&nbsp;
 			<span class="specimen-no">Includes <strong>230 specimens</strong></span>
 			&nbsp;<span class="middot">&middot;</span>&nbsp;
-			<span class="collection-date">Dated to <strong>1904</strong></span>
+			<span class="collection-date">Dated to <strong>1904</strong></span> */ ?>
 		</p>
 		<?php nhsm_the_banner_image(); ?>
 		<?php the_tags('<p class="post_tags"><i class="fi-pricetag-multiple" title="Tagged with:"></i>&nbsp;', ', ', '</p>'); ?>
