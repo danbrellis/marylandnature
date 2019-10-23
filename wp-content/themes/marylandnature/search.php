@@ -1,10 +1,22 @@
 <?php get_header();
 $post_types = [
-    'event' => "Events",
-    'nhsm_collections' => "Collections",
-    'dlm_downloads' => "Downloads",
-    'nhsm_team' => "People"
-]; ?>
+    'event' => [
+        "label" => "Events",
+        "args" => [
+            'event_show_occurrences' => true
+        ]
+    ],
+    'nhsm_collections' => [
+        "label" => "Collections"
+    ],
+    'dlm_downloads' => [
+        "label" => "Downloads"
+    ],
+    'nhsm_team' => [
+        "label" => "People"
+    ]
+];
+remove_filter('excerpt_more', 'joints_excerpt_more');?>
 			
 	<div id="content">
 		<div id="inner-content">
@@ -27,8 +39,8 @@ $post_types = [
 
                             <ul class="tabs" data-tabs id="search-result-tabs">
                                 <li class="tabs-title is-active"><a href="#general" aria-selected="true">General</a></li>
-                                <?php foreach($post_types as $post_type => $label): ?>
-                                    <li class="tabs-title"><a data-tabs-target="<?php echo $post_type; ?>" href="#<?php echo $post_type; ?>"><?php echo $label; ?></a></li>
+                                <?php foreach($post_types as $post_type => $details): ?>
+                                    <li class="tabs-title"><a data-tabs-target="<?php echo $post_type; ?>" href="#<?php echo $post_type; ?>"><?php echo $details['label']; ?></a></li>
                                 <?php endforeach; ?>
                             </ul>
 
@@ -42,11 +54,16 @@ $post_types = [
                                         <?php get_template_part( 'parts/content', 'missing' ); ?>
                                     <?php endif; ?>
                                 </div>
-                                <?php foreach($post_types as $post_type => $label): ?>
+                                <?php foreach($post_types as $post_type => $details): ?>
 
                                     <div class="tabs-panel" id="<?php echo $post_type; ?>">
                                         <?php $s = isset($_GET["s"]) ? $_GET["s"] : "";
-                                        $query = new WP_Query(['s' => $s, 'post_type' => $post_type]);
+                                        $args = [
+                                            's' => $s,
+                                            'post_type' => $post_type,
+                                        ];
+                                        if(isset($details['args'])) $args = wp_parse_args($details['args'], $args);
+                                        $query = new WP_Query($args);
                                         if ( $query->have_posts() ) : while ( $query->have_posts() ) : $query->the_post(); ?>
                                             <?php get_template_part( 'parts/loop', 'archive-' . $post_type ); ?>
                                         <?php endwhile;

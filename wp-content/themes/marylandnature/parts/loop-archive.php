@@ -8,15 +8,15 @@
 			<?php if ( comments_open() ): ?>&nbsp;<span class="middot">&middot;</span>&nbsp;
 			<?php comments_popup_link( '0 Comments', '1 Comment', '% Comments', 'comments-link', ''); ?><?php endif; ?>
 		</p>
-    <?php nhsm_the_cat_labels(); ?>
+        <?php nhsm_the_cat_labels(); ?>
 		<?php nhsm_the_banner_image(); ?>
 		<?php the_tags('<p class="post_tags"><i class="fi-pricetag-multiple" title="Tagged with:"></i>&nbsp;', ', ', '</p>'); ?>
 
 	</header> <!-- end article header -->
 	
 	<section class="entry-content" itemprop="articleBody">
-		<?php the_content(); ?>
-		<div class="addthis_inline_share_toolbox float-right" data-url="<?php the_permalink(); ?>" data-title="<?php the_title(); ?>" data-description="<?php the_excerpt(); ?>" data-media="<?php the_post_thumbnail_url(get_the_ID(), 'nhsm_hbanner'); ?>"></div><a class="more-link button small" href="<?php the_permalink(); ?>"><span aria-label="Continue reading <?php the_title(); ?>">Read more</span></a>
+		<?php the_excerpt(); ?>
+		<div class="addthis_inline_share_toolbox float-right" data-url="<?php the_permalink(); ?>" data-title="<?php the_title(); ?>" data-description="<?php get_the_excerpt(); ?>" data-media="<?php the_post_thumbnail_url('nhsm_hbanner'); ?>"></div><a class="more-link button small" href="<?php the_permalink(); ?>"><span aria-label="Continue reading <?php the_title(); ?>">Read more</span></a>
 		<?php wp_link_pages(); ?>
 	</section> <!-- end article section -->
 						
