@@ -10,7 +10,8 @@ $post_types = [
         "label" => "Collections"
     ],
     'nhsm_team' => [
-        "label" => "People"
+        "label" => "People",
+        "classes" => ["team-cards-grid"]
     ]
 ];
 remove_filter('excerpt_more', 'joints_excerpt_more');?>
@@ -52,23 +53,27 @@ remove_filter('excerpt_more', 'joints_excerpt_more');?>
                                     <?php endif; ?>
                                 </div>
                                 <?php foreach($post_types as $post_type => $details): ?>
-
+                                    <?php
+                                    $classes = [];
+                                    if (isset($details['classes'])) $classes = array_merge($details['classes'], $classes); ?>
                                     <div class="tabs-panel" id="<?php echo $post_type; ?>">
-                                        <?php $s = isset($_GET["s"]) ? $_GET["s"] : "";
-                                        $args = [
-                                            's' => $s,
-                                            'post_type' => $post_type,
-                                        ];
-                                        if(isset($details['args'])) $args = wp_parse_args($details['args'], $args);
-                                        $query = new WP_Query($args);
-                                        if ( $query->have_posts() ) : while ( $query->have_posts() ) : $query->the_post(); ?>
-                                            <?php get_template_part( 'parts/loop', 'archive-' . $post_type ); ?>
-                                        <?php endwhile;
-                                            joints_page_navi();
-                                            wp_reset_postdata();
-                                        else : ?>
-                                            <?php get_template_part( 'parts/content', 'missing' ); ?>
-                                        <?php endif; ?>
+                                        <div class="<?php echo implode(' ', $classes); ?>">
+                                            <?php $s = isset($_GET["s"]) ? $_GET["s"] : "";
+                                            $args = [
+                                                's' => $s,
+                                                'post_type' => $post_type,
+                                            ];
+                                            if(isset($details['args'])) $args = wp_parse_args($details['args'], $args);
+                                            $query = new WP_Query($args);
+                                            if ( $query->have_posts() ) : while ( $query->have_posts() ) : $query->the_post(); ?>
+                                                <?php get_template_part( 'parts/loop', 'archive-' . $post_type ); ?>
+                                            <?php endwhile;
+                                                joints_page_navi();
+                                                wp_reset_postdata();
+                                            else : ?>
+                                                <?php get_template_part( 'parts/content', 'missing' ); ?>
+                                            <?php endif; ?>
+                                        </div>
                                     </div>
                                 <?php endforeach; ?>
                             </div>
