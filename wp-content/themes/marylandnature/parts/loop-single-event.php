@@ -11,15 +11,15 @@
 	</header> <!-- end article header -->
 					
 	<section class="entry-content" itemprop="articleBody">
-		<?php em_display_single_event_google_map(); ?>
 		<?php //the_post_thumbnail('full'); ?>
 		<?php the_content(); ?>
+        <h2>Location</h2>
+        <?php em_display_single_event_google_map(); ?>
 		<?php em_display_event_gallery(); ?>
 	</section> <!-- end article section -->
 						
 	<footer class="article-footer">
 		<?php wp_link_pages( array( 'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'jointswp' ), 'after'  => '</div>' ) ); ?>
-		<p class="tags"><?php the_tags('<span class="tags-title">' . __( 'Tags:', 'jointswp' ) . '</span> ', ', ', ''); ?></p>	
 	</footer> <!-- end article footer -->
 
 	<?php comments_template(); ?>
