@@ -36,6 +36,9 @@ class Events_Admin {
             add_action( 'wp_insert_post', array($this, 'event_saved'), 100, 3 ); //@todo pull post_type from settings
             add_action( 'trash_to_publish', array($this, 'trash_to_publish'), 10, 1 );
             add_action( 'trashed_post', array($this, 'trashed_post'), 10, 1 );
+
+            //For Events Maker duplicate event feature
+            add_action('em_after_duplicate_event', array($this, 'em_after_duplicate_event'), 10, 2 );
         }
 
         add_filter( 'removable_query_args', array($this, 'add_removable_arg') );
@@ -43,6 +46,55 @@ class Events_Admin {
         add_action( 'admin_head', array($this, 'admin_head') );
 
         add_action( 'in_admin_header', array($this, 'import_events') );
+
+        //For Events Maker duplicate event feature
+        add_filter('em_duplicate_event_args', array($this, 'em_duplicate_event_args'), 10, 1 );
+        add_filter('em_duplicate_event_meta_keys', array($this, 'em_duplicate_event_meta_keys'), 10, 1 );
+    }
+
+    /**
+     * @param array $args
+     * @return array
+     */
+    public function em_duplicate_event_args(array $args){
+        //event_saved() is triggered later from em_after_duplicate_event after meta is added
+        remove_action( 'wp_insert_post', array($this, 'event_saved'), 100 );
+        return $args;
+    }
+
+    /**
+     * @param array $keys
+     * @return array
+     */
+    public function em_duplicate_event_meta_keys(array $keys){
+        if($keys === null) return $keys;
+
+        if (($key = array_search('_wa_event_id', $keys)) !== false) {
+            unset($keys[$key]);
+        }
+        if (($key = array_search('_event_tickets_url', $keys)) !== false) {
+            unset($keys[$key]);
+        }
+
+        //removes registration_types_X_registration_type_id && _registration_types_X_registration_type_id
+        foreach($keys as $index => $key){
+            if (substr($key, -21) === '_registration_type_id' &&
+                (substr($key, 0, 18) === 'registration_types' || substr($key, 0, 19) === '_registration_types')) {
+                unset($keys[$index]);
+            }
+        }
+
+        return $keys;
+    }
+
+    /**
+     * @param int $new_post_id
+     * @param \WP_Post $old_post
+     * @throws \Exception
+     */
+    public function em_after_duplicate_event( $new_post_id, \WP_Post $old_post){
+        $new_post = get_post($new_post_id);
+        $this->event_saved($new_post_id, $new_post, true);
     }
 
     /**
@@ -374,6 +426,11 @@ class Events_Admin {
         return $response;
     }
 
+    /**
+     * @param \WP_Post $post
+     * @param int $event_id
+     * @return array|bool|mixed|object
+     */
     public function deleteEvent($post, $event_id){
         $event_url = $this->getEventUrl($event_id);
         $response = false;
