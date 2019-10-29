@@ -184,8 +184,8 @@ function nhsm_get_date_range_by_id($e){
 function nhsm_format_date_range($raw_start, $raw_end, $allday = false){
     $retval = '';
 
-    $start = date('Y', $raw_start) == date('Y') ? date('D, j F', $raw_start) : date('D, j F Y', $raw_start);
-    $end = date('Y', $raw_end) == date('Y') ? date('D, j F', $raw_end) : date('D, j F Y', $raw_end);
+    $start = date('Y', $raw_start) == date('Y') ? date('D, F j', $raw_start) : date('D, F j, Y', $raw_start);
+    $end = date('Y', $raw_end) == date('Y') ? date('D, F j', $raw_end) : date('D, F j, Y', $raw_end);
 
 	if(!$allday){
 		$start_time = date('i', $raw_start) == '00' ? date('ga', $raw_start) : date('g:ia', $raw_start);
@@ -197,7 +197,7 @@ function nhsm_format_date_range($raw_start, $raw_end, $allday = false){
 		$retval = $start;
 		
 		if($start_time) {
-			$retval .= ' ' . $start_time;
+			$retval .= ', ' . $start_time;
 			
 			if($end_time && !$start_time != $end_time){
 				$retval .= ' - ' . $end_time;
@@ -208,7 +208,7 @@ function nhsm_format_date_range($raw_start, $raw_end, $allday = false){
 		$retval = $start;
 		
 		if($start_time) {
-			$retval .= ' ' . $start_time;
+			$retval .= ', ' . $start_time;
 		}
 		
 		$retval .= ' - ' . $end;
