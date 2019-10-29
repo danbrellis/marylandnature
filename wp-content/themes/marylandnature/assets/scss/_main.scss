@@ -105,7 +105,7 @@ h1, .h1 {
 		font-size: 72px;
 		line-height: 1.6em;
 		color: $white;
-		font-weight: 100;
+		font-weight: 200;
 		text-transform: uppercase;
 		
 		small {
@@ -307,6 +307,7 @@ NAVIGATION STYLES
 				padding-left: 3rem;
 				position: relative;
 				z-index: 1;
+				text-decoration: none;
 			}
 			
 			&.active, &.current, &:hover, &:active, &:focus {
@@ -334,6 +335,7 @@ NAVIGATION STYLES
 				font-size: 115%;
 				text-transform: uppercase;
 				padding-right: 1rem;
+				text-decoration: none;
 
 				&:after {
 					border: 0;
@@ -342,6 +344,7 @@ NAVIGATION STYLES
 			&:not(.create-button) {
 				a {
 					color: $black;
+					text-decoration: none;
 				}
 
 			}
@@ -1091,6 +1094,7 @@ SIDEBARS & ASIDES
 			margin-left: 6px;
 			background: none;
 			padding: 0.4rem 1rem;
+			text-decoration: none;
 			
 		}
 	}
@@ -1190,6 +1194,7 @@ FOOTER STYLES
 	
 	a {
 		color: $white;
+		text-decoration: none;
 		
 		&:hover, &:focus {
 			text-decoration: underline;
@@ -1287,7 +1292,7 @@ HOMEPAGE STYLES
 	}
 	
 	h2, .h2 {
-		font-weight: 100;
+		font-weight: 200;
 		text-transform: uppercase;
 		font-size: rem-calc(60);
 	}
@@ -1464,6 +1469,7 @@ HOMEPAGE STYLES
 				font-size: rem-calc(24);
 				font-weight: 500;
 				padding: rem-calc(15);
+				text-decoration: none;
 			}
 		}
 		.widget_text {
@@ -1555,7 +1561,7 @@ HOMEPAGE STYLES
 		background-position: 50% -312px;
 		
 		p, .textwidget {
-			font-weight: 100;
+			font-weight: 200;
 			font-size: rem-calc(36);
 			color: $white;
 			line-height: 1.2;
@@ -1574,6 +1580,7 @@ HOMEPAGE STYLES
 				font-weight: 500;
 				font-size: rem-calc(24);
 				&.button {
+					text-decoration: none;
 					@include breakpoint(small only) {
 						display: block;
 					}
@@ -1618,7 +1625,11 @@ FOUNDATION STYLES
 .create-button { //creates a button on the child <a> tags
 	a {
 		@include button;
+		text-decoration: none;
 	}
+}
+a.button {
+	text-decoration: none;
 }
 
 .nhsm_scrolling_words {
