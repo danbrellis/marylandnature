@@ -455,7 +455,14 @@ class Events_Admin {
             $response = $this->waApiClient->makeRequest($event_url, 'GET');
         }
         catch(\Exception $e){
-            $this->send_error("getEvent\n" . $e->getMessage(), [], $post, $event_id);
+            $this->send_error(
+                "<br/><br/>getEvent<br />" . $e->getMessage() .
+                "<br/><br/>Unable to retrieve event from WildApricot." .
+                "<br/><br/>If the event no longer exists in WildApricot, please <a href='mailto:".get_option('admin_email')."'>contact the site admin</a>.",
+                [],
+                $post,
+                $event_id
+            );
         }
         return $response;
     }
