@@ -43,39 +43,20 @@ function get_events() {
 			
 			//defaults
 			$append_to_title = false;
-			$cat_icons = '';
-			$backgroundColor = '#666666';
-			$textColor = '#ffffff';
+            $event_data['backgroundColor'] = '';
+            $event_data['textColor'] = '';
 
-			$event_categories = wp_get_post_terms( $id, 'event-category' );
-			if(!empty( $event_categories ) && !is_wp_error( $event_categories )){
-				if(count($event_categories) == 1){
-					$backgroundColor = '#' . get_term_meta( $event_categories[0]->term_id, '_label_bg_color', true );
-					$textColor = '#' . get_term_meta( $event_categories[0]->term_id, '_label_txt_color', true );
-				}
-				else {
-					
-					foreach($event_categories as $cat){
-						$bg_color = get_term_meta( $cat->term_id, '_label_bg_color', true );
-						$cat_icons .= sprintf('<span style="background:#%1$s" title="%2$s"><span class="show-for-sr">%2$s</span></span>', $bg_color, $cat->name);
-					}
-					$append_to_title = sprintf('<span class="fc-cats">%s</span>', $cat_icons);
-				}
-			}
-			
 			$eventData[] = array(
-				'id' => get_the_ID(),
-				'title' => get_the_title(),
-			  'allDay' => $allday !== 1 ? false : true,
-			  'start' => $startmoment,
-			  'end' => $endmoment,
-			  'tooltip' => trim($tooltip),
-			  'appendToTitle' => $append_to_title,
-				//'url' => get_permalink(),
-			  'editable' => false,
-			  'description' => get_the_content(),
-				'backgroundColor' => $backgroundColor,
-				'textColor' => $textColor
+                'id' => get_the_ID(),
+                'title' => get_the_title(),
+                'allDay' => $allday !== 1 ? false : true,
+                'start' => $startmoment,
+                'end' => $endmoment,
+                'tooltip' => trim($tooltip),
+                'appendToTitle' => $append_to_title,
+                //'url' => get_permalink(),
+                'editable' => false,
+                'description' => get_the_content()
 			);
 		}
 
@@ -101,10 +82,8 @@ function get_event_cat_filters(){
 		<button class="dropdown float-right" type="button" data-toggle="event-cat-filter">Category Filtering [<span id="cal-filtered">Off</span>]</button>
 		<div class="dropdown-pane bottom" id="event-cat-filter" data-dropdown data-auto-focus="true">
 			<ul class="menu vertical">
-					<?php foreach($terms as $term): 
-						$bg_color = get_term_meta( $term->term_id, '_label_bg_color', true );
-						$txt_color = get_term_meta( $term->term_id, '_label_txt_color', true ); ?>
-						<li><label for="cat_<?php echo $term->slug; ?>" class="label dynamic" style="color: #<?php echo $txt_color; ?>; background-color: #<?php echo $bg_color; ?>"><?php echo $term->name; ?><input type="checkbox" id="cat_<?php echo $term->slug; ?>" class="invisible" /><i></i></label></li>
+					<?php foreach($terms as $term): ?>
+						<li><label for="cat_<?php echo $term->slug; ?>" class="label dynamic"><?php echo $term->name; ?><input type="checkbox" id="cat_<?php echo $term->slug; ?>" class="invisible" /><i></i></label></li>
 					<?php endforeach; ?>
 				</ul>
 		</div>

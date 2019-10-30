@@ -313,26 +313,8 @@ function nhsm_em_calendar_event_data($event_data, $event){
 	setup_postdata( $post );
 	
 	$append_to_title = false;
-	$cat_icons = '';
-
-	//default
-    $event_data['backgroundColor'] = '#666666';
-    $event_data['textColor'] = '#ffffff';
-	
-	$event_categories = wp_get_post_terms( $event->ID, 'event-category' );
-	if(!empty( $event_categories ) && !is_wp_error( $event_categories )){
-	    if(count($event_categories) > 1){
-            foreach($event_categories as $cat){
-                $bg_color = get_term_meta( $cat->term_id, '_label_bg_color', true );
-                $cat_icons .= sprintf('<span style="background:#%1$s" title="%2$s"><span class="show-for-sr">%2$s</span></span>', $bg_color, $cat->name);
-            }
-            $append_to_title = sprintf('<span class="fc-cats">%s</span>', $cat_icons);
-        }
-        else {
-            $event_data['backgroundColor'] = '#' . get_term_meta( $event_categories[0]->term_id, '_label_bg_color', true );
-            $event_data['textColor'] = '#' . get_term_meta( $event_categories[0]->term_id, '_label_txt_color', true );
-        }
-    }
+    $event_data['backgroundColor'] = '';
+    $event_data['textColor'] = '';
 
 	ob_start();
 	get_template_part( 'parts/event', 'tooltip' );
@@ -344,7 +326,7 @@ function nhsm_em_calendar_event_data($event_data, $event){
 	$event_data['appendToTitle'] = $append_to_title;
 	unset($event_data['url']);
 	
-	wp_reset_postdata( $post );
+	wp_reset_postdata();
 	return $event_data;
 }
 
@@ -378,29 +360,36 @@ function nhsm_em_event_category_fields($fields){
 	return $fields;
 }
 
-function nhsm_em_the_event_terms_list($event = 0){
-	$e = get_post($event);
-	if(get_post_type() !== 'event') return false;
-	$cats = get_the_terms(get_the_ID(), 'event-category');
-	$cat_list = array();
+/**
+ * @param int $event_id
+ * @return array
+ */
+function nhsm_em_event_terms_list($event_id = 0){
+    $event = get_post($event_id);
+    if(get_post_type($event) !== 'event') return [];
+    $cats = get_the_terms($event->ID, 'event-category');
+    $cat_list = [];
 
-	if($cats && is_array($cats)){
-		foreach($cats as $cat){
-			$link = get_term_link( $cat, 'event-category' );
-			$template = !is_wp_error( $link ) ? '<a href="'.esc_url($link).'">%s</a>' : '%s';
-			$styles = array();
+    if($cats && is_array($cats)){
+        foreach($cats as $cat){
+            $link = get_term_link( $cat, 'event-category' );
+            $template = !is_wp_error( $link ) ? '<a href="'.esc_url($link).'">%s</a>' : '%s';
 
-			$bg_color = get_term_meta( $cat->term_id, '_label_bg_color', true );
-			if(!empty( $bg_color ) ) $styles[] = "background:#{$bg_color}";
+            $cat_list[] = sprintf($template, '<span class="label dynamic">'.$cat->name.'</span>');
+        }
+    }
 
-			$txt_color = get_term_meta( $cat->term_id, '_label_txt_color', true );
-			if(!empty( $txt_color ) ) $styles[] = "color:#{$txt_color}";
+    return $cat_list;
+}
 
-			$cat_list[] = sprintf($template, '<span class="label dynamic" style="'.implode(';', $styles).'">'.$cat->name.'</span>');
-		}
-	}
+/**
+ * @param int $event_id
+ * @param string $tag
+ */
+function nhsm_em_the_event_terms_list($event_id = 0, $tag = 'p'){
+	$cat_list = nhsm_em_event_terms_list($event_id);
 
-	echo '<p class="event_cat_labels">'.implode(' ', $cat_list).'</p>';
+	echo '<'.$tag.' class="event_cat_labels">'.implode(' ', $cat_list).'</'.$tag.'>';
 }
 
 function nhsm_em_the_date_reg_box($event = 0){

@@ -203,70 +203,6 @@ function nhsm_post_types() {
  ** Custom Meta Data
  **/
 
-function nhsm_event_category_add_form_fields( $taxonomy ) {
-	$bg_color = "#abd037";
-	$txt_color = "#ffffff";
-  ?>
-
-    <div class="form-field term-colorpicker-wrap">
-			<label for="term-colorpicker">Label Color</label>
-			<input name="_label_bg_color" value="<?php echo $bg_color; ?>" class="colorpicker" id="term-bg-colorpicker" data-style-modifier="background" />
-			<input name="_label_txt_color" value="<?php echo $txt_color; ?>" class="colorpicker" id="term-txt-colorpicker" data-style-modifier="color" />
-			<span class="label dynamic" style="color:<?php echo $txt_color; ?>; background:<?php echo $bg_color; ?>">Sample This</span>
-    </div>
-    
-    <div class="form-field term-group">
-			<label for="category_image_id">Image</label>
-			<input type="hidden" id="category_image_id" name="category_image_id" class="custom_media_url" value="">
-			<div id="category-image-wrapper"></div>
-			<p>
-				<input type="button" class="button button-secondary ct_tax_media_button" id="ct_tax_media_button" name="ct_tax_media_button" value="Add Image" />
-				<input type="button" class="button button-secondary ct_tax_media_remove" id="ct_tax_media_remove" name="ct_tax_media_remove" value="Remove Image" />
-			</p>
-   </div>
-
-  <?php
-
-}
-add_action( 'event-category_add_form_fields', 'nhsm_event_category_add_form_fields' );
-
-function nhsm_colorpicker_field_edit_category( $term ) {
-	$bg_color = get_term_meta( $term->term_id, '_label_bg_color', true );
-	$bg_color = ( ! empty( $bg_color ) ) ? "#{$bg_color}" : '#abd037';
-	$txt_color = get_term_meta( $term->term_id, '_label_txt_color', true );
-	$txt_color = ( ! empty( $txt_color ) ) ? "#{$txt_color}" : '#ffffff';?>
-
-	<tr class="form-field term-colorpicker-wrap">
-			<th scope="row"><label for="term-colorpicker">Label Color</label></th>
-			<td>
-				<input name="_label_bg_color" value="<?php echo $bg_color; ?>" class="colorpicker" id="term-bg-colorpicker" data-style-modifier="background" />
-				<input name="_label_txt_color" value="<?php echo $txt_color; ?>" class="colorpicker" id="term-txt-colorpicker" data-style-modifier="color" />
-				<span class="label dynamic" style="color:<?php echo $txt_color; ?>; background:<?php echo $bg_color; ?>"><?php echo $term->name; ?></span>
-			</td>
-	</tr>
-	
-	<tr class="form-field term-group-wrap">
-		<th scope="row">
-			<label for="category_image_id">Image</label>
-		</th>
-		<td>
-			<?php $image_id = get_term_meta ( $term -> term_id, 'category_image_id', true ); ?>
-			<input type="hidden" id="category_image_id" name="category_image_id" value="<?php echo $image_id; ?>">
-			<div id="category-image-wrapper">
-			  <?php if ( $image_id ) { ?>
-				  <?php echo wp_get_attachment_image ( $image_id, 'thumbnail' ); ?>
-			  <?php } ?>
-			</div>
-			<p>
-			  <input type="button" class="button button-secondary ct_tax_media_button" id="ct_tax_media_button" name="ct_tax_media_button" value="Add Image" />
-			  <input type="button" class="button button-secondary ct_tax_media_remove" id="ct_tax_media_remove" name="ct_tax_media_remove" value="Remove Image" />
-			</p>
-		</td>
-	</tr>
-	<?php
-}
-add_action( 'event-category_edit_form_fields', 'nhsm_colorpicker_field_edit_category' );
-
 function nhsm_role_category_add_form_fields($taxonomy) { ?>
     <div class="form-field">
         <label for="term-unique-url">
@@ -293,24 +229,6 @@ function nhsm_role_category_edit_category( $term ) {
 add_action( 'nhsm_role_edit_form_fields', 'nhsm_role_category_edit_category' );
 
 function nhsm_save_termmeta( $term_id ) {
-
-	$color_keys = array('_label_bg_color', '_label_txt_color');
-	// Save term color if possible
-	foreach($color_keys as $color_key){
-		if( isset( $_POST[$color_key] ) && ! empty( $_POST[$color_key] ) ) {
-			update_term_meta( $term_id, $color_key, sanitize_hex_color_no_hash( $_POST[$color_key] ) );
-		} else {
-			delete_term_meta( $term_id, $color_key );
-		}
-	}
-	
-	if( isset( $_POST['category_image_id'] ) && '' !== $_POST['category_image_id'] ){
-		$image = $_POST['category_image_id'];
-		update_term_meta ( $term_id, 'category_image_id', $image );
-	} else {
-		update_term_meta ( $term_id, 'category_image_id', '' );
-	}
-//var_dump($_POST['_has_unique_urls']); exit();
 	if( isset( $_POST['_has_unique_urls'] ) && '' !== $_POST['_has_unique_urls'] ){
 		$checked = $_POST['_has_unique_urls'];
 		update_term_meta ( $term_id, '_has_unique_urls', true );
@@ -318,35 +236,5 @@ function nhsm_save_termmeta( $term_id ) {
 		update_term_meta ( $term_id, '_has_unique_urls', '' );
 	}
 }
-add_action( 'created_event-category', 'nhsm_save_termmeta' );
-add_action( 'edited_event-category',  'nhsm_save_termmeta' );
 add_action( 'created_nhsm_role', 'nhsm_save_termmeta' );
 add_action( 'edited_nhsm_role',  'nhsm_save_termmeta' );
-
-function add_color_label_column( $columns ){
-	$columns['nhsm_label_colors'] = 'Label';
-	$columns['nhsm_cat_img'] = 'Image';
-	unset($columns['description']);
-	return $columns;
-}
-add_filter('manage_edit-event-category_columns', 'add_color_label_column' );
-
-function add_color_label_column_content( $content, $column_name, $term_id ){
-	if( $column_name === 'nhsm_label_colors' ){
-		$bg_color = get_term_meta( $term_id, '_label_bg_color', true );
-		$bg_color = ( ! empty( $bg_color ) ) ? "#{$bg_color}" : '#abd037';
-		$txt_color = get_term_meta( $term_id, '_label_txt_color', true );
-		$txt_color = ( ! empty( $txt_color ) ) ? "#{$txt_color}" : '#ffffff';
-
-		$content = '<span class="label dynamic" style="color:'.$txt_color.';background:'.$bg_color.'">Label Colors</span>';
-	}
-	if( $column_name === 'nhsm_cat_img' ){
-		$image_id = get_term_meta ( $term_id, 'category_image_id', true );
-		$content = '<a href="'. get_edit_post_link( $image_id ) .'" target="_blank" title="View Image">'.wp_get_attachment_image ( $image_id, array(75, 75) ).'</a>';
-	}
-
-	return $content;
-}
-add_filter('manage_event-category_custom_column', 'add_color_label_column_content', 10, 3 );
-
-
