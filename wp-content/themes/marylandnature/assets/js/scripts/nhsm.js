@@ -360,7 +360,7 @@ jQuery( document ).ready( function( $ ) {
 	//Cross domain iframe height (used for wildapricot widgets)
 	if ($(".wildapricotframe").length){
 		$('.wildapricotframe').iFrameResize( [{'checkOrigin': false, 'log': true}] );
-  }
+	}
 	
 	$('.tabs').on('change.zf.tabs', function() {
 		Foundation.reInit('equalizer');

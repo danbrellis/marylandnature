@@ -28,6 +28,6 @@
     "jshint-stylish": "^2.0.0"
   },
   "dependencies": {
-    "iframe-resizer": "^3.5.14"
+    "iframe-resizer": "^4.2.2"
   }
 }
