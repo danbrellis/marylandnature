@@ -4,43 +4,62 @@ add_action( 'wp_ajax_get_events', 'get_events' );
 add_action( 'wp_ajax_nopriv_get_events', 'get_events' );
 function get_events() {
 	//check_ajax_referer( 'nhsm-fc-events', 'security' );
-	
-	//get vars
-	$start_max = isset($_REQUEST['start']) ? $_REQUEST['start'] : false;
-	$end_max = isset($_REQUEST['end']) ? $_REQUEST['end'] : false;
-	$topics = isset($_REQUEST['topics']) ? $_REQUEST['topics'] : false;
 		
-	$eventData = array();
-	$args = array(
-		'post_type' => 'event'
-	);
-	
-	if(isset($_REQUEST['cats']) && !empty($_REQUEST['cats'])) {
-		$tax_query = array();
-		$cats = explode(' ', $_REQUEST['cats']);
-		if($cats && is_array($cats) && !empty($cats)){
-			$tax_query[0]['taxonomy'] = 'event-category';
-			$tax_query[0]['field'] = 'slug';
-			$tax_query[0]['terms'] = $cats;
-		}
-		$args['tax_query'] = $tax_query;
-	}
+	$eventData = [];
+
+    $args = array(
+        'event_start_after'		    => '',
+        'event_start_before'		=> '',
+        'event_end_after'			=> '',
+        'event_end_before'		    => '',
+        'event_ondate'			    => '',
+        'event_date_range'		    => 'between',
+        'event_date_type'			=> 'all',
+        'event_ticket_type'		    => 'all',
+        'event_show_past_events'    => true, // show by default
+        'event_show_occurrences'	=> Events_Maker()->options['general']['show_occurrences'],
+        'post_type'			        => 'event',
+        'author'			        => '',
+        'posts_per_page'            => -1
+    );
+
+    if(isset($_REQUEST['cats']) && !empty($_REQUEST['cats'])) {
+        $cats = explode('+', $_REQUEST['cats']);
+        if($cats && is_array($cats) && !empty($cats)){
+            $args['tax_query'][] = array(
+                'taxonomy'			 => 'event-category',
+                'field'				 => 'slug',
+                'terms'				 => $cats,
+                'include_children'	 => false
+            );
+
+        }
+    }
+
+    // calendar events query
+    $args = apply_filters( 'em_get_full_calendar_events_args', $args );
+
 	$e = new WP_Query( $args );
 	if ( $e->have_posts() ) {
 		// The 2nd Loop
 		while ( $e->have_posts() ) {
 			$e->the_post();
-			
-			$id = get_the_ID();
-			
-			$allday = get_post_meta($e->post->ID, '_event_all_day', true);
-			$startmoment = get_post_meta($e->post->ID, '_event_start_date', true);
-			$endmoment = get_post_meta($e->post->ID, '_event_end_date', true);
+			$event = $e->post;
+
+			$allday = em_is_all_day( $event->ID );
+
+            if ( em_is_recurring( $event->ID ) && Events_Maker()->options['general']['show_occurrences'] ) {
+                $start = $event->event_occurrence_start_date;
+                $end = $event->event_occurrence_end_date;
+            } else {
+                $start = $event->_event_start_date;
+                $end = $event->_event_end_date;
+            }
 
 			ob_start();
 			get_template_part( 'parts/event', 'tooltip' );
 			$tooltip = ob_get_clean();
-			
+
 			//defaults
 			$append_to_title = false;
             $event_data['backgroundColor'] = '';
@@ -49,14 +68,14 @@ function get_events() {
 			$eventData[] = array(
                 'id' => get_the_ID(),
                 'title' => get_the_title(),
-                'allDay' => $allday !== 1 ? false : true,
-                'start' => $startmoment,
-                'end' => $endmoment,
+                'allDay' => $allday,
+                'start' => $start,
+                'end' => $end,
                 'tooltip' => trim($tooltip),
                 'appendToTitle' => $append_to_title,
                 //'url' => get_permalink(),
                 'editable' => false,
-                'description' => get_the_content()
+                //'description' => get_the_content()
 			);
 		}
 

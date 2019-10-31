@@ -212,6 +212,7 @@ jQuery( document ).ready( function( $ ) {
 				var inputs = $('#event-cat-filter').find('input');
 			
 				//Refetch events if hash is present and precheck corresponding checkboxes
+				//@todo work this into the PHP request on load so we don't have to refetch events
 				if(hash){
 					var newSource = nhsm_ajax.ajax_url + '?action=get_events&cats=' + hash.substr(1);
 					$('.event-tooltip').remove();
@@ -260,7 +261,6 @@ jQuery( document ).ready( function( $ ) {
         	letters.splice(3, 0, '<span class="show-for-large">');
         	letters.push('</span>');
         	$(this).html(letters.join(''));
-        	console.log(letters);
 		});
 	}
 
