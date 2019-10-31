@@ -218,7 +218,6 @@ jQuery( document ).ready( function( $ ) {
 					calCont.fullCalendar('removeEventSources');
 					calCont.fullCalendar('removeEvents');
 					calCont.fullCalendar('addEventSource', newSource);
-					$('#cal-filtered').text('On');
 
 					var toCheck = hash.replace('#', '').split('+');
 					inputs.each(function(){
@@ -237,11 +236,9 @@ jQuery( document ).ready( function( $ ) {
 						if($(this).prop('checked')) checked.push($(this).attr('id').replace('cat_',''));
 					});
 					if(checked.length > 0) {
-						$('#cal-filtered').text('On');
 						window.location.hash=checked.join('+');
 					}
 					else {
-						$('#cal-filtered').text('Off');
 						removeHash();
 					}
 

@@ -79,14 +79,17 @@ function get_event_cat_filters(){
 	) );
 	ob_start();
 	if($terms && !is_wp_error($terms)): ?>
-		<button class="dropdown float-right" type="button" data-toggle="event-cat-filter">Category Filtering [<span id="cal-filtered">Off</span>]</button>
-		<div class="dropdown-pane bottom" id="event-cat-filter" data-dropdown data-auto-focus="true">
-			<ul class="menu vertical">
-					<?php foreach($terms as $term): ?>
-						<li><label for="cat_<?php echo $term->slug; ?>" class="label dynamic"><?php echo $term->name; ?><input type="checkbox" id="cat_<?php echo $term->slug; ?>" class="invisible" /><i></i></label></li>
-					<?php endforeach; ?>
-				</ul>
-		</div>
+        <strong>Filter: </strong>
+        <ul class="event-cat-filter__list" id="event-cat-filter">
+            <?php foreach($terms as $term): ?>
+                <li class="event-cat-filter__item">
+                    <input type="checkbox" id="cat_<?php echo $term->slug; ?>" class="" />
+                    <label for="cat_<?php echo $term->slug; ?>" class="dynamic event-cat-filter__label">
+                        <?php echo $term->name; ?>
+                    </label>
+                </li>
+            <?php endforeach; ?>
+        </ul>
 		<?php
 		$json['error'] = false;
 		$json['output'] = ob_get_clean();

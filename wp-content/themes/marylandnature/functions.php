@@ -344,7 +344,7 @@ function nhsm_em_get_full_calendar_script_args($args){
   );
 	$args['columnFormat'] = 'dddd';
 	$args['header']['right'] = '';
-	$args['header']['left'] = 'calview agendaview';
+	$args['header']['left'] = 'agendaview';
 	$args['header']['center'] = 'prev title next';
   
   $default_date = (($fc_year = get_query_var( 'fc_year' )) !== '') ? $fc_year : date('Y');
