@@ -482,22 +482,6 @@ POSTS & CONTENT STYLES
 	}
 }
 
-//remove when in production!!
-.addthis_inline_share_toolbox {
-	width: 130px;
-	height: 30px;
-	background: rgb(59, 89, 152);
-	
-	&:after {
-		content: "social sharing";
-		line-height: 30px;
-		text-align: center;
-		width: 130px;
-		color: #fff;
-		display: block;
-	}
-}
-
 .single-title,
 .page-title {
 	
