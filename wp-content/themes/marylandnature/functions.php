@@ -267,9 +267,25 @@ function nhsm_the_content_more_link() {
 }
 add_filter( 'the_content_more_link', '__return_false' );
 
-function nhsm_addthis($loop_check = false){
-	if($loop_check) if(!is_single()) return;
-	echo '<div class="float-right"><!-- Go to www.addthis.com/dashboard to customize your tools --><div class="addthis_inline_share_toolbox"></div></div>';
+function nhsm_addthis($args = []){
+    $defaults = [
+        'class' => 'float-right',
+        'url' => get_permalink(),
+        'title' => get_the_title(),
+        'description' => get_the_excerpt(),
+        'media' => get_the_post_thumbnail_url(get_the_ID(), 'nhsm_hbanner')
+    ];
+    $args = wp_parse_args($args, $defaults);
+	?>
+    <div class="<?php echo $args['class']; ?>">
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+        <div class="addthis_inline_share_toolbox"
+             data-url="<?php echo $args['url']; ?>"
+             data-title="<?php echo $args['title']; ?>"
+             data-description="<?php echo $args['description']; ?>"
+             data-media="<?php echo $args['media']; ?>"></div>
+    </div>
+    <?php
 }
 
 /** PLUGINS **/

@@ -1,7 +1,7 @@
 <article id="post-<?php the_ID(); ?>" <?php post_class(''); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 						
 	<header class="article-header">	
-		<?php nhsm_addthis(true); ?>
+		<?php nhsm_addthis(); ?>
 		<h1 class="entry-title single-title" itemprop="headline"><?php the_title(); ?></h1>
 		<?php 
 		nhsm_em_the_date_reg_box();
