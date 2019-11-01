@@ -94,7 +94,7 @@ function get_event_cat_filters(){
 	check_ajax_referer( 'cedar-waxwing', 'security' );
 	$terms = get_terms( array(
     'taxonomy' => 'event-category',
-    'hide_empty' => false,
+    'hide_empty' => true,
 	) );
 	ob_start();
 	if($terms && !is_wp_error($terms)): ?>
