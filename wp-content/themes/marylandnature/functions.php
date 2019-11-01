@@ -81,39 +81,22 @@ require_once(get_template_directory().'/assets/functions/custom-post-type.php');
  * @return WP_Query $query
  */
 function nhsm_pre_get_posts( $query ) {
-	if($query->is_main_query() && !is_admin() || false){
+	if($query->is_main_query() && !is_admin()){
 		if ( is_post_type_archive('event') || is_tax('event-category') ) {
-			$query->set( 'orderby', 'meta_value' );
-			$query->set( 'meta_type', 'DATETIME' );
-			$query->set( 'meta_key', '_event_start_date' );
-			$query->set( 'order', 'DESC' );
 			if(isset($_GET['show'])){
 				$scope = sanitize_title($_GET['show']);
 			}
 			else $scope = 'upcoming';
-			if($scope == 'past'){
-				$meta_query = array(
-					array(
-						'key'		=> '_event_start_date',
-						'value'		=> date('Y-m-d'),
-						'compare'	=> '<=',
-						'type'		=> 'DATE'
-					)
-				);
-				$query->set( 'meta_query', $meta_query );
+			if($scope === 'past'){
+				$query->set('event_show_past_events', true);
+				$query->set('event_start_before', date('Y-m-d'));
+                $query->set('order', 'DESC');
 			}
-			elseif($scope == 'upcoming'){
-				$meta_query = array(
-					array(
-						'key'		=> '_event_start_date',
-						'value'		=> date('Y-m-d'),
-						'compare'	=> '>=',
-						'type'		=> 'DATE'
-					)
-				);
-				$query->set( 'meta_query', $meta_query );
-				$query->set( 'order', 'ASC' );
+			elseif($scope === 'upcoming'){
+                $query->set('event_show_past_events', false);
+                $query->set('order', 'ASC');
 			}
+
 		}
 	}
 
@@ -127,7 +110,7 @@ function nhsm_pre_get_posts( $query ) {
 
 	return $query;
 }
-add_action('pre_get_posts', 'nhsm_pre_get_posts');
+add_action('pre_get_posts', 'nhsm_pre_get_posts', 9);
 
 /** Rewrites **/
 function nhsm_rewrite_tags() {
@@ -430,7 +413,6 @@ function nhsm_em_the_event_archive_filters(){
 			</div>
 			<div class="small-5 columns end">
 				<select name="show" class="form-control" onchange="this.form.submit()">
-					<option value="all" <?php selected($scope, 'all'); ?>>All Events</option>
 					<option value="upcoming" <?php selected($scope, 'upcoming'); ?>>Upcoming Events</option>
 					<option value="past" <?php selected($scope, 'past'); ?>>Past Events</option>
 				</select>
