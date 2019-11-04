@@ -277,10 +277,10 @@ function nhsm_addthis($args = []){
     <div class="<?php echo $args['class']; ?>">
         <!-- Go to www.addthis.com/dashboard to customize your tools -->
         <div class="addthis_inline_share_toolbox"
-             data-url="<?php echo $args['url']; ?>"
-             data-title="<?php echo $args['title']; ?>"
-             data-description="<?php echo $args['description']; ?>"
-             data-media="<?php echo $args['media']; ?>"></div>
+             data-url="<?php echo esc_url($args['url']); ?>"
+             data-title="<?php echo htmlentities($args['title'], ENT_QUOTES); ?>"
+             data-description="<?php echo htmlentities($args['description'], ENT_QUOTES); ?>"
+             data-media="<?php echo esc_url($args['media']); ?>"></div>
     </div>
     <?php
 }
