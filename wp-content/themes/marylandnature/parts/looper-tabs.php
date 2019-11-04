@@ -35,6 +35,11 @@ $post_types = [
 
 <div class="tabs-content" data-tabs-content="search-result-tabs">
     <div class="tabs-panel is-active" id="general">
+        <?php
+        global $wp_query;
+        $max_page = $wp_query->max_num_pages;
+        $paged = get_query_var('paged');
+        if($max_page > 1) printf("<p>Showing page %d of %d</p>", $paged, $max_page); ?>
         <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
             <?php get_template_part( 'parts/loop', 'archive' ); ?>
         <?php endwhile;
@@ -46,26 +51,48 @@ $post_types = [
     <?php foreach($post_types as $post_type => $details): ?>
         <?php
         $classes = [];
+        $post_type_page_arg = $post_type . 'page';
+        if(isset($_GET[$post_type_page_arg]) && is_numeric($_GET[$post_type_page_arg])) $page = intval($_GET[$post_type_page_arg]);
         if (isset($details['classes'])) $classes = array_merge($details['classes'], $classes); ?>
         <div class="tabs-panel" id="<?php echo $post_type; ?>">
-            <div class="<?php echo implode(' ', $classes); ?>">
+            <?php
+            $args = [
+                'post_type' => $post_type,
+                'posts_per_page' => 10,
+            ];
+            $args['s'] = isset($_GET["s"]) ? $_GET["s"] : "";
+            if($page > 1) $args['paged'] = $page;
+            if(isset($tag) && $tag) $args['tag_id'] = $tag->term_id;
+            if(isset($details['args'])) $args = wp_parse_args($details['args'], $args);
+            $query = new WP_Query($args);
+
+            //page nav specific to post_types
+            $posts_per_page = intval($query->get('posts_per_page'));
+            $paged = intval($query->get('paged'));
+            $max_page = $query->max_num_pages;
+            if(empty($paged) || $paged === 0) {
+                $paged = 1;
+            }
+
+            if($max_page > 1) printf("<p>Showing page %d of %d</p>", $paged, $max_page);
+            ?>
+            <?php if ( $query->have_posts() ) : ?>
+                <div class="<?php echo implode(' ', $classes); ?>">
+                     <?php while ( $query->have_posts() ) : $query->the_post(); ?>
+                        <?php get_template_part( 'parts/loop', 'archive-' . $post_type ); ?>
+                     <?php endwhile; ?>
+                </div>
                 <?php
-                $args = [
-                    'post_type' => $post_type,
-                ];
-                $args['s'] = isset($_GET["s"]) ? $_GET["s"] : "";
-                if(isset($tag) && $tag) $args['tag_id'] = $tag->term_id;
-                if(isset($details['args'])) $args = wp_parse_args($details['args'], $args);
-                $query = new WP_Query($args);
-                if ( $query->have_posts() ) : while ( $query->have_posts() ) : $query->the_post(); ?>
-                    <?php get_template_part( 'parts/loop', 'archive-' . $post_type ); ?>
-                <?php endwhile;
-                    joints_page_navi();
-                    wp_reset_postdata();
-                else : ?>
-                    <?php get_template_part( 'parts/content', 'missing' ); ?>
-                <?php endif; ?>
-            </div>
+                echo '<nav class="page-navigation"><ul class="pagination">';
+                    if($paged > 1) echo '<li><a href="'.add_query_arg($post_type_page_arg, $paged - 1).'">Previous</a></li>';
+                    if($paged < $max_page) echo '<li><a href="'.add_query_arg($post_type_page_arg, $paged + 1).'">Next</a></li>';
+                echo '</ul></nav>';
+
+                wp_reset_postdata();
+            else : ?>
+                <?php get_template_part( 'parts/content', 'missing' ); ?>
+            <?php endif; ?>
+
         </div>
     <?php endforeach; ?>
 </div>
