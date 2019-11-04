@@ -39,7 +39,11 @@ Author: Dan Brellis
 		margin: 0;
 		color: @title_text_color;
 		font-weight: @title_font_weight;
-		font-size: @title_font_size;
+		font-size: 53px;
+
+		@media (min-width:964px) {
+			font-size: @title_font_size;
+		}
 	}
 
 	.cta-subtitle {
