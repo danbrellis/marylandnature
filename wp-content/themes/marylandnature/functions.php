@@ -248,13 +248,10 @@ function nhsm_is_event_over($post_id = false){
 	if ( empty( $post_id ) )
 		return false;
 
-	$date = get_post_meta( (int) $post_id, '_event_occurrence_last_date', true );
-	if($date === false) return false;
+    $end = em_get_the_date(get_the_ID(), ['range'=>'end','output'=>'datetime']);
 
-	$dates = explode('|', $date);
-	
-	$ts = strtotime($dates[0]);
-	return $ts < time();
+	if($end === false) return false;
+	return strtotime($end) < time();
 }
 
 /** Content **/
