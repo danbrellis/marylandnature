@@ -7,8 +7,8 @@ $page_id = get_option( 'page_for_posts' );
 			<div class="row">
 				<div class="medium-12 columns">
 			
-					<div class="row" data-equalizer="brellis" data-equalize-on="medium">
-						<main id="main" class="medium-9 medium-push-3 columns" role="main" data-equalizer-watch="brellis">
+					<div class="row">
+						<main id="main" class="medium-9 medium-push-3 columns" role="main">
 							
 							<header class="article-header">
 

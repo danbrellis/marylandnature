@@ -4,8 +4,8 @@
 	<div id="inner-content">
 		<div class="row">
 			<div class="<?php echo implode(' ', $classes); ?>">
-				<div class="row" data-equalizer="brellis" data-equalize-on="medium">
-					<div class="medium-9 medium-push-3 columns" data-equalizer-watch="brellis">
+				<div class="row">
+					<div class="medium-9 medium-push-3 columns">
 						<div class="row">
 							<main id="main" class="medium-8 columns" role="main">
 								
