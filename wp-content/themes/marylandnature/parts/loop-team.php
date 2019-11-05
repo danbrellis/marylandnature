@@ -1,4 +1,38 @@
-<?php if(have_posts()): ?>
+<?php
+
+global $wp_query;
+$posts = $wp_query->posts;
+$people = [];
+foreach($posts as $post){
+    $group = '';
+    if(is_tax('nhsm_role')){
+        if(is_tax('nhsm_role', 'board-of-directors')){
+            $group = 'board-of-directors';
+        }
+        else{
+            $group = 'team_' . $wp_query->tax_query->queried_terms['nhsm_role']['terms'][0];
+        }
+    }
+    $rows = get_field('team_member_role', $post->ID);
+    //var_dump($rows);
+    if($rows) {
+        foreach($rows as $row)
+            if($row['group_position']['group'] === $group) {
+                $post->role_position = $row['group_position']['position'];
+                $post->group_order = $row['group_position']['list_order'] === "" ? 9999 : intval($row['group_position']['list_order']);
+            }
+    }
+
+}
+
+usort($wp_query->posts, function ($a, $b) {
+    if($a->group_order === $b->group_order){
+        return strcmp($a->post_title, $b->post_title);
+    }
+    return ($a->group_order < $b->group_order) ? -1 : 1;
+});
+
+if(have_posts()): ?>
     <div class="team-cards-grid">
         <?php while( have_posts() ): the_post(); ?>
             <div class="card team-card" id="team-<?php the_ID(); ?>">
@@ -20,22 +54,7 @@
                     <strong><?php the_title(); ?></strong>
                     <?php
                     //get appropriate role position title
-
-                    $group = '';
-                    if(is_tax('nhsm_role')){
-                        if(is_tax('nhsm_role', 'board-of-directors')){
-                            $group = 'board-of-directors';
-                        }
-                        elseif(is_tax('nhsm_role', 'team')){
-                            $group = 'team_' . $wp_query->tax_query->queried_terms['nhsm_team_cat']['terms'][0];
-                        }
-                    }
-                    $rows = get_field('team_member_role');
-                    //var_dump($rows);
-                    if($rows) {
-                        foreach($rows as $row)
-                            if($row['group_position']['group'] === $group) echo '<p>' . $row['group_position']['position'] . '</p>';
-                    }
+                    echo '<p>' . $post->role_position . '</p>';
                     ?>
                 </div>
             </div>

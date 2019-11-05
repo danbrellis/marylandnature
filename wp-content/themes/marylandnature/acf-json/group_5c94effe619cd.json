@@ -58,10 +58,10 @@
                             },
                             "choices": {
                                 "board-of-directors": "Board of Trustees",
-                                "team_staff": "Staff",
-                                "team_curators": "Curator",
-                                "team_clubs": "Club",
-                                "team_communications": "Communications"
+                                "team_leadership": "Leadership",
+                                "team_administration-operations": "Administration & Operations",
+                                "team_education-programs": "Education & Programs",
+                                "team_collections-research": "Collections & Research"
                             },
                             "default_value": [],
                             "allow_null": 0,
@@ -89,6 +89,27 @@
                             "prepend": "",
                             "append": "",
                             "maxlength": ""
+                        },
+                        {
+                            "key": "field_5dc0c1e2cf77b",
+                            "label": "List Order",
+                            "name": "list_order",
+                            "type": "number",
+                            "instructions": "Ordered in ascending order, 0 is first, then 10, 20, 30...",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "min": "",
+                            "max": "",
+                            "step": ""
                         }
                     ]
                 }
@@ -112,5 +133,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1562013421
+    "modified": 1572916231
 }
