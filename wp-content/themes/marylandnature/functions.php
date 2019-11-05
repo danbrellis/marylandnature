@@ -604,16 +604,6 @@ function nhsm_get_formatted_collector($collection){
     return $collector;
 }
 
-add_filter('siteorigin_panels_postloop_query_args', 'nhsm_what_we_do_upcoming_events');
-function nhsm_what_we_do_upcoming_events($query_args){
-  if(isset($query_args['meta_query']) && isset($query_args['meta_query'][0]) && isset($query_args['meta_query'][0]['value'])){
-    if(strtolower($query_args['meta_query'][0]['value']) === 'now()'){
-      $query_args['meta_query'][0]['value'] = date('Y-m-d H:i:s');
-    }
-  }
-  return $query_args;
-}
-
 add_filter('siteorigin_widgets_posts_selector_query', 'nhsm_siteorigin_widgets_posts_selector_query');
 function nhsm_siteorigin_widgets_posts_selector_query($query){
     //Change Tax Query relation to 'AND' for Team Pages

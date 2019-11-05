@@ -1956,3 +1956,14 @@ PLUGIN STYLES
 		vertical-align: top;
 	}
 }
+.widget_events_maker_list {
+	ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+
+		li {
+			padding: 0;
+		}
+	}
+}
