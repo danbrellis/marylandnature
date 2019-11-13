@@ -152,6 +152,7 @@ jQuery( document ).ready( function( $ ) {
 	var calCont = $('#events-full-calendar');
 	if(calCont.length){
 		var cal = calCont.fullCalendar('getCalendar');
+		var view = calCont.find('.fc-view-container');
 
 		cal.on('eventRender', function( event, element, view ) {
 			if(event.appendToTitle !== false){
@@ -214,6 +215,7 @@ jQuery( document ).ready( function( $ ) {
 				//Refetch events if hash is present and precheck corresponding checkboxes
 				//@todo work this into the PHP request on load so we don't have to refetch events
 				if(hash){
+                    view.addClass('loading');
 					var newSource = nhsm_ajax.ajax_url + '?action=get_events&cats=' + hash.substr(1);
 					$('.event-tooltip').remove();
 					calCont.fullCalendar('removeEventSources');
@@ -230,6 +232,7 @@ jQuery( document ).ready( function( $ ) {
 				
 				//Listen for checkboxes to be checked
 				inputs.on('change', function(e){
+                    view.addClass('loading');
 
 					//gather all checked
 					var checked = [];
@@ -261,6 +264,10 @@ jQuery( document ).ready( function( $ ) {
         	letters.splice(3, 0, '<span class="show-for-large">');
         	letters.push('</span>');
         	$(this).html(letters.join(''));
+		});
+
+        cal.on('eventsReceived', function(){
+            view.removeClass('loading');
 		});
 	}
 

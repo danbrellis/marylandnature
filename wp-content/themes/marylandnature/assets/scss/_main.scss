@@ -1877,6 +1877,46 @@ PLUGIN STYLES
 		}
 	}
 }
+.fc-view-container {
+	position: relative;
+
+	&.loading {
+		&:before {
+			content: "";
+			background: rgba(255, 255, 255, 0.75);
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			z-index: 2;
+		}
+		&:after {
+			content: "\f1a5";
+			line-height: 1.7;
+			font-size: 11rem;
+			display: inline-block;
+			width: 100%;
+			text-align: center;
+			color: $black;
+			position: absolute;
+			margin-top: 0.1875rem;
+			top: 25%;
+			z-index: 9;
+			-webkit-animation: spin 3s linear infinite;
+			-o-animation: spin 3s linear infinite;
+			animation: spin 3s linear infinite;
+			font-family: "foundation-icons";
+			font-style: normal;
+			font-weight: normal;
+			font-variant: normal;
+			text-transform: none;
+			-webkit-font-smoothing: antialiased;
+			text-decoration: inherit;
+		}
+	}
+}
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 
 /* Team */
 .team-cards-grid {
