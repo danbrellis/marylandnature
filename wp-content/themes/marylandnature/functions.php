@@ -203,9 +203,20 @@ function nhsm_format_date_range($raw_start, $raw_end, $allday = false){
 	return $retval;
 	
 }
-function nhsm_get_upcoming_event_date_range($e){
+
+/**
+ * Returns an array with keys 'start' and 'end' for an event. If the event is a
+ * recurrence, uses the closest upcoming occurrence, otherwise, uses the event's
+ * date.
+ * 
+ * @param $e
+ * @return array|bool
+ */
+function get_event_date_range($e){
     $event = get_post($e);
     if(!$event) return false;
+
+    if($event->post_type !== 'event') return false;
 
     //set some defaults
     $start = strtotime(get_post_meta($event->ID, '_event_start_date', true));
@@ -228,9 +239,18 @@ function nhsm_get_upcoming_event_date_range($e){
         }
     }
 
+    return ['start' => $start, 'end' => $end];
+}
+function nhsm_get_upcoming_event_date_range($e){
+    $event = get_post($e);
+    if(!$event) return false;
+
+    $dates = em_get_current_occurrence($event->ID);
+    if(!$dates) return false;
+
     $allday = get_post_meta($event->ID, '_event_all_day', true);
 
-    return nhsm_format_date_range($start, $end, boolval($allday));
+    return nhsm_format_date_range($dates['start'], $dates['end'], boolval($allday));
 }
 
 function nhsm_event_scope_prefix($after){
@@ -248,11 +268,34 @@ function nhsm_is_event_over($post_id = false){
 	if ( empty( $post_id ) )
 		return false;
 
-    $end = em_get_the_date(get_the_ID(), ['range'=>'end','output'=>'datetime']);
+	if(em_is_recurring($post_id)){
+	    $dates = em_get_current_occurrence($post_id);
+	    $end = $dates['end'];
+    }
+    else {
+        $end = strtotime(em_get_the_date($post_id, ['range'=>'end','output'=>'datetime']));
+    }
 
 	if($end === false) return false;
-	return strtotime($end) < time();
+	return $end < time();
 }
+
+/**
+ * @param WP_Post $post
+ * @param WP_Query $wp_query
+ * @return WP_Post
+ */
+function nhsm_add_occurrence_data_to_post($post, $wp_query){
+    if(is_single() && $post->post_type === 'event'){
+        $dates = get_event_date_range($post);
+        if($dates){
+            $post->event_occurrence_start_date = $dates['start'];
+            $post->event_occurrence_end_date = $dates['end'];
+        }
+    }
+    return $post;
+}
+add_action('the_post', 'nhsm_add_occurrence_data_to_post', 10, 2);
 
 /** Content **/
 function nhsm_the_content_more_link() {
