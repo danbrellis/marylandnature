@@ -1719,6 +1719,11 @@ PLUGIN STYLES
 .event-cat-filter__item {
 	margin-left: 1rem;
 }
+.event-cat-filter__label, .event-cat-filter__label input {
+	&:hover {
+		cursor: pointer;
+	}
+}
 .fc {
 	h2 {
 		border-bottom: none;

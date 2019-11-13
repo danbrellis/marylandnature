@@ -105,8 +105,8 @@ function get_event_cat_filters(){
         <ul class="event-cat-filter__list" id="event-cat-filter">
             <?php foreach($terms as $term): ?>
                 <li class="event-cat-filter__item">
-                    <input type="checkbox" id="cat_<?php echo $term->slug; ?>" class="" />
                     <label for="cat_<?php echo $term->slug; ?>" class="dynamic event-cat-filter__label">
+                        <input type="checkbox" id="cat_<?php echo $term->slug; ?>" class="" />
                         <?php echo $term->name; ?>
                     </label>
                 </li>
