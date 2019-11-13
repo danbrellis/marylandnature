@@ -24,7 +24,7 @@ function get_events() {
     );
 
     if(isset($_REQUEST['cats']) && !empty($_REQUEST['cats'])) {
-        $cats = explode('+', $_REQUEST['cats']);
+        $cats = explode(' ', $_REQUEST['cats']);
         if($cats && is_array($cats) && !empty($cats)){
             $args['tax_query'][] = array(
                 'taxonomy'			 => 'event-category',
