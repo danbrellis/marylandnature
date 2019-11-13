@@ -36,6 +36,9 @@ function get_events() {
         }
     }
 
+    if(isset($_REQUEST['start'])) $args['event_start_after'] = sanitize_title_for_query($_REQUEST['start']);
+    if(isset($_REQUEST['end'])) $args['event_start_before'] = sanitize_title_for_query($_REQUEST['end']);
+
     // calendar events query
     $args = apply_filters( 'em_get_full_calendar_events_args', $args );
 
