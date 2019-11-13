@@ -1185,20 +1185,10 @@ FOOTER STYLES
 			text-decoration: underline;
 		}
 	}
-	
-	.media-object-section {
-		vertical-align: bottom;
-		white-space: nowrap;
-		
-		&:last-child {
-			width: 99%;
-			
-			@include breakpoint(small only) {
-				display: block;
-				overflow: hidden;
-				margin: rem-calc(20) 0;
-			}
-		}
+
+
+	.h4 {
+		color: $white;
 	}
 	
 	img {
@@ -1246,13 +1236,6 @@ FOOTER STYLES
 		}
 	}
 	
-	#member-login {
-		float: right;
-    display: block;
-    padding: $menu-item-padding;
-    line-height: 1;
-	}
-	
 	.source-org {
 		margin-top: 1em;
 		margin-bottom: 1.5em;
@@ -1265,7 +1248,47 @@ FOOTER STYLES
 				
 	}
 }
-	
+.footer__logoAddress {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+}
+.logoAddress__logo {
+	margin: 0 0 .5rem;
+}
+@media(min-width: 581px){
+	.footer__logoAddress {
+		flex-direction: row;
+		align-items: flex-end;
+
+	}
+	.logoAddress__logo {
+		margin: 0 1rem 0 0;
+	}
+}
+.footer__navigation {
+
+}
+#member-login {
+	 display: block;
+	 padding: $menu-item-padding;
+	 line-height: 1;
+ }
+#menu-footer-nav {
+	display: flex;
+	flex-direction: column;
+}
+@include breakpoint(medium up) {
+	#menu-footer-nav {
+		flex-direction: row;
+	}
+	.footer__navigation {
+		display: flex;
+		justify-content: space-between;
+	}
+}
+
 /*********************
 HOMEPAGE STYLES
 *********************/
