@@ -64,7 +64,7 @@ $reading: #666666;
 $black: #121A18;
 $white: #fefefe;
 $primary: map-get($foundation-palette, primary);
-$complementary: #2457A3;
+$complementary: map-get($foundation-palette, secondary);
 $body-background: $white;
 $body-font-color: $reading;
 $body-font-family: 'lato', Helvetica, Roboto, Arial, sans-serif;
