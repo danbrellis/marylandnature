@@ -245,7 +245,13 @@ function nhsm_get_upcoming_event_date_range($e){
     $event = get_post($e);
     if(!$event) return false;
 
-    $dates = em_get_current_occurrence($event->ID);
+    if ( empty( $event->event_occurrence_start_date ) )
+        return false;
+
+    $dates = [
+        'start' => $event->event_occurrence_start_date,
+        'end' => $event->event_occurrence_end_date
+    ];
     if(!$dates) return false;
 
     $allday = get_post_meta($event->ID, '_event_all_day', true);
