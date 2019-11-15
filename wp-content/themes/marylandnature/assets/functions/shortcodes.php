@@ -108,3 +108,26 @@ function display_events_calendar($atts){
 		</div>' : $cal_html;
 }
 add_shortcode( 'events_calendar', 'display_events_calendar' );
+
+function nhsm_wa_iframe($atts){
+    $a = shortcode_atts( array(
+        'src' => false,
+        'width' => 870,
+        'class' => ''
+    ), $atts );
+    $a['class'] = $a['class'] . ' wildapricotframe';
+    ob_start(); ?>
+    <iframe
+        class="<?php echo $a['class']; ?>"
+        src="<?php echo $a['src']; ?>"
+        width="<?php echo $a['width']; ?>"
+        height="400"
+        frameborder="0"
+        scrolling="yes"
+        onload='tryToEnableWACookies("https://marylandnature.wildapricot.org");'></iframe>
+    <?php
+    $retval = ob_get_clean();
+    wp_enqueue_script('wa-enable-cookies', 'https://marylandnature.wildapricot.org/Common/EnableCookies.js');
+    return $retval;
+}
+add_shortcode('wildapricot_iframe', 'nhsm_wa_iframe');
