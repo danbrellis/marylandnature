@@ -34,7 +34,7 @@ $term = get_queried_object(); ?>
 								echo '<h2>Resources</h2>';
 								while (have_posts()){
 									the_post();
-									get_template_part( 'parts/loop', 'download-grid' );
+									get_template_part( 'parts/content', 'archive-download-grid' );
 								}
 								joints_page_navi();
 							}

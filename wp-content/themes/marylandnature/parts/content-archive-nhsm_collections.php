@@ -2,7 +2,7 @@
 					
   <header class="article-header">
 		<?php nhsm_addthis(); ?>
-        <h3 class="entry-title single-title" itemprop="headline"><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
+        <h3 class="entry-title single-title" itemprop="headline"><?php the_title(); ?></h3>
 		<p class="collection-meta">
 			<span class="collector">Collected by <strong><?php echo nhsm_get_formatted_collector($post); ?></strong></span>
 			<?php /* &nbsp;<span class="middot">&middot;</span>&nbsp;

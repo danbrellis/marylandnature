@@ -41,7 +41,7 @@ $post_types = [
         $paged = get_query_var('paged');
         if($max_page > 1) printf("<p>Showing page %d of %d</p>", $paged, $max_page); ?>
         <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-            <?php get_template_part( 'parts/loop', 'archive' ); ?>
+            <?php get_template_part( 'parts/content', 'archive' ); ?>
         <?php endwhile;
             joints_page_navi();
         else : ?>
@@ -79,7 +79,7 @@ $post_types = [
             <?php if ( $query->have_posts() ) : ?>
                 <div class="<?php echo implode(' ', $classes); ?>">
                      <?php while ( $query->have_posts() ) : $query->the_post(); ?>
-                        <?php get_template_part( 'parts/loop', 'archive-' . $post_type ); ?>
+                        <?php get_template_part( 'parts/content', 'archive-' . $post_type ); ?>
                      <?php endwhile; ?>
                 </div>
                 <?php

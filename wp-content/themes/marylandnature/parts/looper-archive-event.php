@@ -11,7 +11,7 @@ if (have_posts()){
 			echo '<h2 class="u">' . date($format, $start_ts) . '</h2>';
 			$cur_date = $start;
 		}
-		get_template_part( 'parts/loop', 'archive-event' );
+		get_template_part( 'parts/content', 'archive-event' );
 	}
 	remove_filter('excerpt_more', '__return_false');
 }

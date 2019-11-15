@@ -42,14 +42,13 @@ Template Name: What We Do
 													$programs->the_post(); ?>
 													
 													<div class="column column-block" data-equalizer-watch="terrapin">
-															<?php if(has_post_thumbnail($programs->post)): ?>
-                                <div class="img-caption-container">
-                                  <a href="<?php echo get_page_link($programs->post->ID); ?>"><?php echo get_the_post_thumbnail($programs->post, 'nhsm_medium4x3', array('class' => 'img-responsive')); ?></a>
-                                  <span class="sm_img_caption"><?php echo nhsm_img_credit_and_caption(false, get_post_thumbnail_id($programs->post->ID)); ?></span>
-                                </div>
-                              <?php endif; ?>
-															<h2 class="widget-title stringbean h3" style="margin-top: 10px;"><?php echo get_the_title($programs->post->ID); ?></h2>
-														</a>
+                                                        <?php if(has_post_thumbnail($programs->post)): ?>
+                                                            <div class="img-caption-container">
+                                                              <a href="<?php echo get_page_link($programs->post->ID); ?>"><?php echo get_the_post_thumbnail($programs->post, 'nhsm_medium4x3', array('class' => 'img-responsive')); ?></a>
+                                                              <span class="sm_img_caption"><?php echo nhsm_img_credit_and_caption(false, get_post_thumbnail_id($programs->post->ID)); ?></span>
+                                                            </div>
+                                                        <?php endif; ?>
+                                                        <h2 class="widget-title stringbean h3" style="margin-top: 10px;"><?php echo get_the_title($programs->post->ID); ?></h2>
 														<p>
 															<?php echo get_the_excerpt($programs->post->ID); ?><br /><br />
 															<a class="more-link button small" href="<?php the_permalink($programs->post->ID); ?>"><span aria-label="Continue reading <?php echo get_the_title($programs->post->ID); ?>">Read more</span></a>

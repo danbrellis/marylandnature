@@ -8,7 +8,7 @@
 					<div class="row">
 						<main id="main" class="medium-9 medium-push-3 columns" role="main">
 							<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-								<?php get_template_part( 'parts/loop', 'page' ); ?>
+								<?php get_template_part( 'parts/content', 'page' ); ?>
 							<?php endwhile; endif; ?>	
 						</main> <!-- end #main -->
 
