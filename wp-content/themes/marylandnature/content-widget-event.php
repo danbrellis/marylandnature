@@ -67,7 +67,7 @@ $classes = apply_filters( 'em_widget_event_classes', array( 'hcalendar' ) );
 	if ( apply_filters( 'em_show_widget_event_title', true ) ) :
 		?>
 
-        <h4 style="margin-bottom: 0;"><a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h4>
+        <h3 style="margin-bottom: 0;" class="h4"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
 
 	<?php endif; ?>
 

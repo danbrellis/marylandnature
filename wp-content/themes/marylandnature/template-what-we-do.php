@@ -48,7 +48,7 @@ Template Name: What We Do
                                   <span class="sm_img_caption"><?php echo nhsm_img_credit_and_caption(false, get_post_thumbnail_id($programs->post->ID)); ?></span>
                                 </div>
                               <?php endif; ?>
-															<h3 class="widget-title stringbean" style="margin-top: 10px;"><?php echo get_the_title($programs->post->ID); ?></h3>
+															<h2 class="widget-title stringbean h3" style="margin-top: 10px;"><?php echo get_the_title($programs->post->ID); ?></h2>
 														</a>
 														<p>
 															<?php echo get_the_excerpt($programs->post->ID); ?><br /><br />
