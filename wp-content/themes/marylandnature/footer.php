@@ -18,7 +18,7 @@
                                             $fi = get_sub_field('social_media_icon');
                                             $img_id = get_sub_field('social_website_custom_image');
                                             $icon = '';
-                                            if($fi) $icon = '<i class="fi-'.$fi.'"></i>';
+                                            if($fi) $icon = '<i class="fi-'.$fi.'"></i><span class="show-for-sr">Visit us on '.get_sub_field('social_website_name').'</span>';
                                             elseif($img_id) {
                                                 $icon = wp_get_attachment_image( $img_id, false, "" );
                                             }
