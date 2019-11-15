@@ -517,8 +517,28 @@ article.archive {
 	}
 }
 
+.article__blockList {
+	@include breakpoint(555px){
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-column-gap: 2rem;
+	}
+}
+
 .archive-title {
 
+}
+
+.archive {
+	&.nhsm_collections{
+		display: flex;
+		flex-direction: column;
+		margin-bottom: 1rem;
+
+		.img-caption-container {
+			margin-top: auto;
+		}
+	}
 }
 
 	.single_page_banner {

@@ -25,23 +25,23 @@ Template Name: What We Do
 									</header> <!-- end article header -->
 
 									<section class="entry-content" itemprop="articleBody">
-                    <?php the_content(); ?>
+                                        <?php the_content(); ?>
 										<?php //list event categories
 										$programs = new WP_Query( array(
 											'post_parent' => get_the_ID(),
 											'post_type' => 'page',
-                      'order' => 'ASC',
-                      'orderby' => 'menu_order date'
+                                            'order' => 'ASC',
+                                            'orderby' => 'menu_order date'
 										) );
 
 										if ( $programs->have_posts() ): ?>
-											<div class="row small-up-1 medium-up-2" data-equalizer="terrapin">
+											<section class="article__blockList">
 												<?php // The 2nd Loop
 												add_filter('excerpt_more', '__return_false');
 												while ( $programs->have_posts() ):
 													$programs->the_post(); ?>
 													
-													<div class="column column-block" data-equalizer-watch="terrapin">
+													<div>
                                                         <?php if(has_post_thumbnail($programs->post)): ?>
                                                             <div class="img-caption-container">
                                                               <a href="<?php echo get_page_link($programs->post->ID); ?>"><?php echo get_the_post_thumbnail($programs->post, 'nhsm_medium4x3', array('class' => 'img-responsive')); ?></a>
@@ -58,7 +58,7 @@ Template Name: What We Do
 												remove_filter('excerpt_more', '__return_false');
 												// Restore original Post Data
 												wp_reset_postdata(); ?>
-											</div>
+											</section>
 										
 										<?php endif; ?>
 										<?php wp_link_pages(); ?>
