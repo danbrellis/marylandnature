@@ -83,13 +83,15 @@ require_once(get_template_directory().'/assets/functions/custom-post-type.php');
 function nhsm_pre_get_posts( $query ) {
 	if($query->is_main_query() && !is_admin()){
 		if ( is_post_type_archive('event') || is_tax('event-category') ) {
-			if(isset($_GET['show'])){
+            $query->set('post_type', 'event');
+            if(isset($_GET['show'])){
 				$scope = sanitize_title($_GET['show']);
 			}
 			else $scope = 'upcoming';
 			if($scope === 'past'){
 				$query->set('event_show_past_events', true);
 				$query->set('event_start_before', date('Y-m-d'));
+				$query->set('event_date_range', 'between');
                 $query->set('order', 'DESC');
 			}
 			elseif($scope === 'upcoming'){
