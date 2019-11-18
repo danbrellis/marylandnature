@@ -1,5 +1,5 @@
 <div id="post-<?php the_ID(); ?>" <?php post_class('archive'); ?> role="article" itemscope itemtype="http://schema.org/WebPage">
-    <h3 class="entry-title single-title" itemprop="headline"><?php the_title(); ?></h3>
+    <h2 class="entry-title single-title h3" itemprop="headline"><?php the_title(); ?></h2>
     <p class="collection-meta">
         <span class="collector">Curated by <strong><?php echo nhsm_get_formatted_collector($post); ?></strong></span>
         <?php /* &nbsp;<span class="middot">&middot;</span>&nbsp;
