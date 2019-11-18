@@ -219,8 +219,8 @@ function get_event_date_range($e){
     if($event->post_type !== 'event') return false;
 
     //set some defaults
-    $start = strtotime(get_post_meta($event->ID, '_event_start_date', true));
-    $end = strtotime(get_post_meta($event->ID, '_event_end_date', true));
+    $start = get_post_meta($event->ID, '_event_start_date', true);
+    $end = get_post_meta($event->ID, '_event_end_date', true);
 
     //get all recurrences, and use the most upcoming one
     $recurrences = get_post_meta($event->ID, '_event_occurrence_date');
@@ -234,8 +234,8 @@ function get_event_date_range($e){
         //set most upcoming occurrence
         if((!$timefromnow || $diff < $timefromnow) && $diff > 0){
             $timefromnow = $diff;
-            $start = strtotime($range[0]);
-            $end = strtotime($range[1]);
+            $start = $range[0];
+            $end = $range[1];
         }
     }
 
@@ -256,7 +256,7 @@ function nhsm_get_upcoming_event_date_range($e){
 
     $allday = get_post_meta($event->ID, '_event_all_day', true);
 
-    return nhsm_format_date_range($dates['start'], $dates['end'], boolval($allday));
+    return nhsm_format_date_range(strtotime($dates['start']), strtotime($dates['end']), boolval($allday));
 }
 
 function nhsm_event_scope_prefix($after){
@@ -276,7 +276,7 @@ function nhsm_is_event_over($post_id = false){
 
 	if(em_is_recurring($post_id)){
 	    $dates = em_get_current_occurrence($post_id);
-	    $end = $dates['end'];
+	    $end = strtotime($dates['end']);
     }
     else {
         $end = strtotime(em_get_the_date($post_id, ['range'=>'end','output'=>'datetime']));
