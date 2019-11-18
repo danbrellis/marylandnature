@@ -3,7 +3,6 @@
 					
     <header class="article-header">
         <h3 class="entry-title single-title" itemprop="headline"><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
-        <?php nhsm_the_banner_image(); ?>
         <ul class="post-meta clearfix no-bullet">
             <li class="post-meta-date"><i class="fi-clock"></i>&nbsp;<?php echo nhsm_format_date_range(strtotime($post->event_occurrence_start_date), strtotime($post->event_occurrence_end_date), em_is_all_day($post->ID)); ?></li>
             <?php if(nhsm_is_event_over()): ?>
@@ -11,6 +10,7 @@
             <?php endif; ?>
             <?php the_tags('<li class="post-meta-tags"><i class="fi-pricetag-multiple" title="Tagged with:"></i>&nbsp;', ', ', '</li>'); ?>
         </ul>
+        <?php nhsm_the_banner_image(); ?>
         <?php nhsm_em_the_event_terms_list(); ?>
 
     </header> <!-- end article header -->
