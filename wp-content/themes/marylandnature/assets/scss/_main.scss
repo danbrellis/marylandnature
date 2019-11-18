@@ -2054,3 +2054,69 @@ PLUGIN STYLES
 		}
 	}
 }
+
+/** Coming Soon Page **/
+.cs {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	width: 100%;
+	height: 100vh;
+	padding: 2rem;
+	margin: 0;
+
+	.bg {
+		background-color: #cedbe3;
+		background-position: center center;
+		background-size: cover;
+		background-repeat: no-repeat;
+		position: fixed;
+		top: 0;
+		z-index: -1;
+		left: 0;
+		right: 0;
+		bottom: 0;
+	}
+
+	@include breakpoint(medium up){
+		padding: 5rem;
+	}
+
+	.break {
+		flex-basis: 100%;
+		height: 0;
+	}
+
+	.logo {
+		max-width: 325px;
+		width: 39vw;
+		min-width: 235px;
+	}
+	.content {
+		background: rgba(255,255,255,.9);
+		padding: 1rem;
+		width: 50vw;
+		min-width: 325px;
+		margin: 1rem auto;
+	}
+	p {
+		font-size: 1.5rem;
+	}
+	.button {
+		font-size: 1.1rem;
+		width: 100%;
+		margin: 1rem;
+	}
+	.buttonCont {
+		display: flex;
+		flex-wrap: wrap;
+		width: 100%;
+		justify-content: center;
+		margin: auto;
+	}
+	@include breakpoint(944px){
+		.button {
+			max-width: 188px;
+		}
+	}
+}

@@ -16,7 +16,10 @@
 */
 
 
-
+if (!is_admin() && !current_user_can( 'edit_others_posts' ) && $GLOBALS['pagenow'] !== 'wp-login.php' && MAINTENANCE) {
+    require_once( get_template_directory() . '/maintenance.php' );
+    die();
+}
 
 
 // Theme support options
