@@ -39,8 +39,9 @@
 						<div class="medium-12 columns">
 							<nav role="navigation" class="footer__navigation">
                                 <?php joints_footer_links(); ?>
-                                <a href="<?php echo wp_login_url( admin_url() ); ?>" id="member-login">Member Login</a>
-
+                                <?php if($login = get_field('member_login_url', 'option')): ?>
+                                    <a href="<?php echo $login; ?>" id="member-login">Member Login</a>
+                                <?php endif; ?>
 								
 							</nav>
 						</div>
