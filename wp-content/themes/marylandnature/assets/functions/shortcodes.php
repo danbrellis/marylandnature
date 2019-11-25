@@ -112,7 +112,7 @@ add_shortcode( 'events_calendar', 'display_events_calendar' );
 function nhsm_wa_iframe($atts){
     $a = shortcode_atts( array(
         'src' => false,
-        'width' => 870,
+        'width' => '100%',
         'class' => ''
     ), $atts );
     $a['class'] = $a['class'] . ' wildapricotframe';
@@ -122,7 +122,7 @@ function nhsm_wa_iframe($atts){
         src="<?php echo $a['src']; ?>"
         width="<?php echo $a['width']; ?>"
         height="400"
-        frameborder="0"
+        frameborder="no"
         scrolling="yes"
         onload='tryToEnableWACookies("https://marylandnature.wildapricot.org");'></iframe>
     <?php
