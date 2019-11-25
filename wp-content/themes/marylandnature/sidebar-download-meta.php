@@ -3,7 +3,7 @@
  * Template file for dlm_download post_type meta information on right sidebar
  */
 global $post;
-$dlm_download = new DLM_Download( get_the_ID() );
+$dlm_download = download_monitor()->service( 'download_repository' )->retrieve_single( get_the_ID() );
 
 //var_dump($dlm_download);
 $versions = $dlm_download->get_file_versions();
