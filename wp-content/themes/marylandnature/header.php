@@ -3,7 +3,18 @@
   <html class="no-js"  <?php language_attributes(); ?>>
 
 	<head>
-		<meta charset="utf-8">
+        <?php if(ENV === 'production' && $key = get_field('google_analytics_tracking_key', 'option')): ?>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo $key; ?>"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', <?php echo $key; ?>);
+        </script>
+        <?php endif; ?>
+        <meta charset="utf-8">
 		
 		<!-- Force IE to use the latest rendering engine available -->
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
