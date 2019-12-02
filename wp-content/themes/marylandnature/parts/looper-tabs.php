@@ -38,7 +38,7 @@ $post_types = [
         <?php
         global $wp_query;
         $max_page = $wp_query->max_num_pages;
-        $paged = get_query_var('paged');
+        $paged = get_query_var('paged') === 0 ? 1 : get_query_var('paged');
         if($max_page > 1) printf("<p>Showing page %d of %d</p>", $paged, $max_page); ?>
         <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
             <?php get_template_part( 'parts/content', 'archive' ); ?>
