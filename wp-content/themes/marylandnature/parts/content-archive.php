@@ -3,10 +3,13 @@
   <header class="article-header">
 		<h2 class="entry-title single-title" itemprop="headline"><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h2>
 		<p class="byline">
-			<span class="author">Written by <?php the_author_posts_link(); ?></span>&nbsp;<span class="middot">&middot;</span>&nbsp;
-			<time><?php echo get_the_time('F j, Y'); ?></time>
-			<?php if ( comments_open() ): ?>&nbsp;<span class="middot">&middot;</span>&nbsp;
-			<?php comments_popup_link( '0 Comments', '1 Comment', '% Comments', 'comments-link', ''); ?><?php endif; ?>
+			<?php if(get_post_type() === 'post'): ?>
+                <span class="author">Written by <?php the_author_posts_link(); ?></span>&nbsp;<span class="middot">&middot;</span>&nbsp;
+			    <time><?php echo get_the_time('F j, Y'); ?></time>
+                <?php if ( comments_open() ): ?>&nbsp;<span class="middot">&middot;</span>&nbsp;
+			        <?php comments_popup_link( '0 Comments', '1 Comment', '% Comments', 'comments-link', ''); ?>
+                <?php endif; ?>
+            <?php endif; ?>
 		</p>
         <?php nhsm_the_cat_labels(); ?>
 		<?php nhsm_the_banner_image(); ?>
