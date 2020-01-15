@@ -11,7 +11,7 @@
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
 
-            gtag('config', <?php echo $key; ?>);
+            gtag('config', '<?php echo $key; ?>');
         </script>
         <?php endif; ?>
         <meta charset="utf-8">
