@@ -36,3 +36,5 @@ RewriteRule . /index.php [L]
 </IfModule>
 
 # END WordPress
+
+Redirect 301 /nature-connections /what-we-do/for-the-family
