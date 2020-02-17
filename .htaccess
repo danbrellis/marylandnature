@@ -1,9 +1,35 @@
 
 # BEGIN WordPress
+AddHandler application/x-httpd-ea-php70 .php
+<IfModule mod_expires.c>
+	ExpiresActive On
+	ExpiresByType image/jpg "access plus 6 hours"
+	ExpiresByType image/jpeg "access plus 6 hours"
+	ExpiresByType image/gif "access plus 6 hours"
+	ExpiresByType image/png "access plus 6 hours"
+	ExpiresByType text/css "access plus 6 hours"
+	ExpiresByType application/pdf "access plus 1 week"
+	ExpiresByType text/javascript "access plus 6 hours"
+	ExpiresByType text/html "access plus 5 minutes"
+	ExpiresByType image/x-icon "access plus 1 year"
+	ExpiresDefault "access plus 3 hours"
+</IfModule>
+<ifModule mod_headers.c>
+Header set X-Endurance-Cache-Level "2"
+</ifModule>
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteBase /
+
+RewriteCond %{HTTPS} !on
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^marylandnature\.org [NC]
+RewriteCond %{HTTP_HOST} ^www.marylandnature\.org [NC]
+RewriteRule ^(.*) https://www.marylandnature.org/$1 [L,R=301]
+
 RewriteRule ^index\.php$ - [L]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /index.php [L]
