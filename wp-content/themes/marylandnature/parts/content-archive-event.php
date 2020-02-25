@@ -17,13 +17,24 @@
 
     <section class="entry-content" itemprop="articleBody">
         <?php the_excerpt(); ?>
-        <?php nhsm_addthis(); ?>
-        <a class="more-link button small" href="<?php the_permalink(); ?>" title="Continue reading <?php the_title(); ?>">Read more</a>
-        <?php wp_link_pages(); ?>
+        <?php if( have_rows('registration_types') ){
+            $prices = [];
+            while ( have_rows('registration_types') ){
+                the_row();
+                $prices[] = get_sub_field('base_price');
+
+            }
+            if(count($prices) === 1)
+                printf('<p>Cost: $%d', $prices[0]);
+            else printf('<p>Cost: $%d-%d', min($prices), max($prices));
+        } ?>
+
     </section> <!-- end article section -->
 
     <footer class="article-footer clearfix">
-
+        <?php nhsm_addthis(); ?>
+        <a class="more-link button small" href="<?php the_permalink(); ?>" title="Continue reading <?php the_title(); ?>">Read more</a>
+        <?php wp_link_pages(); ?>
     </footer> <!-- end article footer -->
 						    
 </article> <!-- end article -->
