@@ -45,7 +45,28 @@
             "layout": "row",
             "sub_fields": [
                 {
-                    "key": "field_5d2f75c7a4478",
+                    "key": "field_5d1a472c871e0",
+                    "label": "Registration Limit",
+                    "name": "registration_limit",
+                    "type": "number",
+                    "instructions": "Leave blank for unlimited",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "min": "",
+                    "max": "",
+                    "step": ""
+                },
+                {
+                    "key": "field_5d30e0c2dc339",
                     "label": "Waitlist",
                     "name": "waitlist",
                     "type": "true_false",
@@ -69,27 +90,6 @@
                     "ui": 0,
                     "ui_on_text": "",
                     "ui_off_text": ""
-                },
-                {
-                    "key": "field_5d1a472c871e0",
-                    "label": "Registration Limit",
-                    "name": "registration_limit",
-                    "type": "number",
-                    "instructions": "Leave blank for unlimited",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "min": "",
-                    "max": "",
-                    "step": ""
                 },
                 {
                     "key": "field_5d1a4745871e1",
@@ -130,6 +130,25 @@
                     "new_lines": ""
                 }
             ]
+        },
+        {
+            "key": "field_5d1a4792871e3",
+            "label": "Payment Instructions",
+            "name": "payment_instructions",
+            "type": "textarea",
+            "instructions": "Payment instructions for this event only (for invoice) (max length 2000 characters)",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "maxlength": 2000,
+            "rows": 3,
+            "new_lines": ""
         },
         {
             "key": "field_5d1a46aa871de",
@@ -200,7 +219,7 @@
                     "label": "Name",
                     "name": "name",
                     "type": "text",
-                    "instructions": "",
+                    "instructions": "(e.g. General Admission, Member, Senior, Student)",
                     "required": 1,
                     "conditional_logic": 0,
                     "wrapper": {
@@ -571,49 +590,6 @@
                     "save_other_choice": 0
                 },
                 {
-                    "key": "field_5d1a5af128d4c",
-                    "label": "Membership Types",
-                    "name": "membership_types",
-                    "type": "checkbox",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": [
-                        [
-                            {
-                                "field": "field_5d1a598228d4b",
-                                "operator": "==",
-                                "value": "MembersOnly"
-                            }
-                        ]
-                    ],
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "choices": {
-                        "1 - Individual": "1 - Individual",
-                        "2 - Family": "2 - Family",
-                        "3 - Contributing": "3 - Contributing",
-                        "4 - Sustaining": "4 - Sustaining",
-                        "5 - Life": "5 - Life",
-                        "6 - Corporate": "6 - Corporate"
-                    },
-                    "allow_custom": 0,
-                    "default_value": [
-                        "1 - Individual",
-                        "2 - Family",
-                        "3 - Contributing",
-                        "4 - Sustaining",
-                        "5 - Life",
-                        "6 - Corporate"
-                    ],
-                    "layout": "vertical",
-                    "toggle": 1,
-                    "return_format": "value",
-                    "save_custom": 0
-                },
-                {
                     "key": "field_5d1a5b8728d4d",
                     "label": "Registration Code",
                     "name": "registration_code",
@@ -639,6 +615,49 @@
                     "prepend": "",
                     "append": "",
                     "maxlength": 10
+                },
+                {
+                    "key": "field_5d1a5af128d4c",
+                    "label": "Membership Types",
+                    "name": "membership_types",
+                    "type": "checkbox",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_5d1a598228d4b",
+                                "operator": "==",
+                                "value": "MembersOnly"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "1 - Individual": "1 - Individual",
+                        "2- Family": "2- Family",
+                        "3 - Contributing": "3 - Contributing",
+                        "4 - Sustaining": "4 - Sustaining",
+                        "5 - Life": "5 - Life",
+                        "6 - Corporate": "6 - Corporate"
+                    },
+                    "allow_custom": 0,
+                    "default_value": [
+                        "1 - Individual",
+                        "2 - Family",
+                        "3 - Contributing",
+                        "4 - Sustaining",
+                        "5 - Life",
+                        "6 - Corporate"
+                    ],
+                    "layout": "vertical",
+                    "toggle": 1,
+                    "return_format": "value",
+                    "save_custom": 0
                 },
                 {
                     "key": "field_5d1a5d1d05fe2",
@@ -716,25 +735,6 @@
                     "save_other_choice": 0
                 }
             ]
-        },
-        {
-            "key": "field_5d1a4792871e3",
-            "label": "Payment Instructions",
-            "name": "payment_instructions",
-            "type": "textarea",
-            "instructions": "Payment instructions for this event only (for invoice) (max length 2000 characters)",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": "",
-            "maxlength": 2000,
-            "rows": 3,
-            "new_lines": ""
         }
     ],
     "location": [
@@ -754,5 +754,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1563481293
+    "modified": 1582662049
 }

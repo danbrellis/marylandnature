@@ -46,7 +46,7 @@
             "new_lines": ""
         },
         {
-            "key": "field_5ddc0a56a183e",
+            "key": "field_5ddc0b2938077",
             "label": "Member Login URL",
             "name": "member_login_url",
             "type": "url",
@@ -186,5 +186,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1574701799
+    "modified": 1574701881
 }
