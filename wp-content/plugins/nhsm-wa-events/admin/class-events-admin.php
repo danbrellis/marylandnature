@@ -490,6 +490,7 @@ class Events_Admin {
             $reg_limit = $reg_details['registration_limit'];
             $reg_confirm_extra_info = $reg_details['registration_extra_information'];
             $reg_msg = $reg_details['registration_message'];
+            $show_attendees = $reg_details['attendee_display_settings'];
 
             $payment_instr = get_field('payment_instructions', $post_id);
 
@@ -532,8 +533,8 @@ class Events_Admin {
                     "IsWaitlistEnabled" => false,
                     "MultipleRegistrationAllowed" => true,
                     "AttendeesDisplaySettings" => [
-                        "VisibleTo" => "Public",
-                        "ShowPendingAttendees" => true
+                        "VisibleTo" => $show_attendees ? "Public" : "Nobody",
+                        "ShowPendingAttendees" => false
                     ]
                 ],
                 "RegistrationsLimit" => $reg_limit === "" ? null : intval($reg_limit)
