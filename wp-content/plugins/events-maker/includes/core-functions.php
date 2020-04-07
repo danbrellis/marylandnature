@@ -318,13 +318,13 @@ function em_get_the_date( $post_id = 0, $args = array() ) {
 		else {
 			// output date only
 			if ( $args['output'] === 'date' )
-				$date = ! empty( $args['format'] ) ? em_format_date( $value, 'date', $args['format'] ) : em_format_date( $date, 'date', $date_format );
+				$date = ! empty( $args['format'] ) ? em_format_date( $date, 'date', $args['format'] ) : em_format_date( $date, 'date', $date_format );
 			// output time only
 			elseif ( $args['output'] === 'time' )
-				$date = ! empty( $args['format'] ) ? em_format_date( $value, 'time', $args['format'] ) : em_format_date( $date, 'time', $time_format );
+				$date = ! empty( $args['format'] ) ? em_format_date( $date, 'time', $args['format'] ) : em_format_date( $date, 'time', $time_format );
 			// output date & time
 			else
-				$date = ! empty( $args['format'] ) ? em_format_date( $value, 'datetime', $args['format'] ) : em_format_date( $date, 'datetime', $date_format . ' ' . $time_format );
+				$date = ! empty( $args['format'] ) ? em_format_date( $date, 'datetime', $args['format'] ) : em_format_date( $date, 'datetime', $date_format . ' ' . $time_format );
 		}
 	}
 
