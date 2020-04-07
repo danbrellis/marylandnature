@@ -884,9 +884,9 @@ class Events_Maker_List_Widget extends WP_Widget {
 
 		// backward compatibility
 		$comp = $instance;
-		$comp['categories'] = ( $instance['categories'] === 'selected' ? $instance['categories_arr'] : array() );
-		$comp['locations'] = ( $instance['locations'] === 'selected' ? $instance['locations_arr'] : array() );
-		$comp['organizers'] = ( $instance['organizers'] === 'selected' ? $instance['organizers_arr'] : array() );
+		$comp['categories'] = ( isset($instance['categories']) && $instance['categories'] === 'selected' ? $instance['categories_arr'] : array() );
+		$comp['locations'] = ( isset($instance['locations']) && $instance['locations'] === 'selected' ? $instance['locations_arr'] : array() );
+		$comp['organizers'] = ( isset($instance['organizers']) && $instance['organizers'] === 'selected' ? $instance['organizers_arr'] : array() );
 
 		$html = $args['before_widget'] . $args['before_title'] . ( ! empty( $instance['title'] ) ? $instance['title'] : '' ) . $args['after_title'];
 		$html .= em_display_events( $comp );
