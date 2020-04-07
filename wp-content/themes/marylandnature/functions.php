@@ -217,7 +217,7 @@ function nhsm_format_date_range($raw_start, $raw_end, $allday = false){
  * @param $e
  * @return array|bool
  */
-function get_event_date_range($e){
+function get_event_date_range($e = null){
     $event = get_post($e);
     if(!$event) return false;
 
@@ -246,7 +246,7 @@ function get_event_date_range($e){
 
     return ['start' => $start, 'end' => $end];
 }
-function nhsm_get_upcoming_event_date_range($e){
+function nhsm_get_upcoming_event_date_range($e = null){
     $event = get_post($e);
     if(!$event) return false;
 
