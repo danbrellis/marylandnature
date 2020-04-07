@@ -168,11 +168,7 @@ function pte_tmp_dir()
 
 /** For the "Edit Image" stuff **/
 /* Hook into the Edit Image page */
-add_action('dbx_post_advanced', 'pte_edit_form_hook_redirect');
-/* Slight redirect so this isn't called on all versions of the media upload page */
-function pte_edit_form_hook_redirect(){
-	add_action('add_meta_boxes', 'pte_admin_media_scripts');
-}
+add_action('add_meta_boxes', 'pte_admin_media_scripts');
 
 add_action( 'media_upload_library', 'pte_admin_media_scripts_editor' );
 add_action( 'media_upload_gallery', 'pte_admin_media_scripts_editor' );
@@ -184,7 +180,7 @@ function pte_admin_media_scripts_editor(){
 function pte_admin_media_scripts($post_type){
 	$options = pte_get_options();
 	pte_add_thickbox();
-	if ($post_type == "attachment") {
+	if ($post_type === "attachment") {
 		wp_enqueue_script( 'pte'
 			, PTE_PLUGINURL . 'apps/coffee-script.js'
 			, array('underscore')
