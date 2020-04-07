@@ -106,7 +106,7 @@ if ( ! function_exists( 'em_display_events' ) ) {
 			echo apply_filters( 'em_display_events_wrapper_end', '</ul>' );
 
 			if ( $args['show_archive_link'] ) {
-				echo '<a href="' . get_post_type_archive_link( 'event' ) . '" class="all-events-link" title="' . __( 'All Events', 'events-maker' ) . '">' . __( 'All Events', 'events-maker' ) . '</a>';
+				echo '<a href="' . get_post_type_archive_link( 'event' ) . '" class="all-events-link">' . __( 'All Events', 'events-maker' ) . '</a>';
 			}
 
 			$html = ob_get_contents();

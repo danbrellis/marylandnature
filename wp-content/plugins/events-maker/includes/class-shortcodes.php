@@ -479,7 +479,7 @@ class Events_Maker_Shortcodes {
 				return $calendar;
 
 			foreach ( $events as $event ) {
-				$classes = array();
+				$classes = $term_meta = array();
 				$event_categories = wp_get_post_terms( $event->ID, 'event-category' );
 				$event_tags = wp_get_post_terms( $event->ID, 'event-tag' );
 
@@ -529,7 +529,7 @@ class Events_Maker_Shortcodes {
 				// WPML & Polylang support
 				set_transient( 'em_calendar_query' . '-' . ICL_LANGUAGE_CODE, $calendar, $expiration );
 			} else {
-				set_transient( 'em_calendar_query', $calendar, $expiration );
+				//set_transient( 'em_calendar_query', $calendar, $expiration );
 			}
 		}
 
