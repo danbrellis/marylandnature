@@ -21,7 +21,7 @@ $page_id = get_option( 'page_for_posts' );
 							add_filter('excerpt_more', '__return_false');
 							if (have_posts()) : while (have_posts()) : the_post(); ?>
 
-								<?php get_template_part( 'parts/loop', 'archive' ); ?>
+								<?php get_template_part( 'parts/content', 'archive' ); ?>
 
 							<?php endwhile; else : ?>
 
