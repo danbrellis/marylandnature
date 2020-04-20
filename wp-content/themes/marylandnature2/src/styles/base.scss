@@ -1,0 +1,15 @@
+@import "variables";
+
+html,
+body {
+  font-size: $base-font-size - 4;
+  font-family: $base-font-family;
+  font-weight: $font-weight;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+
+  @media ($medium-up) {
+    font-size: $base-font-size;
+  }
+}

@@ -1,0 +1,13 @@
+.flex-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+.flex-list__item {
+  margin-inline-start: 2em;
+}
+
+.site-footer__socialIconsLink {
+  font-size: 2em;
+}

@@ -1,0 +1,23 @@
+@import "variables";
+@import "mixins";
+
+.img-responsive {
+  @include responsive-img();
+}
+
+.figure {
+  &--captionOverlay {
+    position: relative;
+
+    .figure__caption {
+      position: absolute;
+      bottom: 0.75em;
+      right: 0.75em;
+      font-size: 0.75em;
+      text-align: right;
+      display: block;
+      padding: 0.25em 0.5em;
+      background: rgba($white, 0.75);
+    }
+  }
+}

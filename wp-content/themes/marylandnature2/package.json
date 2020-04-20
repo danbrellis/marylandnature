@@ -15,7 +15,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "watch": "parcel watch ./src/index.js ./src/**/*.js --out-dir ./build",
+    "watch": "parcel watch ./src/index.js ./src/**/*.js --out-dir ./build --public-url /wp-content/themes/marylandnature2/build/",
     "build": "parcel build ./src/index.js ./src/scripts/*.js --out-dir ./dist",
     "deploy": "npm install && composer dump-autoload -a && composer install && npm run build"
   },
@@ -24,13 +24,28 @@
     "autoprefixer": "^9.7.6",
     "axios": "^0.19.2",
     "parcel-bundler": "^1.12.4",
+    "parcel-plugin-static-files-copy": "^2.3.1",
     "prettier": "2.0.4",
     "sass": "^1.26.3",
     "vue-template-compiler": "^2.6.11"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.28",
+    "@fortawesome/free-brands-svg-icons": "^5.13.0",
+    "@fortawesome/free-solid-svg-icons": "^5.13.0",
+    "@fortawesome/vue-fontawesome": "^0.1.9",
+    "alpinejs": "^2.2.5",
     "postcss": "^7.0.27",
     "vue": "^2.6.11",
     "vue-hot-reload-api": "^2.3.4"
+  },
+  "staticFiles": {
+    "staticPath": [
+      {
+        "staticPath": "src/images",
+        "staticOutDir": "images"
+      }
+    ],
+    "watcherGlob": "**"
   }
 }

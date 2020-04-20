@@ -1,0 +1,39 @@
+@import "variables";
+@import "mixins";
+
+.page__header {
+}
+.page__title {
+  color: $black;
+  margin-bottom: 0.5em;
+}
+
+.article {
+  line-height: 1.3;
+  text-rendering: optimizeLegibility;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  .h1,
+  .h2,
+  .h3,
+  .h4 {
+    color: $black;
+    margin-bottom: 0.25em;
+  }
+
+  p {
+    margin: 0 0 1rem;
+    font-size: inherit;
+  }
+}
+
+.article__banner {
+  margin: 0 0 1em;
+
+  img {
+    @include responsive-img();
+  }
+}

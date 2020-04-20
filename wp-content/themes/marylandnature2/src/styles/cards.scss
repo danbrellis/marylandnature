@@ -1,0 +1,19 @@
+.companyCard {
+  display: grid;
+  grid-template-areas: "icon info";
+  grid-gap: 0 1em;
+  text-align: left;
+  align-items: end;
+}
+.companyCard__logo {
+  grid-area: icon;
+}
+.companyCard__info {
+  grid-area: info;
+  padding-bottom: 0.5em;
+}
+.companyCard__title {
+  font-size: 1.5em;
+  margin-bottom: 0.25em;
+  display: inline-block;
+}

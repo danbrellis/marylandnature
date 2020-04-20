@@ -1,0 +1,41 @@
+@import "variables";
+@import "mixins";
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap");
+
+strong {
+  font-weight: $font-weight--bold;
+}
+
+h1,
+h2,
+h3,
+h4,
+.h1,
+.h2,
+.h3,
+.h4 {
+  font-weight: $font-weight;
+}
+
+h1 {
+  font-size: 2em;
+}
+h2 {
+  font-size: 1.75em;
+}
+h3 {
+  font-size: 1.5em;
+}
+h4 {
+  font-size: 1.25em;
+}
+
+a {
+  color: $link;
+  text-decoration: underline;
+
+  &:hover,
+  &:focus {
+    color: $link--hover;
+  }
+}

@@ -1,0 +1,39 @@
+$base-font-size: 20px;
+
+/** Colors **/
+$white: #ffffff;
+$black: #000000;
+$reading: #444;
+$gray: #e8e8e8;
+$gray--dark: #d9d9d9;
+$primary: #367202;
+$primary--dark: #1b3901;
+$secondary: #abd037;
+$secondary--light: #cce17f;
+$dark: #121a18;
+
+$link: $primary;
+$link--hover: $primary--dark;
+$linkOnDark: $secondary--light;
+$linkOnDark--hover: $secondary;
+
+$panel: $gray;
+$panel__border: $gray--dark;
+
+/** Type **/
+$base-font-family: "lato", Helvetica, Roboto, Arial, sans-serif;
+$font-weight: 400;
+$font-weight--thin: 300;
+$font-weight--bold: 700;
+
+/** Animation **/
+$base-transition: 0.3s ease;
+
+/** Screen Sizes **/
+$medium-bp: 601;
+$large-bp: 991;
+$medium-up: "min-width: #{$medium-bp}px";
+$large-up: "min-width: #{$large-bp}px";
+
+$medium-down: "max-width: #{$medium-bp - 1}px";
+$large-down: "max-width: #{$large-bp - 1}px";
