@@ -12,9 +12,18 @@
             </figure>
         <?php endif; ?>
     </header>
+    <?php if(isset($sidebar) && $sidebar): ?>
+        <section class="page__content layout-thin-sidebar">
+            <section class="article__content">
+                <?php the_content(); ?>
+            </section>
+            <aside class="article__sidebar layout-thin-sidebar__sidebar"><?php echo $sidebar; ?></aside>
+        </section>
+    <?php else: ?>
     <section class="page__content article__content">
         <?php the_content(); ?>
     </section>
+    <?php endif; ?>
     <footer class="page__footer article__footer">
 
     </footer>

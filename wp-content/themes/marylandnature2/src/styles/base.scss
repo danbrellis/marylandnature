@@ -1,15 +1,16 @@
 @import "variables";
+@import "mixins";
 
 html,
 body {
   font-size: $base-font-size - 4;
   font-family: $base-font-family;
   font-weight: $font-weight;
-  line-height: 1;
+  line-height: 1.1;
   margin: 0;
   padding: 0;
 
-  @media ($medium-up) {
+  @include for-tablet-portrait-up() {
     font-size: $base-font-size;
   }
 }

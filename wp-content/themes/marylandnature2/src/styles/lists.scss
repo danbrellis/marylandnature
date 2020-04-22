@@ -1,3 +1,6 @@
+@import "variables";
+@import "mixins";
+
 .flex-list {
   margin: 0;
   padding: 0;
@@ -10,4 +13,15 @@
 
 .site-footer__socialIconsLink {
   font-size: 2em;
+}
+
+.two-column-grid__list {
+  @include blank-list();
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 1em;
+}
+
+.events-list {
+  @include blank-list;
 }

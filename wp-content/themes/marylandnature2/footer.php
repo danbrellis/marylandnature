@@ -4,12 +4,12 @@
         <div class="container site-footer">
             <div class="companyCard">
                 <a href="<?php echo site_url(); ?>" title="Home" class="companyCard__logo"><?php echo wp_get_attachment_image( get_field('footer_logo', 'option'), 'thumbnail', "", array( "class" => "img-responsive" ) ); ?></a>
-                <div class="companyCard__info">
+                <address class="companyCard__info">
                     <span class="companyCard__title"><?php bloginfo('name'); ?></span>
                     <div class="companyCard__address">
                         <?php echo nl2br(get_field('org_info_block', 'option')); ?>
                     </div>
-                </div>
+                </address>
             </div>
 
             <div class="site-footer__socialIcons">

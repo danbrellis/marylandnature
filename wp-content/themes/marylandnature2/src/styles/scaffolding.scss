@@ -2,9 +2,7 @@
 @import "mixins";
 
 .container {
-  max-width: 60rem;
-  margin: auto;
-  padding: 0 1em;
+  @include container();
 }
 
 /** Header **/
@@ -118,8 +116,11 @@
 /** Main **/
 .main {
   color: $reading;
-  margin-top: 1em;
-  padding-bottom: 1em;
+
+  &:not(&--homepage) {
+    margin-top: 1em;
+    padding-bottom: 1em;
+  }
 
   &--twoColumns {
     grid-template-columns: 1fr;
@@ -138,6 +139,17 @@
         grid-row: 1;
       }
     }
+  }
+}
+
+.layout-thin-sidebar {
+  display: grid;
+  grid-template-columns: 5fr 2fr;
+  grid-template-rows: auto;
+  grid-gap: 2em;
+
+  &__sidebar {
+    grid-column: 2/3;
   }
 }
 

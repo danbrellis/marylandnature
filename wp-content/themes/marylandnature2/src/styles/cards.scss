@@ -1,3 +1,6 @@
+@import "variables";
+@import "mixins";
+
 .companyCard {
   display: grid;
   grid-template-areas: "icon info";
@@ -16,4 +19,100 @@
   font-size: 1.5em;
   margin-bottom: 0.25em;
   display: inline-block;
+}
+
+.collection {
+  border: 3px solid $white;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+}
+.collection__info {
+  background: $dark;
+  padding: 0.5em;
+  text-align: center;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: $white;
+}
+.collection__img {
+  @include responsive-img;
+}
+.collection__collector {
+  text-align: center;
+}
+.collection__title {
+  margin: 0;
+  font-size: 1.5em;
+  font-weight: $font-weight;
+  text-transform: uppercase;
+  word-break: break-word;
+}
+.collection__collector {
+  font-size: 1em;
+  font-weight: $font-weight--thin;
+}
+
+.pageCard {
+  display: flex;
+  flex-direction: column;
+}
+.pageCard__header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.pageCard__title {
+  text-transform: uppercase;
+  order: 2;
+  margin: 0;
+  font-weight: $font-weight--thin;
+}
+.pageCard__link {
+  text-decoration: none;
+  border-bottom: 1px solid $link;
+  box-shadow: 0 2px 0 transparent;
+  display: block;
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+  }
+
+  &:hover,
+  &:focus {
+    border-bottom-color: $link--hover;
+    box-shadow: 0 2px 0 $link--hover;
+  }
+}
+.pageCard__figure {
+  margin-block-end: 1em;
+
+  .figure__caption {
+    z-index: 9;
+  }
+}
+.pageCard__img {
+  order: 1;
+  @include responsive-img;
+}
+
+.eventStamp {
+  font-size: 0.875em;
+  margin-block-end: 1em;
+}
+.eventStamp__title {
+  border-bottom: 0;
+  margin: 0;
+  font-size: 1.375em;
+}
+.eventStamp__location {
+  margin-block-start: 0.25em;
 }

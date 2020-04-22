@@ -1,5 +1,11 @@
 @import "variables";
 
+@mixin container() {
+  max-width: 60rem;
+  margin: auto;
+  padding: 0 1rem;
+}
+
 @mixin transition($property) {
   transition: #{$property} $base-transition;
 }
@@ -7,6 +13,18 @@
 @mixin responsive-img {
   max-width: 100%;
   height: auto;
+}
+
+@mixin blank-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@mixin heading-style {
+  font-weight: $font-weight--thin;
+  text-transform: uppercase;
+  border-bottom: 1px solid $primary;
 }
 
 @mixin for-phone-only {

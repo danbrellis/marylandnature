@@ -112,8 +112,6 @@
             ]);
             ?>
         </nav>
-        <a href="<?php echo site_url('/donate/'); ?>" class="site-header__donate button button--iconFirst button--primary"><i class="fas fa-heart"></i> Donate</a>
+        <a href="<?php echo site_url('/donate/'); ?>" class="site-header__donate button iconButton--grow iconButton--iconFirst button--primary"><i class="fas fa-heart"></i> Donate</a>
     </div>
 </header> <!-- end .header -->
-
-<div class="container main-container">

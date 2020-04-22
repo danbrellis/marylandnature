@@ -19,13 +19,23 @@
   }
 }
 
-.button--iconFirst {
-  svg {
-    margin-right: 0.5em;
-  }
+.button--prominent {
+  text-transform: uppercase;
+  font-size: 1.25rem;
+  padding: 0.75em 1em;
 }
 
-.site-header__donate {
+.iconButton--iconFirst {
+  svg {
+    margin-inline-end: 0.5em;
+  }
+}
+.iconButton--iconLast {
+  svg {
+    margin-inline-start: 0.5em;
+  }
+}
+.iconButton--grow {
   svg {
     @include transition(transform);
   }

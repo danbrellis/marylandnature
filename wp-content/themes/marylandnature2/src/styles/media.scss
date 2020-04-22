@@ -5,7 +5,16 @@
   @include responsive-img();
 }
 
+figure {
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+}
+
 .figure {
+  font-size: 1rem;
+
   &--captionOverlay {
     position: relative;
 
@@ -13,11 +22,34 @@
       position: absolute;
       bottom: 0.75em;
       right: 0.75em;
-      font-size: 0.75em;
       text-align: right;
-      display: block;
-      padding: 0.25em 0.5em;
       background: rgba($white, 0.75);
     }
   }
+
+  &--circle {
+    img {
+      border-radius: 50%;
+    }
+  }
+}
+
+.figure__caption {
+  font-size: 0.75em;
+  display: block;
+  padding: 0.25em 0.5em;
+}
+.figure__caption:empty {
+  display: none;
+}
+
+.bg-caption {
+  position: absolute;
+  bottom: 0.75em;
+  right: 0.75em;
+  font-size: 0.75rem;
+  text-align: right;
+  display: block;
+  padding: 0.25em 0.5em;
+  background: rgba($white, 0.75);
 }
