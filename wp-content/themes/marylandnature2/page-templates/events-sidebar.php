@@ -4,7 +4,8 @@ $events_args = [
     'categories' => [get_post_field( 'post_name', get_post() )],
     'show_event_thumbnail' => false,
     'show_event_excerpt' => false,
-    'show_featured' => false
+    'show_featured' => false,
+    'show_past_events' => false
 ];
 $sidebar = '<h2 class="stringbean">Events</h2>' . em_display_events( $events_args ); ?>
     <div class="container main-container">
