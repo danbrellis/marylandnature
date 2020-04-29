@@ -75,9 +75,7 @@ function nhsm_img_credit_and_caption($credit = false, $img_id = false, $link = t
 
 function nhsm_format_image_credit_line($credit = false, $img_id = false, $link = true){
     if(!$credit) $credit = nhsm_get_image_credit($img_id, $link);
-    $ret = $credit ? sprintf('Photo by %s', $credit) : false;
-
-    return $ret;
+    return $credit ? sprintf('Photo by %s', $credit) : false;
 }
 
 function nhsm_image_has_credit($thumbnail_id){

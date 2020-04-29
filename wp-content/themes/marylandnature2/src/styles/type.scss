@@ -57,3 +57,8 @@ a {
 .stringbean {
   @include heading-style();
 }
+
+/** Blocks **/
+.has-dark-gray-reading-color {
+  color: $reading;
+}

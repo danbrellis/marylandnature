@@ -1,0 +1,68 @@
+@import "../../../../src/styles/variables";
+@import "../../../../src/styles/mixins";
+
+/** CTA Newsletter Signup **/
+.nhsm-cta-newsletter-signup__inner {
+  display: flex;
+  flex-direction: column;
+}
+.nhsm-cta-newsletter-signup__title {
+  color: $primary;
+  font-size: 1.75em;
+  font-weight: $font-weight--thin;
+  text-transform: uppercase;
+  margin-block-start: 0;
+}
+.nhsm-cta-newsletter-signup__body {
+  margin-top: 0;
+  font-weight: $font-weight--thin;
+  line-height: 1.25;
+}
+.nhsm-cta-newsletter-signup__button {
+  align-self: center;
+  margin-block-end: 1em;
+}
+.nhsm-cta-newsletter-signup__figure {
+  figure {
+    margin: 0.5em;
+  }
+}
+@include for-tablet-portrait-up() {
+  .nhsm-cta-newsletter-signup__inner {
+    display: grid;
+    grid-template-columns: 5fr 4fr;
+    grid-template-rows: auto max-content auto;
+  }
+  .nhsm-cta-newsletter-signup__title {
+    grid-column: 1/3;
+  }
+  .nhsm-cta-newsletter-signup__body {
+    grid-column: 1/2;
+    align-self: end;
+  }
+  .nhsm-cta-newsletter-signup__button {
+    grid-column: 1 / 2;
+    white-space: nowrap;
+    align-self: start;
+    justify-self: center;
+  }
+  .nhsm-cta-newsletter-signup__figure {
+    grid-column: 2/3;
+    grid-row: 2 / 4;
+  }
+}
+@media (min-width: 830px) {
+  .nhsm-cta-newsletter-signup__title {
+    grid-column: 1/2;
+    align-self: end;
+  }
+  .nhsm-cta-newsletter-signup__figure {
+    grid-column: 2/3;
+    grid-row: 1 / 4;
+  }
+}
+@include for-tablet-landscape-up() {
+  .nhsm-cta-newsletter-signup__inner {
+    grid-column-gap: 2em;
+  }
+}

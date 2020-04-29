@@ -20,14 +20,25 @@
     "deploy": "npm install && composer dump-autoload -a && composer install && npm run build"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.9.5",
     "@vue/component-compiler-utils": "^3.1.2",
+    "@wordpress/scripts": "8.0.1",
     "autoprefixer": "^9.7.6",
     "axios": "^0.19.2",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.1.0",
+    "babel-plugin-add-module-exports": "^1.0.2",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "css-loader": "^3.5.2",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "node-sass": "^4.13.1",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-static-files-copy": "^2.3.1",
     "prettier": "2.0.4",
     "sass": "^1.26.3",
-    "vue-template-compiler": "^2.6.11"
+    "sass-loader": "^8.0.2",
+    "vue-template-compiler": "^2.6.11",
+    "webpack-cli": "^3.3.11"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.28",

@@ -1,0 +1,105 @@
+.wp-block .nhsm-cta-collections {
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 15rem;
+  padding: 2rem;
+}
+.wp-block .nhsm-cta-collections textarea {
+  background-color: transparent;
+}
+.wp-block .nhsm-cta-collections textarea:hover,
+.wp-block .nhsm-cta-collections textarea:focus {
+  background-color: #fff;
+  color: #000;
+}
+.wp-block .img-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+.wp-block .img-container button {
+  margin: 0 1rem;
+}
+.wp-block .nhsm-cta-collections {
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 15rem;
+  padding: 2rem;
+}
+.wp-block .nhsm-cta-collections textarea {
+  background-color: transparent;
+}
+.wp-block .nhsm-cta-collections textarea:hover,
+.wp-block .nhsm-cta-collections textarea:focus {
+  background-color: #fff;
+  color: #000;
+}
+.wp-block .nhsm-cta-collections .nhsm-cta-collections__collectionsGridTitle {
+  text-align: center;
+}
+.wp-block .nhsm-cta-collections .nhsm-cta-collections__collectionsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-gap: 0.25rem;
+}
+.wp-block .nhsm-cta-collections .nhsm-cta-collections__collectionsGrid h1 {
+  font-size: 1.5rem;
+}
+.wp-block .img-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+.wp-block .img-container button {
+  margin: 0 1rem;
+}
+.wp-block .container {
+  border: 1px solid #ccc;
+  padding: 1rem;
+}
+.wp-block .nhsm-cta-newsletter-signup {
+  display: grid;
+  grid-template-columns: 4fr 3fr;
+  grid-gap: 1rem;
+}
+.wp-block .nhsm-cta-newsletter-signup > * {
+  grid-column: 1/2;
+}
+.wp-block .button-container {
+  text-align: center;
+  padding: 22% 0;
+  background: #f1f1f1;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  margin: 0 0 1.2rem 0;
+}
+.wp-block .nhsm-cta-newsletter-signup__title {
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+.wp-block .nhsm-cta-newsletter-signup__image {
+  width: 100%;
+  border-radius: 100%;
+  object-fit: cover;
+  grid-column: 2/3;
+  grid-row: 1 / span 3;
+  align-self: center;
+}
+.wp-block .nhsm-cta-newsletter-signup__buttonEditor {
+  display: flex;
+  flex-direction: row-reverse;
+  border: 1px solid #ccc;
+  padding: 1rem 1rem 0.75rem;
+}
+.wp-block .nhsm-cta-newsletter-signup__buttonText {
+  margin-inline-start: 0.5rem;
+}
+
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiIuL2Jsb2Nrcy5lZGl0b3IuYnVpbGQuY3NzIiwic291cmNlUm9vdCI6IiJ9*/

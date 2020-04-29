@@ -3,6 +3,7 @@
         <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
             <?php the_content(); ?>
         <?php endwhile; endif; ?>
+        <!--
         <section class="homepage-section nhsm-cta-newsletter-signup">
             <div class="container nhsm-cta-newsletter-signup__inner">
                 <h2 class="nhsm-cta-newsletter-signup__title">Natural History in Your Inbox!</h2>
@@ -41,6 +42,7 @@
             </div>
         </section>
         <?php endif; ?>
+        -->
         <section class="homepage-section nhsm-cta-join">
             <div class="container nhsm-cta-join__inner">
                 <h2 class="nhsm-cta-join__title">Show Your Support</h2>

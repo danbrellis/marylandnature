@@ -1,0 +1,35 @@
+.wp-block {
+  .nhsm-cta-collections {
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    min-height: 15rem;
+    padding: 2rem;
+
+    textarea {
+      background-color: transparent;
+
+      &:hover,
+      &:focus {
+        background-color: #fff;
+        color: #000;
+      }
+    }
+  }
+  .img-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+
+    button {
+      margin: 0 1rem;
+    }
+
+    &:hover,
+    &:focus,
+    &:focus-within {
+    }
+  }
+}

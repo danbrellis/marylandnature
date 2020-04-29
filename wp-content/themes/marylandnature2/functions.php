@@ -1,5 +1,7 @@
 <?php
 
+require_once(get_template_directory().'/includes/blocks.php');
+
 require_once(get_template_directory().'/includes/media.php');
 
 require_once(get_template_directory().'/includes/menu.php');
