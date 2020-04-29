@@ -26,7 +26,7 @@ function nhsm_get_asset_directory_uri(){
 function nhsm_get_asset_directory(){
     $env = ENV;
     $dir = $env === 'dev' ? '/build' : '/dist';
-    return get_template_directory() . $dir;
+    return get_stylesheet_directory() . $dir;
 }
 
 /* Formatting */
