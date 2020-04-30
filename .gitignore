@@ -77,6 +77,7 @@ wp-content/themes/marylandnature/assets/css/
 wp-content/themes/marylandnature/assets/js/
 wp-content/themes/marylandnature2/build/
 wp-content/themes/marylandnature2/dist/
+wp-content/themes/marylandnature2/blocks/dist/
 !wp-content/themes/marylandnature/assets/js/scripts/
 
 # ignore packaged files
