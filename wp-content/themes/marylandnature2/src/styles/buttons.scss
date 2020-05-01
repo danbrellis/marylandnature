@@ -2,7 +2,7 @@
 @import "mixins";
 
 .button {
-  padding: 0.5em 1em;
+  padding: 0.675em 1em;
   text-decoration: none;
   line-height: 1;
   @include transition(all);
@@ -17,6 +17,17 @@
     color: $white;
     background-color: $primary--dark;
   }
+}
+
+.wp-block-buttons {
+  margin-block-end: 1rem;
+}
+.wp-block-button {
+  margin: 0;
+}
+.wp-block-button__link {
+  @extend .button;
+  @extend .button--primary;
 }
 
 .button--prominent {

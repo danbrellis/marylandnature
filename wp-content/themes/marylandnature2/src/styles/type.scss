@@ -41,16 +41,11 @@ a {
   }
 }
 
-.article__content {
-  h1,
-  h2,
-  h3,
-  h4,
-  .h1,
-  .h2,
-  .h3,
-  .h4 {
-    @include heading-style();
+.icon-with-text {
+  display: flex;
+
+  & > :first-child {
+    margin-inline-end: 0.75em;
   }
 }
 

@@ -28,3 +28,11 @@
 [v-cloak] {
   display: none !important;
 }
+
+/** Block Utilities **/
+.has-green-primary-background-color {
+  background-color: $primary;
+}
+.has-white-color {
+  color: $white;
+}

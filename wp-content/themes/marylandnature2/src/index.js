@@ -4,7 +4,9 @@ import Vue from "vue/dist/vue.js";
 import { library, dom } from "@fortawesome/fontawesome-svg-core";
 import {
   faCalendarAlt,
+  faEnvelope,
   faHeart,
+  faMapPin,
   faPaperPlane,
   faPhone,
   faSearch,
@@ -21,7 +23,15 @@ import "alpinejs";
 //for using icon package in html
 dom.watch();
 
-library.add(faCalendarAlt, faHeart, faPaperPlane, faPhone, faSearch);
+library.add(
+  faCalendarAlt,
+  faEnvelope,
+  faHeart,
+  faMapPin,
+  faPaperPlane,
+  faPhone,
+  faSearch
+);
 library.add(faFacebook, faInstagram, faMeetup, faTwitter);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);

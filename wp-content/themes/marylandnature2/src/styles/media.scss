@@ -53,3 +53,14 @@ figure {
   padding: 0.25em 0.5em;
   background: rgba($white, 0.75);
 }
+
+.wp-block-table {
+  th {
+    text-align: start;
+  }
+  td,
+  th {
+    padding: 0.5em;
+  }
+  margin-block-end: 1rem;
+}
