@@ -5,7 +5,7 @@ function nhsm_register_block() {
     wp_register_script(
         'nhsm-blocks',
         get_stylesheet_directory_uri() . '/blocks/dist/blocks.build.js',
-        ['wp-blocks', 'wp-element', 'wp-editor'],
+        ['wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'wp-data'],
         filemtime(get_stylesheet_directory() . '/blocks/dist/blocks.build.js')
     );
 
@@ -48,7 +48,29 @@ function nhsm_register_block() {
         'attributes' => [
             'count' => [
                 'default' => 6,
-                'type' => 'integer'
+                'type' => 'string'
+            ],
+            'format' => [
+                'default' => 'card',
+                'type' => 'string'
+            ],
+            'order' => [
+                'default' => 'title',
+                'type' => 'string'
+            ],
+            'wrapGrid' => [
+                'default' => false,
+                'type' => 'boolean'
+            ]
+        ]
+    ]);
+    register_block_type('nhsm-widgets/team-list', [
+        'editor_script' => 'nhsm-blocks',
+        'editor_style' => 'nhsm-block-editor-styles',
+        'render_callback' => 'nhsm_widgets_team_list_render',
+        'attributes' => [
+            'role' => [
+                'type' => 'string'
             ]
         ]
     ]);
@@ -70,7 +92,7 @@ function nhsm_featurette_newsletter_signup_render($attributes, $content){
 }
 
 function nhsm_featurette_collections_render($attributes, $content){
-    $collections = nhsm_widgets_collections_render(['count' => 3]);
+    $collections = nhsm_widgets_collections_render(['count' => 3, 'format' => 'stamp']);
     $content = str_replace('<div id="collections_list"></div>', $collections, $content);
 
     return $content;
@@ -81,22 +103,59 @@ function nhsm_widgets_collections_render($attributes){
         'post_type' => 'nhsm_collections',
         'post_status' => 'publish',
         'posts_per_page' => $attributes['count'],
-        'orderby' => 'rand'
+        'orderby' => isset($attributes['order']) ? $attributes['order'] : 'title'
     ];
     $collections = new WP_Query($collections_args);
 
     ob_start();
-    ?>
+
+    if($attributes['wrapGrid'] === true): ?>
+        <div class="autoFitGrid" style="--minWidth:280px">
+    <?php endif; ?>
 
     <?php if($collections->have_posts()): ?>
         <?php while($collections->have_posts()): $collections->the_post(); ?>
+            <?php get_template_part( 'parts/' . $attributes['format'], get_post_type() ); ?>
+        <?php endwhile; wp_reset_postdata(); ?>
+    <?php endif;
+
+    if($attributes['wrapGrid'] === true): ?>
+        </div>
+    <?php endif;
+
+    $content = ob_get_clean();
+
+    return $content;
+}
+
+function nhsm_widgets_team_list_render($attributes){
+    //Query people based on ta provided in block
+    $team_args = [
+        'post_type' => 'nhsm_team',
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'nhsm_role',
+                'field'    => 'slug',
+                'terms'    => $attributes['role'],
+            ),
+        ),
+    ];
+    $team = new WP_Query($team_args);
+
+    ob_start();
+    ?>
+
+    <?php if($team->have_posts()): ?>
+        <?php while($team->have_posts()): $team->the_post(); ?>
             <?php get_template_part( 'parts/card', get_post_type() ); ?>
         <?php endwhile; wp_reset_postdata(); ?>
     <?php endif;
 
     $content = ob_get_clean();
 
-    return $content;
+    return '<section class="autoFitGrid" style="--minWidth: 210px">' . $content . '</section>';
 }
 
 /** Misc **/
