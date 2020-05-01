@@ -4,10 +4,9 @@ const {
   PlainText,
   RichText,
   PanelColorSettings,
-  InnerBlocks,
 } = wp.blockEditor;
 const { registerBlockType } = wp.blocks;
-const { Button, Disabled, ServerSideRender } = wp.components;
+const { Button, ServerSideRender } = wp.components;
 
 import "./style.scss";
 import "./editor.scss";
@@ -19,10 +18,12 @@ registerBlockType("nhsm-featurettes/collections", {
   attributes: {
     title: {
       source: "text",
+      type: "string",
       selector: ".nhsm-cta-collections__title",
     },
     lead: {
       source: "text",
+      type: "string",
       selector: ".nhsm-cta-collections__lead",
     },
     cta: {
@@ -32,9 +33,15 @@ registerBlockType("nhsm-featurettes/collections", {
     },
     componentStyles: {
       type: "object",
-      backgroundImage: {},
-      backgroundColor: "",
-      color: "",
+      backgroundImage: {
+        type: "string",
+      },
+      backgroundColor: {
+        type: "string",
+      },
+      color: {
+        type: "string",
+      },
     },
     bgImageID: {
       type: "integer",
@@ -131,9 +138,11 @@ registerBlockType("nhsm-featurettes/collections", {
             className="nhsm-cta-collections__collectionsGrid"
             attributes={{
               count: 3,
+              order: "rand",
+              format: "stamp",
+              wrapGrid: false,
             }}
           />
-          {/*<InnerBlocks allowedBlocks={["nhsm-widgets/collections"]} />*/}
         </div>
         <MediaUpload
           onSelect={(media) => {
@@ -183,7 +192,6 @@ registerBlockType("nhsm-featurettes/collections", {
               dangerouslySetInnerHTML={ctaMarkup()}
             />
             <div id="collections_list"></div>
-            {/*<InnerBlocks.Content />*/}
           </section>
         </div>
       </section>

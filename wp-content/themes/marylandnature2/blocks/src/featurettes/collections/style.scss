@@ -29,7 +29,7 @@
   grid-gap: 1em 1em;
   font-size: 0.875rem;
 
-  .collection {
+  .collectionStamp {
     align-self: stretch;
   }
 }
@@ -53,7 +53,7 @@
     grid-gap: 1em 2em;
     align-items: end;
 
-    .collection:first-of-type {
+    .collectionStamp:first-of-type {
       grid-row: 1 / span 2;
     }
   }

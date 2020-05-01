@@ -1,35 +1,32 @@
+@import "../../../../src/styles/cards";
+
 .wp-block {
-  .nhsm-cta-collections {
-    background-position: center center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    min-height: 15rem;
-    padding: 2rem;
-
-    textarea {
-      background-color: transparent;
-
-      &:hover,
-      &:focus {
-        background-color: #fff;
-        color: #000;
+  .collectionStamp {
+    margin: 0;
+    font-size: 0.875em;
+  }
+  .nhsm-widget-collections {
+    .collectionCard__title {
+      font-size: 1.25rem;
+    }
+    .collectionCard__figure {
+      margin: auto 0 0 0;
+      .figure__caption {
+        display: none;
       }
     }
-  }
-  .img-container {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
 
-    button {
-      margin: 0 1rem;
+    .collectionStamp__img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
     }
-
-    &:hover,
-    &:focus,
-    &:focus-within {
+  }
+  .nhsm-widget-collections--grid {
+    > div {
+      display: grid;
+      grid-gap: 0.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
   }
 }
