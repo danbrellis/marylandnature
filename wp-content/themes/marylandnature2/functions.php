@@ -2,9 +2,13 @@
 
 require_once(get_template_directory().'/includes/blocks.php');
 
+require_once(get_template_directory().'/includes/custom-post-type.php');
+
 require_once(get_template_directory().'/includes/media.php');
 
 require_once(get_template_directory().'/includes/menu.php');
+
+require_once(get_template_directory().'/includes/shortcodes.php');
 
 require_once(get_template_directory().'/includes/sidebar.php');
 
@@ -110,3 +114,47 @@ function nhsm_format_date_range($raw_start, $raw_end, $allday = false){
     return $retval;
 
 }
+
+/* People */
+
+/**
+ * Adds role_position and group_order properties
+ * to posts array when nhsm_team is queried by role.
+ *
+ * @param array $posts
+ * @param WP_Query $query
+ * @return array
+ */
+function add_meta_for_people_query(array $posts, WP_Query $query){
+    //Loop through results and set ACF meta values as custom $post properties
+
+    if($query->is_post_type_archive('nhsm_team') && $query->is_tax('nhsm_role')){
+
+        if($query->is_tax('nhsm_role', 'board-of-directors')){
+            $group = 'board-of-directors';
+        }
+        else{
+            $group = 'team_' . $query->tax_query->queried_terms['nhsm_role']['terms'][0];
+        }
+        foreach($posts as $post) {
+            $rows = get_field('team_member_role', $post->ID);
+            //var_dump($rows);
+            if ($rows) {
+                foreach ($rows as $row)
+                    if ($row['group_position']['group'] === $group) {
+                        $post->role_position = $row['group_position']['position'];
+                        $post->group_order = $row['group_position']['list_order'] === "" ? 9999 : intval($row['group_position']['list_order']);
+                    }
+            }
+        }
+    }
+    //Sort results based on above custom property (list_order)
+    usort($posts, function ($a, $b) {
+        if($a->group_order === $b->group_order){
+            return strcmp($a->post_title, $b->post_title);
+        }
+        return ($a->group_order < $b->group_order) ? -1 : 1;
+    });
+    return $posts;
+}
+add_filter('posts_results', 'add_meta_for_people_query', 10, 2);

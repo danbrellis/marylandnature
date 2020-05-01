@@ -116,3 +116,28 @@
 .eventStamp__location {
   margin-block-start: 0.25em;
 }
+
+.personCard {
+  display: flex;
+  flex-direction: column-reverse;
+  border: 1px solid $gray;
+  justify-content: flex-end;
+}
+.personCard__info {
+  background-color: $gray;
+  padding: 1em;
+  text-align: center;
+  flex: 1;
+}
+.personCard__name {
+  font-size: 1em;
+  color: $reading;
+  margin: 0;
+  font-weight: $font-weight--bold;
+}
+.personCard__figure {
+  padding: 1em;
+}
+.personCard__img {
+  @include responsive-img;
+}

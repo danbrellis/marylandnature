@@ -1,0 +1,28 @@
+@import "../../../../src/styles/mixins";
+.wp-block {
+  .nhsm_widgets_team_list {
+    .nhsm_widgets_team_list_grid {
+      .personCard {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+        align-items: center;
+        margin-block-end: 1rem;
+
+        &__name {
+          font-size: 1.25rem;
+        }
+      }
+      .personCard__title {
+        display: none;
+      }
+      .personCard__figure {
+        margin: 0 2rem 0 0;
+      }
+      .personCard__img {
+        width: 50px;
+        @include responsive-img;
+      }
+    }
+  }
+}
