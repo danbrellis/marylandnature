@@ -1,0 +1,10 @@
+@import "../../common";
+
+.wp-block {
+  .nhsm-contact__group {
+    display: flex;
+    & > :first-child {
+      flex: 1;
+    }
+  }
+}

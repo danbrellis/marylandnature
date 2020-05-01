@@ -28,6 +28,11 @@ function nhsm_register_block() {
     endif;
 
     // Register blocks
+    register_block_type('nhsm-common/contact', [
+        'editor_script' => 'nhsm-blocks',
+        'editor_style' => 'nhsm-block-editor-styles',
+        'style' => 'nhsm-block-styles',
+    ]);
     register_block_type('nhsm-featurettes/newsletter-signup', [
         'editor_script' => 'nhsm-blocks',
         'editor_style' => 'nhsm-block-editor-styles',

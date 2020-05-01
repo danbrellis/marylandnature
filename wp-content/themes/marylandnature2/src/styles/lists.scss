@@ -2,10 +2,12 @@
 @import "mixins";
 
 .flex-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  @include blank-list();
   display: flex;
+
+  &--wrap {
+    flex-wrap: wrap;
+  }
 }
 .flex-list__item {
   margin-inline-start: 2em;
@@ -31,4 +33,25 @@
   display: grid;
   grid-gap: 1em;
   grid-template-columns: repeat(auto-fit, minmax(var(--minWidth), 1fr));
+}
+
+.contact-details {
+  flex-wrap: wrap;
+  font-size: 1.375em;
+
+  li {
+    margin: 0 2em 0.75em 0;
+  }
+
+  a {
+    text-decoration: none;
+    font-weight: $font-weight--thin;
+
+    &:hover,
+    &:focus {
+      .icon-round {
+        background-color: $link--hover;
+      }
+    }
+  }
 }
