@@ -1,8 +1,12 @@
 <?php
 
+require_once(get_template_directory().'/includes/ajax.php');
+
 require_once(get_template_directory().'/includes/blocks.php');
 
 require_once(get_template_directory().'/includes/custom-post-type.php');
+
+require_once(get_template_directory().'/includes/enqueue-scripts.php');
 
 require_once(get_template_directory().'/includes/media.php');
 
@@ -12,17 +16,9 @@ require_once(get_template_directory().'/includes/shortcodes.php');
 
 require_once(get_template_directory().'/includes/sidebar.php');
 
-/* Styles and Scripts */
-function nhsm_enqueue_scripts(){
-    $css_uri = nhsm_get_asset_directory_uri() . '/index.css';
-    $css_path = nhsm_get_asset_directory() . '/index.css';
-    $js_uri = nhsm_get_asset_directory_uri() . '/index.js';
-    $js_path = nhsm_get_asset_directory() . '/index.js';
-    wp_enqueue_style('nhsm_styles', $css_uri, [], filemtime($css_path));
-
-    wp_enqueue_script('nhsm_index_script', $js_uri, [], filemtime($js_path));
-}
-add_action( 'wp_enqueue_scripts', 'nhsm_enqueue_scripts' );
+/*
+ * Utility
+ */
 
 function nhsm_get_asset_directory_uri(){
     $env = ENV;
@@ -35,13 +31,86 @@ function nhsm_get_asset_directory(){
     return get_stylesheet_directory() . $dir;
 }
 
-/* Formatting */
+
+/*
+ *  Queries
+ */
+
+/**
+ * @param WP_Query $query
+ * @return WP_Query $query
+ */
+function nhsm_pre_get_posts( $query ) {
+    if($query->is_main_query() && !is_admin()){
+        if ( is_post_type_archive('event') || is_tax('event-category') ) {
+            $query->set('post_type', 'event');
+            if(isset($_GET['show'])){
+                $scope = sanitize_title($_GET['show']);
+            }
+            else $scope = 'upcoming';
+            if($scope === 'past'){
+                $query->set('event_show_past_events', true);
+                $query->set('event_start_before', date('Y-m-d'));
+                $query->set('event_date_range', 'between');
+                $query->set('order', 'DESC');
+            }
+            elseif($scope === 'upcoming'){
+                $query->set('event_show_past_events', false);
+                $query->set('order', 'ASC');
+            }
+
+        }
+    }
+
+    if( $query->is_main_query() && is_search() && !is_admin()){
+        //Exclude homepage from search
+        $query->set('post__not_in', array(get_option('page_on_front')));
+
+        //set search to only posts and pages (handle other post types in search template)
+        $query->set('post_type', ['post', 'page']);
+    }
+
+    return $query;
+}
+add_action('pre_get_posts', 'nhsm_pre_get_posts', 9);
+
+
+/*
+ * Rewrites
+ */
+function nhsm_rewrite_tags() {
+    global $wp;
+    $wp->add_query_var( 'fc_year' );
+    $wp->add_query_var( 'fc_month' );
+
+    add_rewrite_tag( '%nhsm_events_year%', '([0-9]{4})' );
+    add_rewrite_tag( '%nhsm_events_month%', '([0-9]{2})' );
+    add_rewrite_rule('^get-involved/calendar(/([0-9]+))?(/([0-9]+))?/?', 'index.php?page_id=190&fc_year=$matches[2]&fc_month=$matches[4]', 'top');
+}
+add_action( 'init', 'nhsm_rewrite_tags' );
+
+
+/*
+ * Formatting
+ */
+
+/**
+ * @param string $title
+ * @param integer $id
+ * @return string
+ */
 function nhsm_add_wbr_to_title($title, $id){
     $title = str_replace( '/', '/<wbr>', $title);
     return $title;
 }
 
-/* Collections */
+/*
+ * Collections
+ */
+/**
+ * @param WP_Post $collection
+ * @return string
+ */
 function nhsm_get_formatted_collector($collection){
     $collectors = [];
 
@@ -68,7 +137,9 @@ function nhsm_get_formatted_collector($collection){
     return $collector;
 }
 
-/* Events */
+/*
+ * Events
+ */
 /**
  * @param int $raw_start
  * @param int $raw_end
@@ -115,8 +186,107 @@ function nhsm_format_date_range($raw_start, $raw_end, $allday = false){
 
 }
 
-/* People */
 
+/**
+ * Removes event ticket/cost meta box
+ * @param array $metaboxes
+ * @return array
+ */
+function nhsm_em_event_metaboxes(array $metaboxes){
+    unset($metaboxes['event-cost-tickets-box']);
+    return $metaboxes;
+}
+add_filter( 'em_event_metaboxes', 'nhsm_em_event_metaboxes', 10, 1);
+
+/**
+ * Remove event tickets column
+ * @param array $columns
+ * @return array
+ */
+function nhsm_manage_event_post_columns(array $columns){
+    unset($columns['tickets']);
+    return $columns;
+}
+add_filter('manage_event_posts_columns', 'nhsm_manage_event_post_columns', 11, 1);
+
+/**
+ * Returns an array of htmls trings for all categories for an event
+ * @param int $event_id
+ * @return array
+ */
+function nhsm_em_event_terms_list($event_id = 0){
+    $event = get_post($event_id);
+    if(get_post_type($event) !== 'event') return [];
+    $cats = get_the_terms($event->ID, 'event-category');
+    $cat_list = [];
+
+    if($cats && is_array($cats)){
+        foreach($cats as $cat){
+            $link = get_term_link( $cat, 'event-category' );
+            $template = !is_wp_error( $link ) ? '<a href="'.esc_url($link).'">%s</a>' : '%s';
+
+            $cat_list[] = sprintf($template, '<span class="label dynamic">'.$cat->name.'</span>');
+        }
+    }
+
+    return $cat_list;
+}
+
+    /**
+     * @param int $event_id
+     * @param string $tag
+     */
+    function nhsm_em_the_event_terms_list($event_id = 0, $tag = 'p'){
+        $cat_list = nhsm_em_event_terms_list($event_id);
+
+        echo '<'.$tag.' class="event_cat_labels">'.implode(' ', $cat_list).'</'.$tag.'>';
+    }
+
+/**
+ * Returns an arry of events to be feed into Full Calendar
+ * @param $args
+ * @return array
+ */
+function nhsm_get_events_for_calendar($args){
+    $events = em_get_events( $args );
+    $calendar = [];
+
+    /**
+     * @var WP_Post $event
+     */
+    foreach ( $events as $event ) {
+        $classes = $term_meta = [];
+        $event_categories = wp_get_post_terms( $event->ID, 'event-category' );
+        $event_tags = wp_get_post_terms( $event->ID, 'event-tag' );
+
+        if ( em_is_recurring( $event->ID ) && Events_Maker()->options['general']['show_occurrences'] ) {
+            $start = $event->event_occurrence_start_date;
+            $end = $event->event_occurrence_end_date;
+        } else {
+            $start = $event->_event_start_date;
+            $end = $event->_event_end_date;
+        }
+
+        $all_day_event = em_is_all_day( $event->ID );
+
+        $calendar[] = apply_filters( 'em_calendar_event_data',
+            [
+                'title'				 => $event->post_title,
+                'start'				 => $start,
+                'end'				 => ($all_day_event ? date( 'Y-m-d H:i:s', strtotime( $end . '+1 day' ) ) : $end),
+                'allDay'			 => $all_day_event,
+                'id'				 => $event->ID,
+                //'url'                => get_permalink($event)
+            ], $event
+        );
+    }
+
+    return $calendar;
+}
+
+/*
+ * People
+ */
 /**
  * Adds role_position and group_order properties
  * to posts array when nhsm_team is queried by role.

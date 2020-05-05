@@ -45,7 +45,11 @@
     "@fortawesome/free-brands-svg-icons": "^5.13.0",
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "@fortawesome/vue-fontawesome": "^0.1.9",
+    "@fullcalendar/core": "^4.4.0",
+    "@fullcalendar/daygrid": "^4.4.0",
+    "@fullcalendar/vue": "^4.4.0",
     "alpinejs": "^2.2.5",
+    "fullcalendar": "^3.3.0",
     "postcss": "^7.0.27",
     "vue": "^2.6.11",
     "vue-hot-reload-api": "^2.3.4"
