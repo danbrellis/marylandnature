@@ -29,6 +29,13 @@
   display: none !important;
 }
 
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.25s ease-out;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
 /** Block Utilities **/
 .has-green-primary-background-color {
   background-color: $primary;

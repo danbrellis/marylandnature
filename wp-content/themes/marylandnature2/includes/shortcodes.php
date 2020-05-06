@@ -188,7 +188,6 @@ function nhsm_full_calendar( $args ) {
             'right'             => false
         ],
         'defaultDate'       => $default_date,
-        'events'		 	=> nhsm_get_events_for_calendar( $args ),
         'ajax_url'          => admin_url( 'admin-ajax.php'),
         'cal_security'      => wp_create_nonce( "cedar-waxwing" ),
         'calendar_url'      => get_permalink($events_maker_general['pages']['calendar']['id']),

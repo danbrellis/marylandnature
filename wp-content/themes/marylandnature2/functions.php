@@ -223,24 +223,62 @@ function nhsm_em_event_terms_list($event_id = 0){
     if($cats && is_array($cats)){
         foreach($cats as $cat){
             $link = get_term_link( $cat, 'event-category' );
-            $template = !is_wp_error( $link ) ? '<a href="'.esc_url($link).'">%s</a>' : '%s';
+            $template = !is_wp_error( $link ) ? '<a href="'.esc_url($link).'" class="button button--primary button--thin">%s</a>' : '%s';
 
-            $cat_list[] = sprintf($template, '<span class="label dynamic">'.$cat->name.'</span>');
+            $cat_list[] = sprintf($template, '<span>'.$cat->name.'</span>');
         }
     }
 
     return $cat_list;
 }
 
-    /**
-     * @param int $event_id
-     * @param string $tag
-     */
-    function nhsm_em_the_event_terms_list($event_id = 0, $tag = 'p'){
-        $cat_list = nhsm_em_event_terms_list($event_id);
+/**
+ * @param int $event_id
+ * @param string $tag
+ */
+function nhsm_em_the_event_terms_list($event_id = 0, $tag = 'p'){
+    $cat_list = nhsm_em_event_terms_list($event_id);
 
-        echo '<'.$tag.' class="event_cat_labels">'.implode(' ', $cat_list).'</'.$tag.'>';
+    echo '<'.$tag.' class="event_cat_labels">'.implode(' ', $cat_list).'</'.$tag.'>';
+}
+
+/**
+ * Returns an array with keys 'start' and 'end' for an event. If the event is a
+ * recurrence, uses the closest upcoming occurrence, otherwise, uses the event's
+ * date.
+ *
+ * @param $e
+ * @return array|bool
+ */
+function get_event_date_range($e){
+    $event = get_post($e);
+    if(!$event) return false;
+
+    if($event->post_type !== 'event') return false;
+
+    //set some defaults
+    $start = get_post_meta($event->ID, '_event_start_date', true);
+    $end = get_post_meta($event->ID, '_event_end_date', true);
+
+    //get all recurrences, and use the most upcoming one
+    $recurrences = get_post_meta($event->ID, '_event_occurrence_date');
+
+    $now = date("U");
+    $timefromnow = false;
+    foreach($recurrences as $occurrence){
+        $range = explode('|', $occurrence);
+        $diff = strtotime($range[0]) - $now;
+
+        //set most upcoming occurrence
+        if((!$timefromnow || $diff < $timefromnow) && $diff > 0){
+            $timefromnow = $diff;
+            $start = $range[0];
+            $end = $range[1];
+        }
     }
+
+    return ['start' => $start, 'end' => $end];
+}
 
 /**
  * Returns an arry of events to be feed into Full Calendar
@@ -255,9 +293,18 @@ function nhsm_get_events_for_calendar($args){
      * @var WP_Post $event
      */
     foreach ( $events as $event ) {
-        $classes = $term_meta = [];
-        $event_categories = wp_get_post_terms( $event->ID, 'event-category' );
-        $event_tags = wp_get_post_terms( $event->ID, 'event-tag' );
+        $locs = em_get_locations_for($event->ID);
+        $loc = '';
+        if($locs && is_array($locs) && !empty($locs[0])){
+            $loc = sprintf(
+                '<address>%s <a href="https://www.google.com/maps/search/'.str_replace(' ', '+', $locs[0]->name).'/@%f,%f,15z">map</a></address>',
+                $locs[0]->name,
+                $locs[0]->location_meta['google_map']['latitude'],
+                $locs[0]->location_meta['google_map']['longitude']
+            );
+        }
+        $tag_list = str_replace('/"', '/#events"', get_the_tag_list());
+        $cat_list = nhsm_em_event_terms_list($event->id);
 
         if ( em_is_recurring( $event->ID ) && Events_Maker()->options['general']['show_occurrences'] ) {
             $start = $event->event_occurrence_start_date;
@@ -271,12 +318,16 @@ function nhsm_get_events_for_calendar($args){
 
         $calendar[] = apply_filters( 'em_calendar_event_data',
             [
-                'title'				 => $event->post_title,
-                'start'				 => $start,
-                'end'				 => ($all_day_event ? date( 'Y-m-d H:i:s', strtotime( $end . '+1 day' ) ) : $end),
-                'allDay'			 => $all_day_event,
-                'id'				 => $event->ID,
-                //'url'                => get_permalink($event)
+                'title'     => $event->post_title,
+                'start'     => $start,
+                'end'       => ($all_day_event ? date( 'Y-m-d H:i:s', strtotime( $end . '+1 day' ) ) : $end),
+                'allDay'    => $all_day_event,
+                'id'        => $event->ID,
+                'c'         => implode(' ', $cat_list),
+                'd'         => nhsm_format_date_range(strtotime($event->event_occurrence_start_date), strtotime($event->event_occurrence_end_date), em_is_all_day($event->ID)),
+                'l'         => $loc,
+                't'         => $tag_list,
+                'u'         => get_permalink($event)
             ], $event
         );
     }

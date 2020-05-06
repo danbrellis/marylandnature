@@ -48,6 +48,27 @@
     color: $reading;
   }
 }
+.fc-notice {
+  font-weight: $font-weight--bold;
+  display: flex;
+  align-items: center;
+  margin-block-end: 1em;
+}
+.fc-notice__icon {
+  margin-inline-end: .375em;
+  color: $alert;
+}
+.fc-indicators {
+  margin-block-end: 1em;
+  height: 2em;
+  @include for-desktop-up{
+    float: right;
+    margin: 9px 0 0 0;
+    height: auto;
+  }
+
+}
+
 /*
 .event-cat-filter__list {
   margin: 0;

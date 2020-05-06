@@ -1,38 +1,166 @@
 <template>
-    <div>
-        <h4>{{event.title}}</h4>
-        <?php nhsm_em_the_event_terms_list($id, 'div'); ?>
-        <table class="unstriped event-tooltip-data">
+    <dialog class="tooltip" v-bind:open="showTooltip" v-show="showTooltip" :style="tooltipStyle">
+        <header class="tooltip__header">
+            <button
+                    class="tooltip__close-button"
+                    aria-label="Close event details"
+                    type="button"
+                    v-on:click="$emit('closeTip')"
+            >
+                <span aria-hidden="true">×</span>
+            </button>
+            <h3 class="tooltip__title">{{title}}</h3>
+        </header>
+        <div class="tooltip__cat-labels" v-html="cats"></div>
+
+        <table class="tooltip__data">
+            <tbody>
             <tr>
                 <th>When</th>
-                <td><?php echo nhsm_format_date_range(strtotime($post->event_occurrence_start_date), strtotime($post->event_occurrence_end_date), em_is_all_day($post->ID)); ?></td>
+                <td>{{when}}</td>
             </tr>
-            <?php if($locs && is_array($locs) && !empty($locs[0])): ?>
             <tr>
                 <th>Where</th>
-                <?php foreach($locs as $loc) $wheres[] = sprintf('%s <a href="https://www.google.com/maps/search/'.str_replace(' ', '+', $loc->name).'/@%f,%f,15z" target="_blank">map</a>', $loc->name, $loc->location_meta['google_map']['latitude'], $loc->location_meta['google_map']['longitude']); ?>
-                <td><?php echo implode($wheres); ?></td>
+                <td v-html="location"></td>
             </tr>
-            <?php endif; ?>
-            <?php $tag_list = get_the_tag_list( '<tr><th>Topics</th><td>', ', ', '</td></tr>');
-            echo str_replace('/"', '/#events"', $tag_list); ?>
+            <tr v-if="tags">
+                <th>Topics</th>
+                <td>
+                    {{tags}}
+                </td>
+            </tr>
+            </tbody>
         </table>
-        <a href="<?php echo get_permalink(); ?>" class="button small" title="<?php the_title(); ?>">More details</a>
-    </div>
+        <a
+            :href="url"
+            class="button button--primary button--small tooltip__cta-button"
+            :title="title"
+        >Visit event page</a>
+    </dialog>
 </template>
 
 <script>
+    //add focus trap
     export default {
         name: "tooltip",
         props: {
-            event: {
+            e: {
                 type: Object,
                 required: true
+            },
+            tooltipStyle: {
+                type: Object,
+                default: () => {
+                    return {
+                        top: '0px',
+                        left: '0px'
+                    }
+                }
+            },
+            showTooltip: {
+                type: Boolean,
+                default: false
             }
-        }
+        },
+        computed: {
+            title: function() {
+                return 'title' in this.e ? this.e.title : '';
+            },
+            cats: function() {
+                return 'extendedProps' in this.e ? this.e.extendedProps.c : '';
+            },
+            when: function() {
+                return 'extendedProps' in this.e ? this.e.extendedProps.d : '';
+            },
+            location: function() {
+                return 'extendedProps' in this.e ? this.e.extendedProps.l : '';
+            },
+            tags: function() {
+                return 'extendedProps' in this.e ? this.e.extendedProps.t : '';
+            },
+            url: function() {
+                return 'extendedProps' in this.e ? this.e.extendedProps.u : '';
+            },
+        },
     }
 </script>
 
-<style scoped>
+<style lang="scss">
+    @import "../../styles/variables";
 
+    .tooltip {
+        position: absolute;
+        background: $white;
+        padding: 1em;
+        border: 1px solid $gray--dark;
+        font-size: .875em;
+        z-index: 9;
+        margin: 0;
+        max-width: 370px;
+        color: $reading;
+    }
+    .tooltip__header {
+        display: flex;
+        justify-content: space-between;
+        margin-block-end: .75em;
+    }
+    .tooltip__close-button {
+        background: none;
+        color: $reading;
+        font-size: 2rem;
+        width: 2rem;
+        height: 2rem;
+        margin: -.5rem -.5rem 0 0;
+        border: 0;
+        font-family: Courier, monospace;
+        font-weight: 500;
+        order: 2;
+        align-self: center;
+        border-radius: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        line-height: 1;
+
+        &:hover {
+            cursor: pointer;
+            background: $gray;
+            color: $black;
+        }
+        &:focus {
+            box-shadow: 0 0 0 0.2rem rgba(76, 91, 106, 0.5);
+            background: $gray;
+            color: $black;
+            outline: 0;
+        }
+        &:active {
+            background: $dark;
+            color: $white;
+
+            outline: 0;
+        }
+    }
+    .tooltip__title {
+        margin: 0;
+        font-size: 1.25rem;
+    }
+    .tooltip__data {
+        tr {
+            display: flex;
+            align-items: baseline;
+        }
+        th {
+            text-transform: uppercase;
+            font-size: .625em;
+            color: lighten($reading, 20%);
+        }
+        td {
+            font-size: .875em;
+        }
+        th, td {
+
+            padding: .625rem;
+        }
+        margin-block-end: 0.5em;
+    }
 </style>

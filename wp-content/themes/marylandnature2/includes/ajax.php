@@ -3,8 +3,8 @@
 add_action( 'wp_ajax_get_events', 'get_events' );
 add_action( 'wp_ajax_nopriv_get_events', 'get_events' );
 function get_events() {
-	//check_ajax_referer( 'nhsm-fc-events', 'security' );
-    $args = array(
+	check_ajax_referer( 'cedar-waxwing', 'security' );
+    $args = [
         'event_start_after'		    => '',
         'event_start_before'		=> '',
         'event_end_after'			=> '',
@@ -18,7 +18,7 @@ function get_events() {
         'post_type'			        => 'event',
         'author'			        => '',
         'posts_per_page'            => -1
-    );
+    ];
 
     if(isset($_REQUEST['cats']) && !empty($_REQUEST['cats'])) {
         $cats = explode(' ', $_REQUEST['cats']);
