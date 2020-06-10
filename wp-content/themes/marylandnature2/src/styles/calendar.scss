@@ -4,11 +4,50 @@
 @import "~@fullcalendar/core/main.css";
 //@import "~@fullcalendar/daygrid/main.css";
 
-.fc-header-toolbar {
+.fc {
+  display: grid;
+  grid-template-areas:
+          "toolbar"
+          "filters"
+          "view";
+  grid-gap: .75em 1em;
+}
+
+.fc-toolbar.fc-header-toolbar {
+  grid-area: toolbar;
+  align-self: center;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
+  margin-block-end: 0;
 }
+.fc-indicators {
+  display: none;
+  @include transition('background');
+}
+.fc-indicators:not(:empty) {
+  grid-area: view;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-block-end: 0;
+  background: rgba($white, .5);
+}
+.fc-notice {
+  margin: 5em 5vw 0;
+  background-color: $white;
+  padding: 1em;
+  align-self: flex-start;
+}
+.fc-category-filters {
+  grid-area: filters;
+}
+.fc-view-container {
+  grid-area: view;
+}
+
 .fc-left {
   margin-inline-end: 1em;
 }
@@ -18,6 +57,26 @@
   grid-template-columns: repeat(4, auto);
 }
 
+@include for-tablet-landscape-up(){
+  .fc {
+    grid-template-areas:
+            "toolbar indicator"
+            "filters filters"
+            "view    view";
+    grid-template-columns: auto 1fr;
+    grid-column-gap: 2em;
+  }
+  .fc-indicators:not(:empty) {
+    grid-area: indicator;
+    justify-self: flex-start;
+    align-self: center;
+  }
+  .fc-notice {
+    margin: 0;
+    padding: 0;
+    align-self: center;
+  }
+}
 @media (min-width: 395px) {
   .fc-center {
     align-items: center;
@@ -48,245 +107,3 @@
     color: $reading;
   }
 }
-.fc-notice {
-  font-weight: $font-weight--bold;
-  display: flex;
-  align-items: center;
-  margin-block-end: 1em;
-}
-.fc-notice__icon {
-  margin-inline-end: .375em;
-  color: $alert;
-}
-.fc-indicators {
-  margin-block-end: 1em;
-  height: 2em;
-  @include for-desktop-up{
-    float: right;
-    margin: 9px 0 0 0;
-    height: auto;
-  }
-
-}
-
-/*
-.event-cat-filter__list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-}
-.event-cat-filter__item {
-  margin-left: 1rem;
-}
-.event-cat-filter__label,
-.event-cat-filter__label input {
-  &:hover {
-    cursor: pointer;
-  }
-}
-.fc {
-  h2 {
-    border-bottom: none;
-  }
-  table thead,
-  table tbody,
-  table tfoot {
-    background: inherit;
-    border: inherit;
-  }
-
-  table {
-    margin-bottom: inherit;
-  }
-
-  .fc-other-month .fc-day-number {
-    color: lighten($reading, 25%);
-  }
-
-  .fc-day-number {
-    color: $reading;
-  }
-
-  .fc-event {
-    background: none;
-    color: $black;
-    font-size: 1rem;
-
-    &:hover {
-      color: $black;
-      background: $gray;
-    }
-  }
-
-  .fc-content {
-    font-size: 0.75em;
-  }
-
-  .fc-day-grid-event {
-    margin: 1px 1px 0;
-    padding: 5px 5px;
-    border: 0;
-  }
-
-  .fc-toolbar {
-    margin-block-end: 1em;
-    display: grid;
-    grid-template-columns: auto;
-    grid-template-rows: auto auto auto;
-
-    .fc-left {
-      float: none;
-      grid-column: 1;
-      grid-row: 2;
-    }
-    .fc-right {
-      float: none;
-      grid-column: 1;
-      grid-row: 3;
-      display: flex;
-      align-items: baseline;
-    }
-    .fc-center {
-      grid-column: 1;
-      grid-row: 1;
-      align-items: center;
-      justify-self: flex-start;
-      display: grid;
-      justify-content: center;
-      grid-column-gap: 0.1rem;
-    }
-
-    @media (min-width: 395px) {
-      grid-template-columns: min-content auto;
-      grid-template-rows: auto auto;
-      grid-column-gap: 1rem;
-
-      .fc-left {
-        grid-column: 1/2;
-        grid-row: 1;
-      }
-      .fc-right {
-        grid-column: 1/3;
-        grid-row: 2;
-        display: flex;
-        align-items: baseline;
-      }
-      .fc-center {
-        grid-column: 2/3;
-        grid-row: 1;
-        align-items: center;
-        justify-self: flex-start;
-      }
-    }
-
-    h2 {
-      grid-column: 3/4;
-      margin: 0 0 0 0.25em;
-    }
-    .fc-next-button {
-      grid-column: 2/3;
-      grid-row: 1;
-      margin-left: 0;
-    }
-    .fc-prev-button,
-    .fc-next-button {
-      background: none;
-      border: 0;
-      padding: 0 0.4em;
-    }
-    .fc-agendaview-button {
-      @extend .button;
-      @extend .button--primary;
-
-      padding: 0 0.6em;
-      font-size: 1rem;
-      margin-block-start: 0.5em;
-
-      &.fc-state-default {
-        background-image: none;
-        background-repeat: no-repeat;
-        border: none;
-        text-shadow: none;
-        box-shadow: none;
-        border-radius: 0;
-      }
-    }
-  }
-
-  .fc-time {
-  }
-
-  .fc-cats {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: stretch;
-
-    span {
-      display: block;
-      flex: 1;
-      width: 50%;
-      height: 5px;
-      float: left;
-      background-color: $primary;
-
-      &:first-of-type {
-        border-bottom-left-radius: 3px;
-      }
-      &:last-of-type {
-        border-bottom-right-radius: 3px;
-      }
-    }
-  }
-}
-.fc-view-container {
-  position: relative;
-
-  &.loading {
-    &:before {
-      content: "";
-      background: rgba(255, 255, 255, 0.75);
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 2;
-    }
-    &:after {
-      content: "\f1a5";
-      line-height: 1.7;
-      font-size: 11rem;
-      display: inline-block;
-      width: 100%;
-      text-align: center;
-      color: $black;
-      position: absolute;
-      margin-top: 0.1875rem;
-      top: 25%;
-      z-index: 9;
-      -webkit-animation: spin 3s linear infinite;
-      -o-animation: spin 3s linear infinite;
-      animation: spin 3s linear infinite;
-      font-family: "foundation-icons";
-      font-style: normal;
-      font-weight: normal;
-      font-variant: normal;
-      text-transform: none;
-      -webkit-font-smoothing: antialiased;
-      text-decoration: inherit;
-    }
-  }
-}
-@keyframes spin {
-  100% {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-*/

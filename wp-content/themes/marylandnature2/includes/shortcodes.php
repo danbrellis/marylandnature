@@ -173,6 +173,21 @@ function nhsm_full_calendar( $args ) {
     // calendar events query
     $args = apply_filters( 'em_get_full_calendar_events_args', $args );
 
+    // categories for filtering
+    $terms = get_terms( array(
+        'taxonomy' => 'event-category',
+        'hide_empty' => true,
+    ) );
+    $cat_filters = [];
+    if($terms && !is_wp_error($terms)){
+        foreach($terms as $term) {
+            $cat_filters[] = [
+                'slug' => $term->slug,
+                'label' => $term->name
+            ];
+        }
+    }
+
     // script args
     $events_maker_general = get_option('events_maker_general', []);
     $default_date = (($fc_year = get_query_var( 'fc_year' )) !== '') ? $fc_year : date('Y');
@@ -191,7 +206,8 @@ function nhsm_full_calendar( $args ) {
         'ajax_url'          => admin_url( 'admin-ajax.php'),
         'cal_security'      => wp_create_nonce( "cedar-waxwing" ),
         'calendar_url'      => get_permalink($events_maker_general['pages']['calendar']['id']),
-        'agenda_url'        => get_permalink($events_maker_general['pages']['events']['id'])
+        'agenda_url'        => get_permalink($events_maker_general['pages']['events']['id']),
+        'categories'        => $cat_filters
     ] );
 
     wp_localize_script(

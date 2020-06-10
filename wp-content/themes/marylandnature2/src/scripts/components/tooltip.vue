@@ -25,9 +25,7 @@
             </tr>
             <tr v-if="tags">
                 <th>Topics</th>
-                <td>
-                    {{tags}}
-                </td>
+                <td v-html="tags"></td>
             </tr>
             </tbody>
         </table>
@@ -145,6 +143,8 @@
         font-size: 1.25rem;
     }
     .tooltip__data {
+        margin-block-end: 0.5em;
+
         tr {
             display: flex;
             align-items: baseline;
@@ -161,6 +161,8 @@
 
             padding: .625rem;
         }
-        margin-block-end: 0.5em;
+        address {
+            font-style: normal;
+        }
     }
 </style>

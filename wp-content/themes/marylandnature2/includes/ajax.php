@@ -20,8 +20,8 @@ function get_events() {
         'posts_per_page'            => -1
     ];
 
-    if(isset($_REQUEST['cats']) && !empty($_REQUEST['cats'])) {
-        $cats = explode(' ', $_REQUEST['cats']);
+    if(isset($_REQUEST['categories']) && !empty($_REQUEST['categories'])) {
+        $cats = explode(' ', $_REQUEST['categories']);
         if($cats && is_array($cats) && !empty($cats)){
             $args['tax_query'][] = array(
                 'taxonomy'			 => 'event-category',
@@ -41,38 +41,6 @@ function get_events() {
 	wp_send_json($events);
 	
 	wp_die();
-}
-
-add_action( 'wp_ajax_get_event_cat_filters', 'get_event_cat_filters' );
-add_action( 'wp_ajax_nopriv_get_event_cat_filters', 'get_event_cat_filters' );
-function get_event_cat_filters(){
-	check_ajax_referer( 'cedar-waxwing', 'security' );
-	$terms = get_terms( array(
-    'taxonomy' => 'event-category',
-    'hide_empty' => true,
-	) );
-	ob_start();
-	if($terms && !is_wp_error($terms)): ?>
-        <strong>Filter: </strong>
-        <ul class="event-cat-filter__list" id="event-cat-filter">
-            <?php foreach($terms as $term): ?>
-                <li class="event-cat-filter__item">
-                    <label for="cat_<?php echo $term->slug; ?>" class="dynamic event-cat-filter__label">
-                        <input type="checkbox" id="cat_<?php echo $term->slug; ?>" class="" />
-                        <?php echo $term->name; ?>
-                    </label>
-                </li>
-            <?php endforeach; ?>
-        </ul>
-		<?php
-		$json['error'] = false;
-		$json['output'] = ob_get_clean();
-	else:
-		$json['error'] = true;
-		$json['output'] = $terms;
-	endif;
-	echo wp_send_json($json);
-	die();
 }
 
 add_action( 'wp_ajax_get_img_credit', 'ajax_get_img_credit' );

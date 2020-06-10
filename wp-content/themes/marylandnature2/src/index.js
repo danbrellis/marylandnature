@@ -5,12 +5,18 @@ import { library, dom } from "@fortawesome/fontawesome-svg-core";
 import {
   faCalendarAlt,
   faEnvelope,
+  faExclamationCircle,
   faHeart,
   faMapPin,
   faPaperPlane,
   faPhone,
   faSearch,
+    faTags,
 } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCheckSquare,
+  faClock
+} from "@fortawesome/free-regular-svg-icons";
 import {
   faFacebook,
   faInstagram,
@@ -25,12 +31,16 @@ dom.watch();
 
 library.add(
   faCalendarAlt,
+  faClock,
+  faCheckSquare,
   faEnvelope,
+  faExclamationCircle,
   faHeart,
   faMapPin,
   faPaperPlane,
   faPhone,
-  faSearch
+  faSearch,
+    faTags
 );
 library.add(faFacebook, faInstagram, faMeetup, faTwitter);
 

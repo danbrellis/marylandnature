@@ -5,21 +5,15 @@ import Vue from "vue/dist/vue.js";
 import "@babel/polyfill";
 import FullCalendar from "@fullcalendar/vue";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import loader from "./components/loader";
+import calendarIndicators from "./components/calendar-indicators";
+import filters from "./components/filters";
 import tooltip from "./components/tooltip";
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-
-library.add(faExclamationCircle);
-
-Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 const cal_args = JSON.parse(emCalendarArgs);
 
 new Vue({
   el: "#events-full-calendar",
-  data() {
+  data: function() {
     return {
       calendarApi: null,
       calendarPlugins: [dayGridPlugin],
@@ -30,29 +24,62 @@ new Vue({
         method: "POST",
         extraParams: {
           security: cal_args.cal_security,
-          custom_param2: "somethingelse",
+          categories: [],
         },
         failure: () => this.notice_msg = "Unable to load events, please refresh the page or contact us."
       },
       eventDetails: {},
-      notice_msg: false,
+      notice_msg: "",
       showEventDetails: false,
       showLoader: false,
+      indicatorsInstance: null
     };
   },
   components: {
     FullCalendar: FullCalendar, // make the <FullCalendar> tag available
-    loader,
+    calendarIndicators,
+    filters,
     tooltip,
   },
   created() {},
   mounted() {
     //this.calendarApi = this.$refs.fullCalendar.getApi();
+
+    const indicatorsComponentClass = Vue.extend(calendarIndicators);
+    this.indicatorsInstance = new indicatorsComponentClass({
+      propsData: {
+        notice_msg: this.notice_msg,
+        showLoader: this.showLoader
+      },
+      //parent: this
+    });
+    this.indicatorsInstance.$mount(); // pass nothing
+    this.$refs.fullCalendar.$el.appendChild(this.indicatorsInstance.$el);
+
+    const filtersComponentClass = Vue.extend(filters);
+    const filtersInstance = new filtersComponentClass({
+      propsData: {
+        filterOptions: this.calArgs.categories
+      },
+      parent: this
+    });
+
+    filtersInstance.$mount(); // pass nothing
+    filtersInstance.$on('categoryFiltersChanged', filters => {
+      this.events.extraParams.categories = filters;
+    });
+    this.$refs.fullCalendar.$el.appendChild(filtersInstance.$el);
+  },
+  watch: {
+   showLoader: function(newValue){
+      this.indicatorsInstance.$props.showLoader = newValue;
+    },
+    notice_msg: function(newValue){
+      this.indicatorsInstance.$props.noticeMsg = newValue;
+    }
   },
   methods: {
     handleEventClick(eventClickInfo) {
-      console.log(eventClickInfo);
-
       this.eventDetails = eventClickInfo.event;
 
       let calItem = eventClickInfo.el;
@@ -91,25 +118,13 @@ new Vue({
       window.location.href = url;
     },
     reset() {
-      this.notice_msg = false;
+      this.notice_msg = "";
       this.showEventDetails = false;
     }
   },
   template: `
     <div>
-      <div class="fc-indicators">
-        <transition name="fade" mode="out-in">
-          <loader v-if="showLoader" key="loader" />
-          <div
-              class="notice notice--error fc-notice"
-              key="notice"
-              v-if="notice_msg && !showLoader"
-          >
-            <font-awesome-icon icon="exclamation-circle" size="lg" class="fc-notice__icon" />
-            {{ notice_msg }}
-          </div>
-        </transition>
-      </div>
+      
       
       <FullCalendar
           ref="fullCalendar"
