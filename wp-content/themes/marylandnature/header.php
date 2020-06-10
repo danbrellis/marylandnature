@@ -55,6 +55,7 @@
                 $share_excerpt = sprintf('Join us %s. %s', $range, $share_excerpt);
             }
         }
+        $share_excerpt = strip_tags($share_excerpt);
         ?>
 
         <meta name="description" content="<?php echo esc_attr($share_excerpt); ?>" />
