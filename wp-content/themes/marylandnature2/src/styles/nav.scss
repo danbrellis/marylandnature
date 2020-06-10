@@ -190,6 +190,7 @@ ul.sidebar-nav__list {
     display: grid;
     grid-template-columns: auto 2em;
     grid-gap: 0 0.25em;
+    align-items: center;
   }
   .menu-item__expand {
     background: none;

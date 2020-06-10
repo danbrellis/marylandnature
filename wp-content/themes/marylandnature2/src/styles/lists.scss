@@ -10,8 +10,29 @@
   }
 }
 .flex-list__item {
-  margin-inline-start: 2em;
+  &:not(:last-child) {
+    margin-inline-end: 2em;
+  }
 }
+
+.flex-list__item--lessSpacing {
+  &:not(:last-child) {
+    margin-inline-end: 1em;
+  }
+}
+
+.post-meta {
+  color: $reading--subtle;
+
+  li {
+    margin-block-end: .5em;
+  }
+
+  .icon {
+    font-size: 1.125em;
+  }
+}
+
 
 .site-footer__socialIconsLink {
   font-size: 2em;
@@ -54,4 +75,8 @@
       }
     }
   }
+}
+
+.iconLabel__icon {
+  margin-inline-end: .25em;
 }

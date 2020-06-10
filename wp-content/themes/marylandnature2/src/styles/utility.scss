@@ -36,6 +36,15 @@
   opacity: 0;
 }
 
+.alignleft {
+  float: left;
+  margin: 0 1em 1em 0;
+}
+.alignright {
+  float: right;
+  margin: 0 0 1em 1em;
+}
+
 /** Block Utilities **/
 .has-green-primary-background-color {
   background-color: $primary;
