@@ -107,6 +107,33 @@ function nhsm_add_wbr_to_title($title, $id){
 }
 
 /*
+ * Posts
+ */
+function nhsm_get_the_cat_labels($p = 0){
+    $post = get_post($p);
+    $cats = wp_get_post_categories($post->ID, array('fields' => 'all'));
+    $html = '';
+    $cat_list = array();
+
+    if($cats && is_array($cats)){
+        foreach($cats as $cat){
+            $link = get_category_link( $cat->term_id );
+            $template = !is_wp_error( $link ) ? '<a href="'.esc_url($link).'" class="button button--primary button--thin">%s</a>' : '%s';
+            $styles = array();
+
+            $cat_list[] = sprintf($template, '<span class="label">'.$cat->name.'</span>');
+        }
+    }
+    if(!empty($cat_list))
+        $html = '<p class="event_cat_labels">'. implode(' ', $cat_list) .'</p>';
+
+    return $html;
+}
+    function nhsm_the_cat_labels($p = 0){
+        echo nhsm_get_the_cat_labels($p);
+    }
+
+/*
  * Collections
  */
 /**
@@ -187,7 +214,6 @@ function nhsm_format_date_range($raw_start, $raw_end, $allday = false){
     return $retval;
 
 }
-
 
 /**
  * Removes event ticket/cost meta box
