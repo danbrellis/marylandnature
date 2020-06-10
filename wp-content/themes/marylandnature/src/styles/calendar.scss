@@ -1,0 +1,109 @@
+@import "variables";
+@import "mixins";
+@import "buttons";
+@import "~@fullcalendar/core/main.css";
+//@import "~@fullcalendar/daygrid/main.css";
+
+.fc {
+  display: grid;
+  grid-template-areas:
+          "toolbar"
+          "filters"
+          "view";
+  grid-gap: .75em 1em;
+}
+
+.fc-toolbar.fc-header-toolbar {
+  grid-area: toolbar;
+  align-self: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-block-end: 0;
+}
+.fc-indicators {
+  display: none;
+  @include transition('background');
+}
+.fc-indicators:not(:empty) {
+  grid-area: view;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-block-end: 0;
+  background: rgba($white, .5);
+}
+.fc-notice {
+  margin: 5em 5vw 0;
+  background-color: $white;
+  padding: 1em;
+  align-self: flex-start;
+}
+.fc-category-filters {
+  grid-area: filters;
+}
+.fc-view-container {
+  grid-area: view;
+}
+
+.fc-left {
+  margin-inline-end: 1em;
+}
+.fc-center {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(4, auto);
+}
+
+@include for-tablet-landscape-up(){
+  .fc {
+    grid-template-areas:
+            "toolbar indicator"
+            "filters filters"
+            "view    view";
+    grid-template-columns: auto 1fr;
+    grid-column-gap: 2em;
+  }
+  .fc-indicators:not(:empty) {
+    grid-area: indicator;
+    justify-self: flex-start;
+    align-self: center;
+  }
+  .fc-notice {
+    margin: 0;
+    padding: 0;
+    align-self: center;
+  }
+}
+@media (min-width: 395px) {
+  .fc-center {
+    align-items: center;
+  }
+}
+.fc-button-primary {
+  @extend .button;
+  @extend .button--primary;
+}
+.fc-agendaview-button {
+  font-size: 0.875em;
+}
+.fc-prev-button,
+.fc-next-button {
+  background-color: transparent;
+  color: $reading;
+  padding: 0.375em;
+  border-radius: 100%;
+  //Add gradient border on focus: https://css-tricks.com/gradient-borders-in-css/
+
+  .fc-icon {
+    font-weight: bold;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: $gray;
+    color: $reading;
+  }
+}

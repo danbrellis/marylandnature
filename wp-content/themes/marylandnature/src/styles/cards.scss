@@ -1,0 +1,187 @@
+@import "variables";
+@import "mixins";
+
+.companyCard {
+  display: grid;
+  grid-template-areas: "icon info";
+  grid-gap: 0 1em;
+  text-align: left;
+  align-items: end;
+}
+.companyCard__logo {
+  grid-area: icon;
+}
+.companyCard__info {
+  grid-area: info;
+  padding-bottom: 0.5em;
+}
+.companyCard__title {
+  font-size: 1.5em;
+  margin-bottom: 0.25em;
+  display: inline-block;
+}
+
+.collectionStamp {
+  border: 3px solid $white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.collectionStamp__caption {
+  background: $dark;
+  padding: 0.5em;
+  text-align: center;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: $white;
+}
+.collectionStamp__img {
+  @include responsive-img;
+}
+.collectionStamp__collector {
+  text-align: center;
+  font-size: 1em;
+  font-weight: $font-weight--thin;
+}
+.collectionStamp__title {
+  margin: 0;
+  font-size: 1.5em;
+  font-weight: $font-weight;
+  text-transform: uppercase;
+  word-break: break-word;
+}
+
+.collectionCard {
+  display: flex;
+  flex-direction: column;
+}
+.collectionCard__info {
+  display: flex;
+  flex-direction: column;
+  margin-block-end: 1em;
+}
+.collectionCard__title {
+  border-bottom: 1px solid $primary;
+  font-size: 1.75em;
+  margin-block-start: 0.5em;
+  margin-block-end: 0.25em;
+}
+.collectionCard__collector {
+  font-weight: $font-weight--bold;
+}
+.collectionCard__figure {
+  margin-block-start: auto;
+}
+.collectionCard__img {
+  @include responsive-img;
+}
+
+.pageCard {
+  display: flex;
+  flex-direction: column;
+}
+.pageCard__header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.pageCard__title {
+  text-transform: uppercase;
+  order: 2;
+  margin: 0;
+  font-weight: $font-weight--thin;
+}
+.pageCard__link {
+  text-decoration: none;
+  border-bottom: 1px solid $link;
+  box-shadow: 0 2px 0 transparent;
+  display: block;
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+  }
+
+  &:hover,
+  &:focus {
+    border-bottom-color: $link--hover;
+    box-shadow: 0 2px 0 $link--hover;
+  }
+}
+.pageCard__figure {
+  margin-block-end: 1em;
+
+  .figure__caption {
+    z-index: 9;
+  }
+}
+.pageCard__img {
+  order: 1;
+  @include responsive-img;
+}
+
+.eventStamp {
+  font-size: 0.875em;
+  margin-block-end: 1em;
+}
+.eventStamp__title {
+  border-bottom: 0;
+  margin: 0;
+  font-size: 1.375em;
+}
+.eventStamp__location {
+  margin-block-start: 0.25em;
+}
+
+.callout {
+  border: 1px solid $gray--dark;
+  font-size: 1.25em;
+  padding: 1em;
+  margin-block-end: 1em;
+}
+
+.event-regBox {
+  .svg-inline--fa {
+    color: $complementary;
+  }
+
+  .flex-list {
+    justify-content: center;
+  }
+}
+.personCard {
+  display: flex;
+  flex-direction: column-reverse;
+  border: 1px solid $gray;
+  justify-content: flex-end;
+}
+.personCard__info {
+  background-color: $gray;
+  padding: 1em;
+  text-align: center;
+  flex: 1;
+}
+.personCard__name {
+  font-size: 1em;
+  color: $reading;
+  margin: 0;
+  font-weight: $font-weight--bold;
+}
+.personCard__figure {
+  padding: 1em;
+}
+.personCard__img {
+  @include responsive-img;
+}
+
+
+.notice__heading {
+  font-size: 1.5em;
+}

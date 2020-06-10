@@ -1,0 +1,74 @@
+@import "variables";
+@import "mixins";
+
+.img-responsive {
+  @include responsive-img();
+}
+
+figure {
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+}
+
+.figure, .wp-caption {
+  font-size: 1rem;
+
+  &--captionOverlay {
+    position: relative;
+
+    .figure__caption, {
+      position: absolute;
+      bottom: 0.75em;
+      right: 0.75em;
+      text-align: right;
+      background: rgba($white, 0.75);
+      padding: 0.25em .5em;
+    }
+  }
+
+  &--circle {
+    img {
+      border-radius: 50%;
+    }
+  }
+
+  &:hover, &:focus {
+    .figure__caption, .wp-caption-text {
+      background: rgba($white, 1);
+    }
+  }
+}
+
+.figure__caption, .wp-caption-text {
+  font-size: 0.75em;
+  display: block;
+  padding: 0.25em 0;
+
+}
+.figure__caption:empty {
+  display: none;
+}
+
+.bg-caption {
+  position: absolute;
+  bottom: 0.75em;
+  right: 0.75em;
+  font-size: 0.75rem;
+  text-align: right;
+  display: block;
+  padding: 0.25em 0.5em;
+  background: rgba($white, 0.75);
+}
+
+.wp-block-table {
+  th {
+    text-align: start;
+  }
+  td,
+  th {
+    padding: 0.5em;
+  }
+  margin-block-end: 1rem;
+}

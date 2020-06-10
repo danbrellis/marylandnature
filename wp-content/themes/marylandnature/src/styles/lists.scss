@@ -1,0 +1,82 @@
+@import "variables";
+@import "mixins";
+
+.flex-list {
+  @include blank-list();
+  display: flex;
+
+  &--wrap {
+    flex-wrap: wrap;
+  }
+}
+.flex-list__item {
+  &:not(:last-child) {
+    margin-inline-end: 2em;
+  }
+}
+
+.flex-list__item--lessSpacing {
+  &:not(:last-child) {
+    margin-inline-end: 1em;
+  }
+}
+
+.post-meta {
+  color: $reading--subtle;
+
+  li {
+    margin-block-end: .5em;
+  }
+
+  .icon {
+    font-size: 1.125em;
+  }
+}
+
+
+.site-footer__socialIconsLink {
+  font-size: 2em;
+}
+
+.two-column-grid__list {
+  @include blank-list();
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 1em;
+}
+
+.events-list {
+  @include blank-list;
+}
+
+.autoFitGrid {
+  --minWidth: 200px;
+  display: grid;
+  grid-gap: 1em;
+  grid-template-columns: repeat(auto-fit, minmax(var(--minWidth), 1fr));
+}
+
+.contact-details {
+  flex-wrap: wrap;
+  font-size: 1.375em;
+
+  li {
+    margin: 0 2em 0.75em 0;
+  }
+
+  a {
+    text-decoration: none;
+    font-weight: $font-weight--thin;
+
+    &:hover,
+    &:focus {
+      .icon-round {
+        background-color: $link--hover;
+      }
+    }
+  }
+}
+
+.iconLabel__icon {
+  margin-inline-end: .25em;
+}

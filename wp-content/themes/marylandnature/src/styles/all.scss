@@ -1,0 +1,88 @@
+@import "base";
+@import "article";
+@import "buttons";
+@import "cards";
+@import "forms";
+@import "lists";
+@import "media";
+@import "nav";
+@import "scaffolding";
+@import "type";
+@import "utility";
+
+.main.main--homepage {
+  .wp-block-cover {
+    align-items: flex-start;
+    padding-top: 4em;
+
+    .wp-block-cover__inner-container {
+      width: 60%;
+      line-height: 1.5;
+    }
+  }
+}
+
+.homepage-section {
+  padding-block-start: 2em;
+  padding-block-end: 2em;
+  font-size: 1.5rem;
+  position: relative;
+}
+
+/** CTA Membership **/
+.nhsm-cta-join {
+  background-color: #000000;
+  background-image: url(https://www.marylandnature.org/wp-content/uploads/2017/03/terrapin-hatchlings-e1488944593770.png);
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.nhsm-cta-join__inner {
+  //padding: 0 5em;
+  font-weight: $font-weight--thin;
+  color: $white;
+  font-size: 1.75rem;
+  display: flex;
+  flex-direction: column;
+}
+.nhsm-cta-join__title {
+  font-weight: $font-weight--thin;
+  text-transform: uppercase;
+  margin-block-end: 0;
+}
+.nhsm-cta-join__body {
+  margin-block-end: 1em;
+}
+.nhsm-cta-join__actions {
+  font-size: 1.25rem;
+  text-transform: uppercase;
+  line-height: 2;
+  text-align: center;
+
+  a {
+    display: block;
+  }
+}
+@include for-tablet-portrait-up() {
+  .nhsm-cta-join__actions {
+    text-align: left;
+    align-self: flex-end;
+
+    a {
+      display: inline-block;
+    }
+  }
+}
+@media (min-width: 713px) {
+  .nhsm-cta-join__body {
+    width: 80%;
+  }
+}
+@media ($large-up) {
+  .nhsm-cta-join__inner {
+    padding: 0 5em;
+  }
+  .nhsm-cta-join__body {
+    width: 70%;
+  }
+}

@@ -1,6 +1,3 @@
-[submodule "wp-content/themes/marylandnature/assets/js/scripts/FitText.js"]
-	path = wp-content/themes/marylandnature/assets/js/scripts/FitText.js
-	url = https://github.com/davatron5000/FitText.js.git
 [submodule "wp-content/themes/marylandnature/assets/js/scripts/gridme"]
 	path = wp-content/themes/marylandnature/assets/js/scripts/gridme
 	url = https://github.com/danbrellis/gridme.git

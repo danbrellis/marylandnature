@@ -1,29 +1,28 @@
 <?php get_header(); ?>
-	
-	<div id="content">
-		<div id="inner-content">
-			<div class="row">
-				<div class="medium-12 columns">
-			
-					<div class="row">
-						<main id="main" class="medium-9 medium-push-3 columns" role="main">
-							<header class="article-header">
-								<?php nhsm_addthis(); ?>
-								<h1 class="single-title"><?php echo nhsm_event_scope_prefix(' '); post_type_archive_title(); ?></h1>
-								<?php nhsm_em_the_event_archive_filters(); ?>
-							</header>
-							<?php get_template_part( 'parts/looper', 'archive-event' ); ?>
-						</main> <!-- end #main -->
+    <div class="container main-container">
+        <main class="main main--twoColumns" id="main">
+            <article class="main__content">
+                <header class="article-header" id="page-title">
+                    <h1 class="single-title"><?php echo nhsm_event_scope_prefix(' '); post_type_archive_title('', false) ? post_type_archive_title() : the_archive_title(); ?></h1>
+                    <?php get_template_part('parts/snippet', 'event-archive-filters'); ?>
+                </header>
+                <section class="archiveList" aria-labelledby="page-title">
+                    <?php if(have_posts()): while(have_posts()): the_post(); ?>
+                        <?php get_template_part( 'parts/archive', 'event' ); ?>
+                    <?php endwhile;
+                    else: ?>
+                        <div class="notice notice--alert">
+                            <span class="notice__heading">No Events Listed</span>
+                            <p>Apologies, but no events were found.</p>
+                        </div>
+                    <?php endif; ?>
 
-						<?php get_sidebar(); ?>
-
-					</div>
-				</div>
-			</div>
-		  
-		  
-		</div> <!-- end #inner-content -->
-
-	</div> <!-- end #content -->
-
+                </section>
+                <footer class="article-footer">
+                    <nav class="prev-next"><?php posts_nav_link(); ?></nav>
+                </footer>
+            </article>
+            <?php get_sidebar(); ?>
+        </main>
+    </div>
 <?php get_footer(); ?>
