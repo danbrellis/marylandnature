@@ -1,0 +1,42 @@
+{
+  "key": "group_5e95b78e987af",
+  "title": "Auxiliary Menu",
+  "fields": [
+    {
+      "key": "field_5e95b7abdb17a",
+      "label": "Prefix Icon",
+      "name": "prefix_icon",
+      "type": "text",
+      "instructions": "Add the class for a font awesome icon (needs to be included in the js library)",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "",
+      "placeholder": "fas fa-search",
+      "prepend": "",
+      "append": "",
+      "maxlength": ""
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "nav_menu_item",
+        "operator": "==",
+        "value": "3"
+      }
+    ]
+  ],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": "",
+  "active": true,
+  "description": ""
+}
