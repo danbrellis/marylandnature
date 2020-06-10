@@ -5,7 +5,8 @@ $events_args = [
     'show_event_thumbnail' => false,
     'show_event_excerpt' => false,
     'show_featured' => false,
-    'show_past_events' => false
+    'show_past_events' => false,
+    'no_events_message' => 'Apologies, but no upcoming ' . get_the_title() . ' events are scheduled.'
 ];
 $sidebar = '<h2 class="stringbean">Events</h2>' . em_display_events( $events_args ); ?>
     <div class="container main-container">

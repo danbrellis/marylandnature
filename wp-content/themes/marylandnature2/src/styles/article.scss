@@ -26,7 +26,6 @@
 
   p {
     margin: 0 0 1rem;
-    font-size: inherit;
   }
 }
 
@@ -50,4 +49,14 @@
     @include heading-style();
     margin-bottom: 0.25em;
   }
+}
+
+.article-footer {
+  margin-block-start: 1em;
+}
+.archiveList {
+  margin-block-start: 2em;
+}
+.archiveArticle__title {
+  font-size: 1.5em;
 }
