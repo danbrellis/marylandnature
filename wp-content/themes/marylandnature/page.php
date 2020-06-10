@@ -1,26 +1,10 @@
 <?php get_header(); ?>
-	
-	<div id="content">
-		<div id="inner-content">
-			<div class="row">
-				<div class="medium-12 columns">
-			
-					<div class="row">
-						<main id="main" class="medium-9 medium-push-3 columns" role="main">
-							<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-								<?php get_template_part( 'parts/content', 'page' ); ?>
-							<?php endwhile; endif; ?>	
-						</main> <!-- end #main -->
-
-						<?php get_sidebar(); ?>
-
-					</div>
-				</div>
-			</div>
-		  
-		  
-		</div> <!-- end #inner-content -->
-
-	</div> <!-- end #content -->
-
+    <div class="container main-container">
+        <main class="main main--twoColumns" id="main">
+            <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+                <?php get_template_part( 'parts/single', 'page' ); ?>
+            <?php endwhile; endif; ?>
+            <?php get_sidebar(); ?>
+        </main>
+    </div>
 <?php get_footer(); ?>
