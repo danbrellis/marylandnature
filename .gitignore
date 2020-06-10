@@ -36,7 +36,7 @@
 
 # ignore all files starting with .
 .*
-!wp-content/themes/marylandnature2/.babelrc
+!wp-content/themes/marylandnature/.babelrc
 
 # track this file .gitignore (i.e. do NOT ignore it)
 !.gitignore
@@ -74,12 +74,10 @@ Thumbs.db
 *.exe
 *.o
 *.so
-wp-content/themes/marylandnature/assets/css/
-wp-content/themes/marylandnature/assets/js/
-wp-content/themes/marylandnature2/build/
-wp-content/themes/marylandnature2/dist/
-wp-content/themes/marylandnature2/blocks/dist/
-!wp-content/themes/marylandnature/assets/js/scripts/
+
+wp-content/themes/marylandnature/build/
+wp-content/themes/marylandnature/dist/
+wp-content/themes/marylandnature/blocks/dist/
 
 # ignore packaged files
 *.7z
