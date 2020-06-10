@@ -31,6 +31,8 @@ function nhsm_get_asset_directory(){
     return get_stylesheet_directory() . $dir;
 }
 
+add_theme_support( 'title-tag' );
+
 
 /*
  *  Queries
@@ -281,8 +283,104 @@ function get_event_date_range($e){
 }
 
 /**
- * Returns an arry of events to be feed into Full Calendar
- * @param $args
+ * Returns a formatted date range for the event (or closest upcoming event if a recurrence)
+ *
+ * @param WP_Post $event
+ * @return array|bool
+ */
+function nhsm_get_upcoming_event_date_range($event){
+    if ( empty( $event->event_occurrence_start_date ) )
+        return false;
+
+    $dates = [
+        'start' => $event->event_occurrence_start_date,
+        'end' => $event->event_occurrence_end_date
+    ];
+    if(!$dates) return false;
+
+    $allday = get_post_meta($event->ID, '_event_all_day', true);
+    return nhsm_format_date_range(strtotime($dates['start']), strtotime($dates['end']), boolval($allday));
+}
+
+/**
+ * Prefixes a string with 'All', 'Past', or 'Upcoming' depending on the value of $_GET['show']
+ *
+ * @param string $after
+ * @return string
+ */
+function nhsm_event_scope_prefix($after){
+    $scope = isset($_GET['show']) ? sanitize_title($_GET['show']) : 'upcoming';
+    if($scope == 'all') $h = 'All';
+    elseif($scope == 'past') $h = 'Past';
+    else $h = 'Upcoming';
+
+    return $h . $after;
+}
+
+/**
+ * @param string $attr
+ * @return string
+ */
+function nhsm_previous_posts_link_attributes($attr){
+    $attr .= ' class="prev-next__prevLink" rel="prev"';
+    return $attr;
+}
+add_filter('previous_posts_link_attributes', 'nhsm_previous_posts_link_attributes');
+
+/**
+ * @param string $attr
+ * @return string
+ */
+function nhsm_next_posts_link_attributes($attr){
+    $attr .= ' class="prev-next__nextLink" rel="next"';
+    return $attr;
+}
+add_filter('next_posts_link_attributes', 'nhsm_next_posts_link_attributes');
+
+/**
+ * Returns true if event end date has not yet passed
+ *
+ * @param Integer $post_id
+ * @return bool
+ */
+function nhsm_is_event_over($post_id = 0){
+    $post_id = !$post_id ? get_the_ID() : $post_id ;
+    if ( !$post_id ) return false;
+
+    if(em_is_recurring($post_id)){
+        $dates = em_get_current_occurrence($post_id);
+        $end = strtotime($dates['end']);
+    }
+    else {
+        $end = strtotime(em_get_the_date($post_id, ['range'=>'end','output'=>'datetime']));
+    }
+
+    if($end === false) return false;
+    return $end < time();
+}
+
+/**
+ * Adds occurrence start and end dates to a WP_Post object
+ * if the post is an event and a single post is requested
+ * @param WP_Post $post
+ * @param WP_Query $wp_query
+ * @return WP_Post
+ */
+function nhsm_add_occurrence_data_to_post($post, $wp_query){
+    if(is_single() && $post->post_type === 'event'){
+        $dates = get_event_date_range($post);
+        if($dates){
+            $post->event_occurrence_start_date = $dates['start'];
+            $post->event_occurrence_end_date = $dates['end'];
+        }
+    }
+    return $post;
+}
+add_action('the_post', 'nhsm_add_occurrence_data_to_post', 10, 2);
+
+/**
+ * Returns an array of events to be feed into Full Calendar
+ * @param [] $args
  * @return array
  */
 function nhsm_get_events_for_calendar($args){
@@ -303,8 +401,8 @@ function nhsm_get_events_for_calendar($args){
                 $locs[0]->location_meta['google_map']['longitude']
             );
         }
-        $tag_list = str_replace('/"', '/#events"', get_the_tag_list());
-        $cat_list = nhsm_em_event_terms_list($event->id);
+        $tag_list = str_replace('/"', '/#events"', get_the_tag_list('',', ','', $event->ID));
+        $cat_list = nhsm_em_event_terms_list($event->ID);
 
         if ( em_is_recurring( $event->ID ) && Events_Maker()->options['general']['show_occurrences'] ) {
             $start = $event->event_occurrence_start_date;
