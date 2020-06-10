@@ -87,7 +87,7 @@ registerBlockType("nhsm-featurettes/collections", {
           title="Color Settings"
           colorSettings={[
             {
-              value: attributes.componentStyles.backgroundColor,
+              value: attributes.componentStyles ? attributes.componentStyles.backgroundColor : false,
               onChange: (colorValue) => {
                 const styles = { ...attributes.componentStyles };
                 styles.backgroundColor = colorValue;
@@ -96,7 +96,7 @@ registerBlockType("nhsm-featurettes/collections", {
               label: "Background Color",
             },
             {
-              value: attributes.componentStyles.color,
+              value: attributes.componentStyles ? attributes.componentStyles.color : false,
               onChange: (colorValue) => {
                 const styles = { ...attributes.componentStyles };
                 styles.color = colorValue;

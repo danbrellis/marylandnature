@@ -74,7 +74,7 @@ registerBlockType("nhsm-featurettes/newsletter-signup", {
   },
   edit({ attributes, className, setAttributes }) {
     const getImageButton = (openEvent) => {
-      if (attributes.image.url) {
+      if (attributes.image) {
         return (
           <img
             src={attributes.image.url}
