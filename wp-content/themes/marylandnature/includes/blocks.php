@@ -224,3 +224,9 @@ function nhsm_theme_supports(){
 }
 add_action('after_setup_theme', 'nhsm_theme_supports');
 
+function nhsm_image_size_names_choose($sizes) {
+    $sizes['nhsm_hbanner'] = 'Heading Banner';
+    $sizes['nhsm_headshot'] = 'Headshot';
+    return $sizes;
+}
+add_filter('image_size_names_choose', 'nhsm_image_size_names_choose');
