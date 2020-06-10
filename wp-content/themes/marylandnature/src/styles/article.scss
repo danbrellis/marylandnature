@@ -57,6 +57,11 @@
 .archiveList {
   margin-block-start: 2em;
 }
+.archiveArticle {
+  margin-block-end: 2em;
+  padding-block-end: 2em;
+  border-bottom: 1px solid $gray--dark;
+}
 .archiveArticle__title {
   font-size: 1.5em;
 }
