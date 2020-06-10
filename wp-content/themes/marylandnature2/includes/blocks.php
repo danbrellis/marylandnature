@@ -97,7 +97,7 @@ function nhsm_featurette_newsletter_signup_render($attributes, $content){
 }
 
 function nhsm_featurette_collections_render($attributes, $content){
-    $collections = nhsm_widgets_collections_render(['count' => 3, 'format' => 'stamp']);
+    $collections = nhsm_widgets_collections_render(['count' => 3, 'format' => 'stamp', 'wrapGrid' => false]);
     $content = str_replace('<div id="collections_list"></div>', $collections, $content);
 
     return $content;
