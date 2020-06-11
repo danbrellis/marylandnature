@@ -11,12 +11,9 @@ import {
   faPaperPlane,
   faPhone,
   faSearch,
-    faTags,
+  faTags,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  faCheckSquare,
-  faClock
-} from "@fortawesome/free-regular-svg-icons";
+import { faCheckSquare, faClock } from "@fortawesome/free-regular-svg-icons";
 import {
   faFacebook,
   faInstagram,
@@ -40,7 +37,7 @@ library.add(
   faPaperPlane,
   faPhone,
   faSearch,
-    faTags
+  faTags
 );
 library.add(faFacebook, faInstagram, faMeetup, faTwitter);
 
