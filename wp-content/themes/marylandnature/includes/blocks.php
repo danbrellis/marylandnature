@@ -33,6 +33,12 @@ function nhsm_register_block() {
         'editor_style' => 'nhsm-block-editor-styles',
         'style' => 'nhsm-block-styles',
     ]);
+    register_block_type('nhsm-common/page-card', [
+        'editor_script' => 'nhsm-blocks',
+        'editor_style' => 'nhsm-block-editor-styles',
+        'style' => 'nhsm-block-styles',
+        'render_callback' => 'nhsm_common_page_card_render',
+    ]);
     register_block_type('nhsm-featurettes/newsletter-signup', [
         'editor_script' => 'nhsm-blocks',
         'editor_style' => 'nhsm-block-editor-styles',
@@ -79,10 +85,31 @@ function nhsm_register_block() {
             ]
         ]
     ]);
+
+    //@todo remove featured image from tempaltes and create block templates for post types
+    /*
+    $post_type_object = get_post_type_object( 'page' );
+    $post_type_object->template = array(
+        array( 'core/image' ),
+        array( 'core/heading' )
+    );
+    */
 }
 add_action( 'init', 'nhsm_register_block' );
 
 /** Render Functions **/
+function nhsm_common_page_card_render($attributes, $content){
+    $photo_credit = nhsm_format_image_credit_line( false, $attributes['imageID'] );
+    if ( $photo_credit ) {
+        if ( strpos( $content, '<figcaption>' ) !== false ) {
+            $content = str_replace( '<figcaption>', '<figcaption class="figure__caption">'.$photo_credit, $content );
+        } else {
+            $content = str_replace( '</figure>', '<figcaption class="figure__caption">'. $photo_credit .'</figcaption></figure>', $content );
+        }
+    }
+
+    return $content;
+}
 function nhsm_featurette_newsletter_signup_render($attributes, $content){
     $photo_credit = nhsm_format_image_credit_line( false, $attributes['imageID'] );
     if ( $photo_credit ) {
@@ -227,6 +254,7 @@ add_action('after_setup_theme', 'nhsm_theme_supports');
 function nhsm_image_size_names_choose($sizes) {
     $sizes['nhsm_hbanner'] = 'Heading Banner';
     $sizes['nhsm_headshot'] = 'Headshot';
+    $sizes['nhsm_medium4x3'] = '4x3 Card';
     return $sizes;
 }
 add_filter('image_size_names_choose', 'nhsm_image_size_names_choose');

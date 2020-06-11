@@ -126,6 +126,9 @@
   order: 1;
   @include responsive-img;
 }
+.pageCard__excerpt {
+  margin: 1em 0;
+}
 
 .eventStamp {
   font-size: 0.875em;
@@ -180,7 +183,6 @@
 .personCard__img {
   @include responsive-img;
 }
-
 
 .notice__heading {
   font-size: 1.5em;

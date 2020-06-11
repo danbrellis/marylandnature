@@ -34,7 +34,7 @@
     "node-sass": "^4.13.1",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-static-files-copy": "^2.3.1",
-    "prettier": "2.0.4",
+    "prettier": "^2.0.4",
     "sass": "^1.26.3",
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11",
