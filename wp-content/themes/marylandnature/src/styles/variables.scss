@@ -8,18 +8,29 @@ $reading--subtle: #737373;
 $gray: #e8e8e8;
 $gray--dark: #d9d9d9;
 $primary: #367202;
-$primary--dark: #28502E;//#1b3901;
+$primary--dark: #28502e; //#1b3901;
 $secondary: #abd037;
 $secondary--light: #cce17f;
-$complementary: #8C7051;
+$complementary: #8c7051;
 $tertiary: #d04937;
-$dark: #1B2F33;//#121a18;
-$alert: #EF3054;
+$dark: #1b2f33; //#121a18;
+$alert: #ef3054;
 
 $link: $primary;
 $link--hover: $primary--dark;
 $linkOnDark: $secondary--light;
 $linkOnDark--hover: $secondary;
+
+$buttonColors: (
+  "green-primary": $primary,
+  "green-secondary": $secondary,
+  "green-dark": $dark,
+  "white": $white,
+  "very-light-gray": $gray,
+  "light-gray": $gray--dark,
+  "dark-gray-reading": $reading,
+  "black": $black,
+);
 
 $panel: $gray;
 $panel__border: $gray--dark;

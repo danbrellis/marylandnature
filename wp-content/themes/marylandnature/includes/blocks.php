@@ -5,7 +5,7 @@ function nhsm_register_block() {
     wp_register_script(
         'nhsm-blocks',
         get_stylesheet_directory_uri() . '/blocks/dist/blocks.build.js',
-        ['wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'wp-data'],
+        ['wp-blocks', 'wp-dom-ready', 'wp-edit-post', 'wp-element', 'wp-editor', 'wp-components', 'wp-data'],
         filemtime(get_stylesheet_directory() . '/blocks/dist/blocks.build.js')
     );
 
@@ -219,7 +219,7 @@ function nhsm_theme_supports(){
         [
             'name' => 'forest green',
             'slug' => 'green-dark',
-            'color' => '#121a18',
+            'color' => '#1B2F33',
         ],
         [
             'name' => 'white',

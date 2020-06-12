@@ -30,6 +30,13 @@
 .button--small {
   font-size: 16px;
 }
+.button--large {
+  font-size: 1.25em;
+}
+.button--center {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .wp-block-buttons {
@@ -38,9 +45,64 @@
 .wp-block-button {
   margin: 0;
 }
+
+.wp-block-button {
+  &.is-style-small {
+    .wp-block-button__link {
+      @extend .button--small;
+    }
+  }
+  &.is-style-large {
+    .wp-block-button__link {
+      @extend .button--large;
+    }
+  }
+  &.is-style-prominent {
+    .wp-block-button__link {
+      @extend .button--prominent;
+    }
+  }
+}
+
 .wp-block-button__link {
   @extend .button;
-  @extend .button--primary;
+
+  &:not(.has-text-color) {
+    color: $white;
+
+    &:hover {
+      color: $white;
+    }
+  }
+
+  &:not(.has-background) {
+    background-color: $primary;
+
+    &:hover,
+    &:focus {
+      background-color: $primary--dark;
+    }
+  }
+
+  @each $name, $color in $buttonColors {
+    &.has-#{$name}-color {
+      color: $color;
+    }
+
+    &.has-#{$name}-background-color {
+      background-color: $color;
+    }
+
+    &.has-#{$name}-color:hover,
+    &.has-#{$name}-color:focus {
+      color: $color;
+    }
+
+    &.has-#{$name}-background-color:hover,
+    &.has-#{$name}-background-color:focus {
+      background-color: darken($color, 20%);
+    }
+  }
 }
 
 .iconButton--iconFirst {
