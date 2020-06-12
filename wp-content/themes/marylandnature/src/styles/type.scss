@@ -2,7 +2,8 @@
 @import "mixins";
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap");
 
-strong, .strong {
+strong,
+.strong {
   font-weight: $font-weight--bold;
 }
 
@@ -56,6 +57,27 @@ a {
 
 .stringbean {
   @include heading-style();
+}
+
+.label {
+  text-decoration: none;
+  line-height: 1;
+  border: 0;
+  border-radius: 0;
+  display: inline-block;
+  font-size: 16px;
+  padding: 0.25em 0.75em;
+  @include transition(all);
+}
+.label--primary {
+  background-color: $primary;
+  color: $white;
+
+  &:hover,
+  &:focus {
+    color: $white;
+    background-color: $primary--dark;
+  }
 }
 
 /** Blocks **/

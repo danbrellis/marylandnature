@@ -118,10 +118,10 @@ function nhsm_get_the_cat_labels($p = 0){
     if($cats && is_array($cats)){
         foreach($cats as $cat){
             $link = get_category_link( $cat->term_id );
-            $template = !is_wp_error( $link ) ? '<a href="'.esc_url($link).'" class="button button--primary button--thin">%s</a>' : '%s';
+            $template = !is_wp_error( $link ) ? '<a href="'.esc_url($link).'" class="label label--primary">%s</a>' : '%s';
             $styles = array();
 
-            $cat_list[] = sprintf($template, '<span class="label">'.$cat->name.'</span>');
+            $cat_list[] = sprintf($template, $cat->name);
         }
     }
     if(!empty($cat_list))
@@ -251,9 +251,9 @@ function nhsm_em_event_terms_list($event_id = 0){
     if($cats && is_array($cats)){
         foreach($cats as $cat){
             $link = get_term_link( $cat, 'event-category' );
-            $template = !is_wp_error( $link ) ? '<a href="'.esc_url($link).'" class="button button--primary button--thin">%s</a>' : '%s';
+            $template = !is_wp_error( $link ) ? '<a href="'.esc_url($link).'" class="label label--primary">%s</a>' : '%s';
 
-            $cat_list[] = sprintf($template, '<span>'.$cat->name.'</span>');
+            $cat_list[] = sprintf($template, $cat->name);
         }
     }
 
