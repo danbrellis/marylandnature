@@ -12,19 +12,20 @@ figure {
   margin-inline-end: 0;
 }
 
-.figure, .wp-caption {
+.figure,
+.wp-caption {
   font-size: 1rem;
 
   &--captionOverlay {
     position: relative;
 
-    .figure__caption, {
+    .figure__caption {
       position: absolute;
       bottom: 0.75em;
       right: 0.75em;
       text-align: right;
       background: rgba($white, 0.75);
-      padding: 0.25em .5em;
+      padding: 0.25em 0.5em;
     }
   }
 
@@ -34,18 +35,20 @@ figure {
     }
   }
 
-  &:hover, &:focus {
-    .figure__caption, .wp-caption-text {
+  &:hover,
+  &:focus {
+    .figure__caption,
+    .wp-caption-text {
       background: rgba($white, 1);
     }
   }
 }
 
-.figure__caption, .wp-caption-text {
+.figure__caption,
+.wp-caption-text {
   font-size: 0.75em;
   display: block;
   padding: 0.25em 0;
-
 }
 .figure__caption:empty {
   display: none;
