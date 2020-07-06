@@ -1,5 +1,7 @@
 <?php
 
+add_theme_support( 'responsive-embeds' );
+
 add_action( 'after_setup_theme', 'nhsm_image_sizes' );
 function nhsm_image_sizes() {
     add_image_size( 'nhsm_hbanner', 1900, 826, true ); // (cropped)

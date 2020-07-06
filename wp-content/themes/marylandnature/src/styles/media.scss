@@ -46,7 +46,9 @@ figure {
 }
 
 .figure__caption,
-.wp-caption-text {
+.wp-caption-text,
+.wp-block-image figure figcaption,
+.wp-block-embed figcaption {
   font-size: 0.75em;
   display: block;
   padding: 0.25em 0;
