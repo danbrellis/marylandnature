@@ -33,6 +33,14 @@ function nhsm_get_asset_directory(){
 
 add_theme_support( 'title-tag' );
 
+// This removes the annoying […] to a Read More link
+function nhsm_excerpt_more($more) {
+    global $post;
+    // edit here if you like
+    return '<a class="excerpt-read-more" href="'. get_permalink($post->ID) . '" title="Read ' . get_the_title($post->ID).'">Read more &raquo;</a>';
+}
+//add_filter('excerpt_more', 'nhsm_excerpt_more');
+
 
 /*
  *  Queries
