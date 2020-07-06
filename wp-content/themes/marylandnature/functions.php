@@ -481,7 +481,7 @@ function nhsm_get_events_for_calendar($args){
 function add_meta_for_people_query(array $posts, WP_Query $query){
     //Loop through results and set ACF meta values as custom $post properties
 
-    if($query->is_post_type_archive('nhsm_team') && $query->is_tax('nhsm_role')){
+    if($query->is_post_type_archive('nhsm_team') && $query->is_tax('nhsm_role') && !is_admin()){
 
         if($query->is_tax('nhsm_role', 'board-of-directors')){
             $group = 'board-of-directors';
@@ -500,14 +500,16 @@ function add_meta_for_people_query(array $posts, WP_Query $query){
                     }
             }
         }
+
+        //Sort results based on above custom property (list_order)
+        usort($posts, function ($a, $b) {
+            if($a->group_order === $b->group_order){
+                return strcmp($a->post_title, $b->post_title);
+            }
+            return ($a->group_order < $b->group_order) ? -1 : 1;
+        });
     }
-    //Sort results based on above custom property (list_order)
-    usort($posts, function ($a, $b) {
-        if($a->group_order === $b->group_order){
-            return strcmp($a->post_title, $b->post_title);
-        }
-        return ($a->group_order < $b->group_order) ? -1 : 1;
-    });
+
     return $posts;
 }
 add_filter('posts_results', 'add_meta_for_people_query', 10, 2);
