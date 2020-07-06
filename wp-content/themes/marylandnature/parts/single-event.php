@@ -45,7 +45,7 @@
                         <?php endwhile; ?>
                     </p>
                 <?php endif; ?>
-                <a href="<?php echo esc_url($tickets_url); ?>" class="button" title="Visit event registration url" target="_blank">Register Now!</a>
+                <a href="<?php echo esc_url($tickets_url); ?>" class="button button--primary" title="Visit event registration url" target="_blank">Register Now!</a>
             <?php endif;
         endif ?>
         <h2>Location</h2>
