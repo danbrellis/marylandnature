@@ -4,11 +4,18 @@
     <header class="article__header">
         <h1 class="article__title archiveArticle__title"><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h1>
         <ul class="post-meta flex-list flex-list--wrap">
-            <li class="post-meta-date flex-list__item icon-with-text"><i class="far fa-clock icon icon--accentuate"></i>&nbsp;<?php echo nhsm_format_date_range(strtotime($post->event_occurrence_start_date), strtotime($post->event_occurrence_end_date), em_is_all_day($post->ID)); ?></li>
+            <li class="post-meta-date flex-list__item icon-with-text">
+                <i class="far fa-clock icon icon--accentuate"></i>&nbsp
+                <?php echo nhsm_format_date_range(
+                        strtotime($post->event_occurrence_start_date),
+                        strtotime($post->event_occurrence_end_date),
+                        em_is_all_day($post->ID));
+                ?>
+            </li>
             <?php if(nhsm_is_event_over()): ?>
                 <li class="post-meta-notice flex-list__item icon-with-text"><i class="fas fa-exclamation-circle icon icon--accentuate"></i>&nbsp;This event has passed.</li>
             <?php endif; ?>
-            <?php the_tags('<li class="post-meta-tags flex-list__item icon-with-text"><i class="fas fa-tags icon icon--accentuate" title="Tagged with:"></i>&nbsp;', ', ', '</li>'); ?>
+            <?php the_tags('<li class="post-meta-tags flex-list__item icon-with-text"><i class="fas fa-tags icon icon--accentuate" title="Tagged with:"></i>&nbsp;<span>', ', ', '</span></li>'); ?>
         </ul>
 
         <?php
