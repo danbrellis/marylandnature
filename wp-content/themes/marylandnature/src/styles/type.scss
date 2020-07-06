@@ -45,6 +45,7 @@ a {
 .icon-with-text {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 
   & > :first-child {
     margin-inline-end: 0.5em;
