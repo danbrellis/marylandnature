@@ -401,7 +401,7 @@ function nhsm_is_event_over($post_id = 0){
  * @return WP_Post
  */
 function nhsm_add_occurrence_data_to_post($post, $wp_query){
-    if(is_single() && $post->post_type === 'event'){
+    if($post->post_type === 'event'){
         $dates = get_event_date_range($post);
         if($dates){
             $post->event_occurrence_start_date = $dates['start'];
