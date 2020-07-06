@@ -77,7 +77,7 @@ function nhsm_pre_get_posts( $query ) {
         $query->set('post__not_in', array(get_option('page_on_front')));
 
         //set search to only posts and pages (handle other post types in search template)
-        $query->set('post_type', ['post', 'page']);
+        $query->set('post_type', ['post', 'page', 'event']);
     }
 
     return $query;
