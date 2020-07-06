@@ -46,7 +46,8 @@
   .h2,
   .h3,
   .h4 {
-    @include heading-style();
+    font-weight: $font-weight;
+    border-bottom: 1px solid $primary;
     margin-bottom: 0.25em;
   }
 }
