@@ -47,7 +47,7 @@
             <div class="container nhsm-cta-join__inner">
                 <h2 class="nhsm-cta-join__title">Show Your Support</h2>
                 <p class="nhsm-cta-join__body">Help us continue to deliver quality, engaging programs and provide a space for all Marylanders to learn and explore.</p>
-                <p class="nhsm-cta-join__actions"><a href="/" class="button button--primary button--prominent">Become a member</a> or <a href="/" class="button button--primary button--prominent">learn more</a> about what we do</p>
+                <p class="nhsm-cta-join__actions"><a href="/get-involved/membership" class="button button--primary button--prominent">Become a member</a> or <a href="/what-we-do" class="button button--primary button--prominent" title="Visit What We Do page">learn more</a> about what we do</p>
             </div>
             <span class="bg-caption">Photo by <a href="https://www.flickr.com/photos/allianceforthebay/13726291073/in/album-72157643586815294/" target="_blank">Alliance for the Chesapeake Bay</a></span>
         </section>
