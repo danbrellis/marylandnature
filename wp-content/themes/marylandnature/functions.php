@@ -467,6 +467,43 @@ function nhsm_get_events_for_calendar($args){
     return $calendar;
 }
 
+/**
+ * Outputs the single-event/google-map.php template
+ * or a list of location names if none of the locations have addresses.
+ */
+function em_display_single_event_google_map() {
+    global $post;
+    $locations = em_get_locations_for( $post->ID );
+    $one_location_has_address = false;
+    $location_names = [];
+
+    if ( is_array( $locations ) && ! empty( $locations ) ) {
+        $locations_tmp = [];
+
+        foreach ($locations as $location)
+            $locations_tmp[] = (int)$location->term_id;
+
+        foreach ( array_unique( $locations_tmp ) as $location_id ) {
+            $location = em_get_location($location_id);
+
+            $location_names[] = $location->name;
+
+            if (!empty($location->location_meta['google_map']) && is_array($location->location_meta['google_map'])) {
+                $one_location_has_address = true;
+            }
+            elseif ( ! empty( $location->location_meta['latitude'] ) && ! empty( $location->location_meta['longitude'] ) ) {
+                $one_location_has_address = true;
+            }
+        }
+    }
+
+    if($one_location_has_address)
+        em_get_template( 'single-event/google-map.php' );
+    elseif(count($location_names)) {
+        echo implode(', ', $location_names);
+    }
+}
+
 /*
  * People
  */
