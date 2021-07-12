@@ -24,7 +24,7 @@
     "@vue/component-compiler-utils": "^3.1.2",
     "@wordpress/scripts": "8.0.1",
     "autoprefixer": "^9.7.6",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.1.0",
     "babel-plugin-add-module-exports": "^1.0.2",
