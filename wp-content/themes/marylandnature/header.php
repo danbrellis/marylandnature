@@ -44,7 +44,7 @@
     $post_id = get_queried_object_id();
     $post_thumbnail_id = get_post_thumbnail_id($post_id);
     $post_thumbnail_alt = get_post_meta($post_thumbnail_id, '_wp_attachment_image_alt', true);
-    $fb_post_thumbnail = wp_get_attachment_image_src($post_thumbnail_id, 'nhsm_headshot');
+    $fb_post_thumbnail = wp_get_attachment_image_src($post_thumbnail_id, 'medium');
     $share_excerpt = is_singular() ? get_the_excerpt() : get_the_archive_description();
     if(get_post_type() === 'event'){
         $dates = get_event_date_range($post_id);

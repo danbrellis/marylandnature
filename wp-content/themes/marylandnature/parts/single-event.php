@@ -22,7 +22,7 @@
             if( have_rows('registration_types') ): ?>
                 <h2>Registration</h2>
                 <?php if(count($reg_types) > 1): ?>
-                    <span class="subheader h4">Levels:</span>
+                    <span class="subheader">Levels:</span>
                     <ul>
                         <?php while ( have_rows('registration_types') ) : the_row(); ?>
                             <li>

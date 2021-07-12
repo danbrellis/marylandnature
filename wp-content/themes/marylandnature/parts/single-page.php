@@ -3,7 +3,7 @@
     <header class="page__header article__header">
         <h1 class="page__title article__title"><?php the_title(); ?></h1>
         <?php
-        if(has_post_thumbnail()): ?>
+        if(isset($no_featured_image) && $no_featured_image && has_post_thumbnail()): ?>
             <figure class="article__banner figure figure--captionOverlay">
                 <?php the_post_thumbnail('nhsm_hbanner', ['class' => 'figure__img']); ?>
                 <figcaption class="figure__caption">

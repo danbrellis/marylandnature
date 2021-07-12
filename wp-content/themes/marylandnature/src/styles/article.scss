@@ -41,14 +41,17 @@
   h1,
   h2,
   h3,
-  h4,
   .h1,
   .h2,
-  .h3,
-  .h4 {
+  .h3 {
     font-weight: $font-weight;
     border-bottom: 1px solid $primary;
     margin-bottom: 0.25em;
+  }
+  h4,
+  .h4 {
+    font-weight: $font-weight;
+    margin-bottom: 0em;
   }
 }
 

@@ -16,7 +16,9 @@
     padding-top: 4em;
 
     .wp-block-cover__inner-container {
-      width: 60%;
+      @include for-tablet-landscape-up {
+        width: 60%;
+      }
       line-height: 1.5;
     }
   }

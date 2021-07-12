@@ -19,6 +19,7 @@ import {
   faInstagram,
   faMeetup,
   faTwitter,
+  faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import "alpinejs";
@@ -39,7 +40,7 @@ library.add(
   faSearch,
   faTags
 );
-library.add(faFacebook, faInstagram, faMeetup, faTwitter);
+library.add(faFacebook, faInstagram, faMeetup, faTwitter, faYoutube);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 

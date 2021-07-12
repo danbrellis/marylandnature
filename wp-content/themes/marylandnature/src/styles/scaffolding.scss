@@ -143,6 +143,13 @@
     }
   }
 }
+.home-hero-text {
+  --home-hero-stroke-color: #d9e2e9;
+  text-shadow: -1px -1px 0 var(--home-hero-stroke-color),
+    1px -1px 0 var(--home-hero-stroke-color),
+    -1px 1px 0 var(--home-hero-stroke-color),
+    1px 1px 0 var(--home-hero-stroke-color);
+}
 
 .layout-thin-sidebar {
   display: grid;

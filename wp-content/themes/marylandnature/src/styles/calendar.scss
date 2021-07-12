@@ -43,6 +43,7 @@
 }
 .fc-category-filters {
   grid-area: filters;
+  align-self: flex-start;
 }
 .fc-view-container {
   grid-area: view;

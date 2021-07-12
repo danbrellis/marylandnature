@@ -29,10 +29,12 @@
   display: none !important;
 }
 
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 0.25s ease-out;
 }
-.fade-enter, .fade-leave-to {
+.fade-enter,
+.fade-leave-to {
   opacity: 0;
 }
 
@@ -43,6 +45,10 @@
 .alignright {
   float: right;
   margin: 0 0 1em 1em;
+}
+
+.no-bottom-border {
+  border-bottom: 0 !important;
 }
 
 /** Block Utilities **/
