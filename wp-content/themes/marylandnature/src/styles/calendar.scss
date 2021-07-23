@@ -108,3 +108,9 @@
     color: $reading;
   }
 }
+
+.fc-event {
+  &:hover {
+    cursor: pointer;
+  }
+}

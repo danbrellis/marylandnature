@@ -149,7 +149,7 @@ new Vue({
           :editable="false"
           @eventClick="handleEventClick"
           :events="events"
-          eventColor="transparent"
+          eventColor="#dddddd"
           eventTextColor="inherit"
           :eventTimeFormat="{
               hour: 'numeric',
