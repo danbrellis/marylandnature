@@ -196,7 +196,7 @@ function nhsm_the_banner_image($post = 0, $atts = array()){
 function nhsm_get_the_banner_image($post = 0, $atts = array()){
     $post = get_post( $post );
     $defaults = array(
-        'class' => 'single_page_banner figure__img'
+        'class' => 'single_page_banner figure__img img-responsive'
     );
     $atts = wp_parse_args( $atts, $defaults );
     if(has_post_thumbnail($post)){
