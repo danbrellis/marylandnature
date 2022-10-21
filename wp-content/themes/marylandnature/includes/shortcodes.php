@@ -227,14 +227,33 @@ function nhsm_wa_iframe($atts){
     ), $atts );
     $a['class'] = $a['class'] . ' wildapricotframe';
     ob_start(); ?>
+    <div class="callout hide" id="js-cookies-disabled-notice">
+        <strong>The form below uses third-party cookies. Either <a href="https://akohubteam.medium.com/how-to-enable-third-party-cookies-on-your-browsers-f9a8143b8cc5" target="_blank" rel="nofollow">enable them in your browser</a> or you can <a href="<?php echo $a['src']; ?>" target="_blank">access the form directly</a>.</strong>
+        <br /><br />
+        <small>Learn more about our third-party membership software powered by <a href="https://www.wildapricot.com/wild-apricot-security" target="_blank">Wild Apricot</a>.</small>
+    </div>
     <iframe
         class="<?php echo $a['class']; ?>"
         src="<?php echo $a['src']; ?>"
         width="<?php echo $a['width']; ?>"
-        height="400"
+        height="600"
         frameborder="no"
         scrolling="yes"
         onload='tryToEnableWACookies("https://marylandnature.wildapricot.org");'></iframe>
+    <iframe src="https://mindmup.github.io/3rdpartycookiecheck/start.html"
+            style="display:none"></iframe>
+    <script>
+      var receiveMessage = function (evt) {
+        var callout = document.getElementById("js-cookies-disabled-notice");
+        if (evt.data === 'MM:3PCunsupported') {
+          console.log('third party cookies are not supported');
+          callout.classList.remove("hide");
+        } else if (evt.data === 'MM:3PCsupported') {
+          console.log('third party cookies are supported');
+        }
+      };
+      window.addEventListener("message", receiveMessage, false);
+    </script>
     <?php
     $retval = ob_get_clean();
     wp_enqueue_script('wa-enable-cookies', 'https://marylandnature.wildapricot.org/Common/EnableCookies.js');
