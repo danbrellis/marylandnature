@@ -25,8 +25,7 @@ class Events_Maker_Query {
 		add_filter( 'request', array( $this, 'feed_request' ) );
 		add_filter( 'request', array( $this, 'alter_event_page_request' ) );
 		// add_filter('the_posts', array(&$this, 'sticky_featured'));
-	}
-
+    }
 	/**
 	 * New rewrite rules.
 	 */
@@ -548,7 +547,7 @@ class Events_Maker_Query {
 				}
 
 				if ( ! $query->query_vars['event_show_past_events'] && ! $query->is_singular ) {
-					$meta_args[] = array(
+                    $meta_args[] = array(
 						'key'		 => ( ! Events_Maker()->options['general']['expire_current'] ? $keys['end'] : $keys['start']),
 						'value'		 => current_time( 'mysql' ),
 						'compare'	 => '>=',

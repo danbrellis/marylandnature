@@ -43,7 +43,8 @@ function nhsm_post_types() {
 	 	) /* end of options */
 	); /* end of register post type */
 	register_taxonomy_for_object_type('post_tag', 'nhsm_collections');
-	
+
+  /** NHSM Team **/
 	register_post_type( 'nhsm_team', /* (http://codex.wordpress.org/Function_Reference/register_post_type) */
 	 	// let's now add all the options for this post type
 		array(
@@ -78,9 +79,7 @@ function nhsm_post_types() {
 			'supports' => array( 'title', 'editor', 'thumbnail', 'excerpt', 'custom-fields', 'revisions', 'page-attributes')
 	 	) /* end of options */
 	); /* end of register post type */
-	
 	register_taxonomy_for_object_type('post_tag', 'nhsm_team');
-	
 	register_taxonomy( 'nhsm_role', array( 'nhsm_team' ), array(
 		'hierarchical'      => true,
 		'labels'            => array(
@@ -103,9 +102,43 @@ function nhsm_post_types() {
         'show_in_rest'      => true
 	) );
 
+  /** Events **/
 	register_taxonomy_for_object_type('post_tag', 'event');
 
-	
+	/** Curiosities **/
+  register_post_type( 'nhsm_curiosities', /* (http://codex.wordpress.org/Function_Reference/register_post_type) */
+    // let's now add all the options for this post type
+    array(
+      'labels' => array(
+        'name' => __('Curiosities', 'nhsm'), /* This is the Title of the Group */
+        'singular_name' => __('Curiosity', 'nhsm'), /* This is the individual type */
+        'all_items' => __('All Curiosities', 'nhsm'), /* the all items menu item */
+        'add_new' => __('Add New', 'nhsm'), /* The add new menu item */
+        'add_new_item' => __('Add New Curiosity', 'nhsm'), /* Add New Display Title */
+        'edit' => __( 'Edit', 'nhsm' ), /* Edit Dialog */
+        'edit_item' => __('Edit Curiosity', 'nhsm'), /* Edit Display Title */
+        'new_item' => __('New Curiosity', 'nhsm'), /* New Display Title */
+        'view_item' => __('View Curiosity', 'nhsm'), /* View Display Title */
+        'search_items' => __('Search Curiosities', 'nhsm'), /* Search Custom Type Title */
+        'not_found' =>  __('Nothing found in the Database.', 'nhsm'), /* This displays if there are no entries yet */
+        'not_found_in_trash' => __('Nothing found in Trash', 'nhsm'), /* This displays if there is nothing in the trash */
+        'parent_item_colon' => ''
+      ), /* end of arrays */
+      'description' => __( 'Cabinets and curiosities', 'nhsm' ), /* Custom Type Description */
+      'public' => true,
+      'publicly_queryable' => true,
+      'exclude_from_search' => false,
+      'show_ui' => true,
+      'query_var' => true,
+      'menu_icon' => 'dashicons-vault', /* the icon for the custom post type menu. uses built-in dashicons (CSS class name) */
+      'rewrite'	=> array( 'slug' => 'learn/curiosities', 'with_front' => false ), /* you can specify its url slug */
+      'has_archive' => 'curiosities', /* you can rename the slug here */
+      'capability_type' => 'post',
+      'hierarchical' => true,
+      /* the next one is important, it tells what's enabled in the post editor */
+      'supports' => ['title', 'editor', 'thumbnail', 'excerpt', 'page-attributes', 'custom-fields', 'revisions']
+    ) /* end of options */
+  ); /* end of register post type */
 } 
 
 
