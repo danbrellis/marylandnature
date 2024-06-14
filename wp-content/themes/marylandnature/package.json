@@ -15,7 +15,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "watch": "parcel watch ./src/index.js ./src/**/*.js --out-dir ./build --public-url /wp-content/themes/marylandnature2/build/",
+    "dev": "parcel watch ./src/index.js ./src/**/*.js --out-dir ./build --public-url /wp-content/themes/marylandnature2/build/",
     "build": "parcel build ./src/index.js ./src/scripts/*.js --out-dir ./dist",
     "deploy": "npm install && composer dump-autoload -a && composer install && npm run build"
   },
@@ -51,6 +51,7 @@
     "@fullcalendar/daygrid": "^4.4.0",
     "@fullcalendar/vue": "^4.4.0",
     "alpinejs": "^2.2.5",
+    "fullcalendar": "^6.1.10",
     "postcss": "^7.0.27",
     "vue": "^2.6.11",
     "vue-hot-reload-api": "^2.3.4"
