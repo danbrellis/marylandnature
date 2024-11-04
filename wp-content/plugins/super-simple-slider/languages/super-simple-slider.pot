@@ -1,0 +1,358 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Super Simple Slider\n"
+"POT-Creation-Date: 2021-07-28 15:07+0200\n"
+"PO-Revision-Date: 2019-11-28 09:14+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.11\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: en\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_ex:1,2c;"
+"esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;"
+"esc_html_x:1,2c\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: library/classes/class-super-simple-form-control.php:388
+msgid "Upload Image"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:113
+msgid "Slider has a minimum width"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:123
+msgid "Transition Speed"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:129
+msgid ""
+"The speed it takes to transition between slides in milliseconds. 1000 "
+"milliseconds equals 1 second."
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:144
+msgid "Heading"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:150
+msgid "Text"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:156
+msgid "Button Text"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:168
+msgid "Open the link in..."
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:169
+msgid "The Same Window"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:170
+msgid "A New Window"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:178
+msgid "Add a URL to link to"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:184
+msgid "Image Title Text"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:190
+msgid "Image Alt Text"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:195
+msgid "Overlay Opacity"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:211
+msgid "Text Overlay Opacity"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:227
+msgid "Text Shadow"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:231
+msgid "Display a drop shadow on the text overlay text"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:273
+#, php-format
+msgid "Add New %s"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:274
+#, php-format
+msgid "Edit %s"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:275
+#: super-simple-slider.php:61
+#, php-format
+msgid "New %s"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:276
+#, php-format
+msgid "All %s"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:277
+#, php-format
+msgid "View %s"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:278
+#, php-format
+msgid "Search %s"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:279
+#, php-format
+msgid "No %s Found"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:280
+#, php-format
+msgid "No %s Found In Trash"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:281
+#: super-simple-slider.php:67
+#, php-format
+msgid "Parent %s"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:319
+msgid "Slides"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:323
+msgid "Shortcode"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:326
+msgid "Global Settings"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:368
+#: library/classes/class-super-simple-slider.php:397
+msgid "Go Pro"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:368
+msgid "See what Super Simple Slider Premium has to offer"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:372
+msgid "Add Another Slide"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:402
+msgid "[ssslider id=\""
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:406
+msgid "Copied to clipboard"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:613
+#, php-format
+msgid "%1$s updated. %2$sView %3$s%4$s."
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:614
+msgid "Custom field updated."
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:615
+msgid "Custom field deleted."
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:616
+#, php-format
+msgid "%1$s updated."
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:617
+#, php-format
+msgid "%1$s restored to revision from %2$s."
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:618
+#, php-format
+msgid "%1$s published. %2$sView %3$s%4s."
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:619
+#, php-format
+msgid "%1$s saved."
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:620
+#, php-format
+msgid "%1$s submitted. %2$sPreview post%3$s%4$s."
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:621
+#, php-format
+msgid "%1$s scheduled for: %2$s. %3$sPreview %4$s%5$s."
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:621
+msgid "M j, Y @ G:i"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:622
+#, php-format
+msgid "%1$s draft updated. %2$sPreview %3$s%4$s."
+msgstr ""
+
+#: library/classes/class-super-simple-slider-post-type.php:640
+#, php-format
+msgid "%1$s %2$s updated."
+msgid_plural "%1$s %3$s updated."
+msgstr[0] ""
+msgstr[1] ""
+
+#: library/classes/class-super-simple-slider-post-type.php:641
+#, php-format
+msgid "%1$s %2$s not updated, somebody is editing it."
+msgid_plural "%1$s %3$s not updated, somebody is editing them."
+msgstr[0] ""
+msgstr[1] ""
+
+#: library/classes/class-super-simple-slider-post-type.php:642
+#, php-format
+msgid "%1$s %2$s permanently deleted."
+msgid_plural "%1$s %3$s permanently deleted."
+msgstr[0] ""
+msgstr[1] ""
+
+#: library/classes/class-super-simple-slider-post-type.php:643
+#, php-format
+msgid "%1$s %2$s moved to the Trash."
+msgid_plural "%1$s %3$s moved to the Trash."
+msgstr[0] ""
+msgstr[1] ""
+
+#: library/classes/class-super-simple-slider-post-type.php:644
+#, php-format
+msgid "%1$s %2$s restored from the Trash."
+msgid_plural "%1$s %3$s restored from the Trash."
+msgstr[0] ""
+msgstr[1] ""
+
+#: library/classes/class-super-simple-slider-widget.php:10
+#: super-simple-slider.php:50
+msgid "Super Simple Slider"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-widget.php:13
+msgid "Display any super simple slider."
+msgstr ""
+
+#: library/classes/class-super-simple-slider-widget.php:58
+msgid "Title:"
+msgstr ""
+
+#: library/classes/class-super-simple-slider-widget.php:90
+msgid "Slider:"
+msgstr ""
+
+#: library/classes/class-super-simple-slider.php:412
+#: library/classes/class-super-simple-slider.php:413
+msgid ""
+"<span class=\"premium-link\" style=\"color: #f18500;\">Our Themes</"
+"span>"
+msgstr ""
+
+#: library/classes/class-super-simple-slider.php:511
+msgid "Cloning of Super_Simple_Slider is forbidden"
+msgstr ""
+
+#: library/classes/class-super-simple-slider.php:520
+msgid "Unserializing instances of Super_Simple_Slider is forbidden"
+msgstr ""
+
+#: library/template-parts/content-themes.php:5
+msgid "Check out our themes!"
+msgstr ""
+
+#: library/template-parts/content-themes.php:9
+msgid "If you like this plugin you might like our themes!"
+msgstr ""
+
+#: library/template-parts/content-themes.php:44
+msgid "Coming soon!"
+msgstr ""
+
+#: library/template-parts/repeatable-panel-slide.php:16
+msgid "Content"
+msgstr ""
+
+#: library/template-parts/repeatable-panel-slide.php:17
+msgid "SEO"
+msgstr ""
+
+#: library/template-parts/repeatable-panel-slide.php:18
+msgid "Styling"
+msgstr ""
+
+#: library/template-parts/repeatable-panel-slide.php:39
+msgid "Add a Button"
+msgstr ""
+
+#: library/template-parts/slider.php:152
+msgid "Invalid Shortcode ID,"
+msgstr ""
+
+#: library/template-parts/slider.php:152
+msgid "Create a new Slider"
+msgstr ""
+
+#: super-simple-slider.php:49
+msgid "Super Simple Sliders"
+msgstr ""
+
+#: super-simple-slider.php:59
+msgid "Create New Slider"
+msgstr ""
+
+#: super-simple-slider.php:60
+msgid "Edit Slider"
+msgstr ""
+
+#: super-simple-slider.php:62
+msgid "View Sliders"
+msgstr ""
+
+#: super-simple-slider.php:63
+msgid "View Slider"
+msgstr ""
+
+#: super-simple-slider.php:64
+msgid "Search Sliders"
+msgstr ""
+
+#: super-simple-slider.php:65
+msgid "No Sliders"
+msgstr ""
+
+#: super-simple-slider.php:66
+msgid "No Sliders Found In Trash"
+msgstr ""
