@@ -16,7 +16,9 @@
     padding-top: 4em;
 
     .wp-block-cover__inner-container {
-      width: 60%;
+      @include for-tablet-landscape-up {
+        width: 60%;
+      }
       line-height: 1.5;
     }
   }
@@ -51,18 +53,13 @@
   margin-block-end: 0;
 }
 
-div:has(> [id*="super-simple-slider-"][id*="super-simple-slider-"]) {
-  margin-block-end: 3rem;
-}
-
 .caroufredsel_wrapper,
-div:has(> [id*="super-simple-slider-"][id*="super-simple-slider-"]),
-div:has(> [id*="super-simple-slider-"][id*="super-simple-slider-"])
-  [id*="super-simple-slider-"][id*="super-simple-slider-"],
+div[id*="super-simple-slider-"],
+div[id*="super-simple-slider-"] [id*="super-simple-slider-"],
 ul.super-simple-slider,
 ul.super-simple-slider li {
-  height: clamp(500px, 80vh, 1620px) !important;
-  // height: 90vh !important;
+  // height: clamp(500px, 80vh, 1620px) !important;
+  height: clamp(450px, 36.45833333vw, 700px) !important;
   max-width: 100% !important;
   overflow: hidden;
 }
@@ -83,19 +80,18 @@ ul.super-simple-slider li img {
   .slide
   .overlay-container
   .overlay
-  div:has(> .title) {
+  .opacity.half {
   top: 50% !important;
   transform: translateY(-50%) !important;
   min-height: auto !important;
   background: rgba(0, 0, 0, 0.825) !important;
+  z-index: 1;
 
   @media screen and (max-width: 768px) {
     width: 75% !important;
   }
 }
-div:has(> [id*="super-simple-slider-"][id*="super-simple-slider-"])
-  .controls
-  > div {
+div[id*="super-simple-slider-"] .controls > div {
   background-color: $primary;
   border: none !important;
   transition: background-color 0.3s ease;
@@ -104,9 +100,7 @@ div:has(> [id*="super-simple-slider-"][id*="super-simple-slider-"])
     background-color: $primary--dark;
   }
 }
-div:has(> [id*="super-simple-slider-"][id*="super-simple-slider-"])
-  .buttons
-  button {
+div[id*="super-simple-slider-"] .buttons button {
   cursor: pointer;
   background-color: $primary;
   color: #fff !important;
